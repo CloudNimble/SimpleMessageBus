@@ -1,2 +1,4 @@
 # SimpleMessageBus
-A framework for scalable, distributed cross-platform event processing on .NET
+A framework for scalable, distributed cross-platform event processing on .NET.
+
+## Why SimpleMessageBus

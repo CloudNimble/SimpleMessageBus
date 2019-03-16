@@ -42,7 +42,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         {
             foreach (var handler in _messageHandlers.Where(c => c.GetHandledMessageTypes().Any(d => d.Name == messageEnvelope.MessageType)))
             {
-                await handler.OnNextAsync(messageEnvelope);
+                await handler.OnNextAsync(messageEnvelope).ConfigureAwait(false);
             }
         }
 

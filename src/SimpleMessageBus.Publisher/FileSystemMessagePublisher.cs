@@ -20,7 +20,6 @@ namespace CloudNimble.SimpleMessageBus.Publish
 
         #endregion
 
-
         #region Constructors
 
         /// <summary>
@@ -67,7 +66,7 @@ namespace CloudNimble.SimpleMessageBus.Publish
 
                 var payload = JsonConvert.SerializeObject(envelope);
                 File.WriteAllText(Path.Combine(_options.QueueFolderPath, $"{message.Id}.json"), payload);
-            });
+            }).ConfigureAwait(false);
         }
 
         #endregion

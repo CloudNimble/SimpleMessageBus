@@ -47,7 +47,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
                 {
                     handler.OnNextAsync(messageEnvelope);
                 });
-            });
+            }).ConfigureAwait(false);
         }
 
         #endregion

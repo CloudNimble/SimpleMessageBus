@@ -90,7 +90,7 @@ namespace CloudNimble.SimpleMessageBus.Publish
             };
 
             //RWM: Push it onto the queue.
-            await Queue.AddMessageAsync(envelope.ToCloudQueueMessage());
+            await Queue.AddMessageAsync(envelope.ToCloudQueueMessage()).ConfigureAwait(false);
         }
 
         #endregion
@@ -102,7 +102,7 @@ namespace CloudNimble.SimpleMessageBus.Publish
         /// </summary>
         /// <param name="queueName">The name of the CloudQueue instance to get.</param>
         /// <param name="connectionString">The connection string for the Storage Account.</param>
-        internal CloudQueue GetQueue(string queueName, string connectionString)
+        internal static CloudQueue GetQueue(string queueName, string connectionString)
         {
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             var queueClient = storageAccount.CreateCloudQueueClient();
@@ -117,7 +117,7 @@ namespace CloudNimble.SimpleMessageBus.Publish
                 Console.WriteLine("AzureQueueMessagePublisher Error: " + ex.Message);
                 //TODO: RWM: Add telemetry.
                 //_telemetryClient.TrackException(ex);
-                throw ex;
+                throw;
             }
 
             return queue;

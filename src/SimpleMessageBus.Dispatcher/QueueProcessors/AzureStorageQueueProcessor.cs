@@ -74,7 +74,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
                 var message = JsonConvert.DeserializeObject<MessageEnvelope>(messageEnvelopeJson);
                 message.AttemptsCount = dequeueCount;
                 message.ProcessLog = log;
-                await _dispatcher.Dispatch(message);
+                await _dispatcher.Dispatch(message).ConfigureAwait(false);
             }
         }
 

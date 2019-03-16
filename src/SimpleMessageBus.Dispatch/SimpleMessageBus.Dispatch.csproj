@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>CloudNimble.SimpleMessageBus.Dispatch</AssemblyName>
     <RootNamespace>CloudNimble.SimpleMessageBus.Dispatch</RootNamespace>
+    <PackageId>SimpleMessageBus.Dispatch</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -17,7 +17,6 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
 
         #region Private Members
 
-        private readonly AzureQueueOptions _options;
         private readonly IMessageDispatcher _dispatcher;
         private readonly IServiceProvider _serviceProvider;
 
@@ -28,22 +27,12 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="options"></param>
         /// <param name="dispatcher"></param>
-        public AzureStorageQueueProcessor(AzureQueueOptions options, IMessageDispatcher dispatcher, IServiceProvider serviceProvider)
+        /// <param name="serviceProvider"></param>
+        public AzureStorageQueueProcessor(IMessageDispatcher dispatcher, IServiceProvider serviceProvider)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options), "Please register a FileSystemOptions instance with your DI container.");
-            }
-            if (string.IsNullOrWhiteSpace(options.QueueName))
-            {
-                throw new ArgumentNullException(nameof(options.QueueName), "Please specify the path to the folder that will store queue items.");
-            }
- 
-            _options = options;
-            _dispatcher = dispatcher;
-            _serviceProvider = serviceProvider;
+            _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher), "Please call \".UseOrderedMessageDispatcher()\" or \".UseParallelMessageDispatcher()\" in your Dependency Injection service registration.");
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(dispatcher), "The DependencyInjection IServiceProvider could not be found. Please ensure you've properly registered DI.");
 
             //// RWM: This needs to refactor to an extension method on IHostBuilder.
             //var builder = new HostBuilder();
@@ -77,7 +66,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <param name="messageEnvelopeJson"></param>
         /// <param name="dequeueCount"></param>
         /// <param name="log"></param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Task"/> reference for the asynchronous function.</returns>
         public async Task ProcessQueue([QueueTrigger("%queue%")] string messageEnvelopeJson, int dequeueCount, TextWriter log)
         {
             using (var lifetimeScope = _serviceProvider.CreateScope())

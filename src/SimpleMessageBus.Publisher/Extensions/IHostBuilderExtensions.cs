@@ -11,12 +11,12 @@ namespace Microsoft.Extensions.Hosting
     /// </summary>
     public static class IHostBuilderExtensions
     {
-        
+
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
+        /// <param name="builder">The <see cref="IHostBuilder"/> instance to extend.</param>
+        /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
         public static IHostBuilder UseAzureQueueMessagePublisher(this IHostBuilder builder)
         {
             return builder.UseAzureQueueMessagePublisher(o => { });
@@ -25,9 +25,9 @@ namespace Microsoft.Extensions.Hosting
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="builder"></param>
+        /// <param name="builder">The <see cref="IHostBuilder"/> instance to extend.</param>
         /// <param name="azureQueueOptions"></param>
-        /// <returns></returns>
+        /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
         public static IHostBuilder UseAzureQueueMessagePublisher(this IHostBuilder builder, Action<AzureQueueOptions> azureQueueOptions)
         {
             if (builder == null)
@@ -52,8 +52,8 @@ namespace Microsoft.Extensions.Hosting
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
+        /// <param name="builder">The <see cref="IHostBuilder"/> instance to extend.</param>
+        /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
         public static IHostBuilder UseFileSystemMessagePublisher(this IHostBuilder builder)
         {
             return builder.UseFileSystemMessagePublisher(o => { });
@@ -62,9 +62,9 @@ namespace Microsoft.Extensions.Hosting
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="azureQueueOptions"></param>
-        /// <returns></returns>
+        /// <param name="builder">The <see cref="IHostBuilder"/> instance to extend.</param>
+        /// <param name="fileSystemOptions"></param>
+        /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
         public static IHostBuilder UseFileSystemMessagePublisher(this IHostBuilder builder, Action<FileSystemOptions> fileSystemOptions)
         {
             if (builder == null)

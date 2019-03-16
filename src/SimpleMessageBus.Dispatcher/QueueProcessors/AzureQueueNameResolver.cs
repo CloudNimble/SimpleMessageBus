@@ -1,5 +1,6 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Options;
 
 namespace CloudNimble.SimpleMessageBus.Dispatch
 {
@@ -8,7 +9,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
     /// Helps dynamically resolve the name of the configured Queue at runtime.
     /// </summary>
     /// <remarks>See https://github.com/Azure/azure-webjobs-sdk/wiki/Queues#set-values-for-webjobs-sdk-constructor-parameters-in-code.</remarks>
-    public class AzureQueueNameResolver : INameResolver
+    internal class AzureQueueNameResolver : INameResolver
     {
 
         #region Private Members
@@ -22,10 +23,10 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <summary>
         /// Creates a new instance of the <see cref="AzureQueueNameResolver"/>
         /// </summary>
-        /// <param name="options">The </param>
-        public AzureQueueNameResolver(AzureQueueOptions options)
+        /// <param name="options">The <see cref="IOptions{AzureQueueOptions}"/> instance injected from the DI container.</param>
+        public AzureQueueNameResolver(IOptions<AzureQueueOptions> options)
         {
-            _options = options;
+            _options = options.Value;
         }
 
         #endregion

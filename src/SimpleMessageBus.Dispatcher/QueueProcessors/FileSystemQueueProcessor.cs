@@ -1,6 +1,7 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
@@ -10,7 +11,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
 {
 
     /// <summary>
-    /// 
+    /// Processes queue items stored in the local file system and dispatches them to all <see cref="IMessageHandler">IMessageHandlers</see> registered with the DI container.
     /// </summary>
     public class FileSystemQueueProcessor : IQueueProcessor
     {
@@ -26,11 +27,16 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         #region Constructors
 
         /// <summary>
-        /// 
+        /// The default constructor called by the Dependency Injection container.
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="options">
+        /// The injected <see cref="IOptions{FileSystemOptions}"/> specifying the options required to leverage the local file system as the SimpleMessageBus backing queue.
+        /// </param>
         /// <param name="dispatcher"></param>
-        /// <param name="serviceProvider"></param>
+        /// <param name="serviceProvider">
+        /// The Dependency Injection container's <see cref="IServiceProvider"/> instance, so that a "per-request" scope can be created that gives each <see cref="MessageEnvelope"/>
+        /// its own set of isolated dependencies.
+        /// </param>
         public FileSystemQueueProcessor(IOptions<FileSystemOptions> options, IMessageDispatcher dispatcher, IServiceProvider serviceProvider)
         {
             if (options == null)
@@ -63,31 +69,37 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
 
         #region Public Methods
 
-        // Drop a file in the "convert" directory, and this function will reverse it
-        // the contents and write the file to the "converted" directory.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="messageEnvelopeJson"></param>
+        /// <param name="logger"></param>
         public void ProcessQueue(
-            [FileTrigger(@"queue\{name}", "*.json", autoDelete: true)] string messageEnvelopeJson)
+            [FileTrigger(@"queue\{name}", "*.json", autoDelete: true)] string messageEnvelopeJson, ILogger logger)
             //[File(@"%completed%\{name}", FileAccess.Write)] out string converted,
             //[File(@"%error%\{name}", FileAccess.Write)] out string error)
         {
+            MessageEnvelope messageEnvelope = null;
             try
             {
                 using (var lifetimeScope = _serviceProvider.CreateScope())
                 {
-                    var message = JsonConvert.DeserializeObject<MessageEnvelope>(messageEnvelopeJson);
+                    messageEnvelope = JsonConvert.DeserializeObject<MessageEnvelope>(messageEnvelopeJson);
                     //message.AttemptsCount = dequeueCount;
                     //message.ProcessLog = log;
-                    _dispatcher.Dispatch(message).GetAwaiter().GetResult();
-                    File.WriteAllText(Path.Combine(_options.RootFolder, _options.CompletedFolderPath, $"{message.Id}.json"), messageEnvelopeJson);
+                    _dispatcher.Dispatch(messageEnvelope).GetAwaiter().GetResult();
+                    File.WriteAllText(Path.Combine(_options.RootFolder, _options.CompletedFolderPath, $"{messageEnvelope.Id}.json"), messageEnvelopeJson);
                 }
                 //converted = messageEnvelopeJson;
                 //error = null;
             }
             catch (Exception ex)
             {
+                if (logger != null)
+                {
+                    logger.LogCritical(ex, "An error occurred dispatching the MessageEnvelope with ID {0}", messageEnvelope?.Id);
+                }
                 File.WriteAllText(Path.Combine(_options.RootFolder, _options.ErrorFolderPath), messageEnvelopeJson);
-                //converted = null;
-                //error = messageEnvelopeJson;
             }
         }
 

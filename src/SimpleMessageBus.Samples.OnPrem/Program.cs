@@ -1,5 +1,4 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
-using CloudNimble.SimpleMessageBus.Dispatch;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -28,6 +27,7 @@ namespace SimpleMessageBus.Samples.OnPrem
                 options.CompletedFolderPath = FileSystemConstants.Completed;
                 options.ErrorFolderPath = FileSystemConstants.Error;
             })
+            .UseOrderedMessageDispatcher()
             .ConfigureLogging((context, b) =>
             {
                 b.SetMinimumLevel(LogLevel.Debug);
@@ -35,7 +35,6 @@ namespace SimpleMessageBus.Samples.OnPrem
             })
             .ConfigureServices(services =>
             {
-                services.AddSingleton<IMessageDispatcher, OrderedMessageDispatcher>();
                 services.AddSingleton<IMessageHandler, TestMessageHandler>();
             });
 

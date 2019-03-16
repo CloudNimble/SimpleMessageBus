@@ -28,14 +28,12 @@ namespace SimpleMessageBus.Samples.SimpleClientApp
                 b.SetMinimumLevel(LogLevel.Debug);
                 b.AddConsole();
             })
-            .ConfigureServices(services =>
-            {
-                services.AddSingleton<IMessagePublisher, FileSystemMessagePublisher>();
-            })
             .UseConsoleLifetime();
 
             _host = builder.Build();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             _host.RunAsync();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
             await CreateMessage(_host.Services.GetRequiredService<IMessagePublisher>());
         }

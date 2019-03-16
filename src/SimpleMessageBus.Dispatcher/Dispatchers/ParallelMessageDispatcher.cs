@@ -7,7 +7,8 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
 {
 
     /// <summary>
-    /// 
+    /// An <see cref="IMessageDispatcher"/> implementation that processes the messages in parallel, regardless of the order the <see cref="IMessageHandler">IMessageHandlers</see> 
+    /// were registered with the Dependency Injection container.
     /// </summary>
     public class ParallelMessageDispatcher : IMessageDispatcher
     {
@@ -34,7 +35,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         #region Public Methods
 
         /// <summary>
-        /// Sends the <see cref="MessageEnvelope"/> to the <see cref="MessageHandler">MessageHandlers</see> registered to that type, for processing.  
+        /// Sends the <see cref="MessageEnvelope"/> to the <see cref="IMessageHandler">MessageHandlers</see> registered to that type, for processing.  
         /// </summary>
         /// <param name="messageEnvelope"></param>
         /// <remarks>Messages will br processed in the order the MessageHandlers were registered.</remarks>

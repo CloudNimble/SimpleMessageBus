@@ -9,7 +9,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
     /// Helps dynamically resolve the name of the configured Queue at runtime.
     /// </summary>
     /// <remarks>See https://github.com/Azure/azure-webjobs-sdk/wiki/Queues#set-values-for-webjobs-sdk-constructor-parameters-in-code.</remarks>
-    public class FileSystemNameResolver : INameResolver
+    internal class FileSystemNameResolver : INameResolver
     {
 
         #region Private Members
@@ -23,7 +23,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <summary>
         /// Creates a new instance of the <see cref="AzureQueueNameResolver"/>
         /// </summary>
-        /// <param name="options">The </param>
+        /// <param name="options">The <see cref="IOptions{FileSystemOptions}"/> instance injected from the DI container.</param>
         public FileSystemNameResolver(IOptions<FileSystemOptions> options)
         {
             _options = options.Value;

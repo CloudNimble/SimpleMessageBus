@@ -25,9 +25,10 @@ namespace SimpleMessageBus.Samples.OnPrem
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="error"></param>
+        /// <param name="message"></param>
+        /// <param name="exception"></param>
         /// <returns></returns>
-        public Task OnErrorAsync(Exception error) => throw new NotImplementedException();
+        public Task OnErrorAsync(IMessage message, Exception exception) => throw new NotImplementedException();
 
         /// <summary>
         /// 

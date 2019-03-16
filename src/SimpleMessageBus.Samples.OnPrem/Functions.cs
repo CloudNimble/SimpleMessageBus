@@ -4,18 +4,21 @@ using System.IO;
 
 namespace SimpleMessageBus.Samples.OnPrem
 {
+
+    /// <summary>
+    /// This class represents a set of test functions to ensure that Azure WebJobs works locally file FileTriggers.
+    /// </summary>
     public class Functions
     {
 
-        private IServiceProvider _provider;
-
-        public Functions(IServiceProvider provider)
-        {
-            _provider = provider;
-        }
-
-        // Drop a file in the "convert" directory, and this function will reverse it
-        // the contents and write the file to the "converted" directory.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="converted"></param>
+        /// <remarks>
+        /// Drop a file in the "convert" directory, and this function will reverse the contents and write the file to the "converted" directory.
+        /// </remarks>
         public void Converter(
             [FileTrigger(@"convert\{name}", "*.txt", autoDelete: true)] string file,
             [File(@"converted\{name}", FileAccess.Write)] out string converted)
@@ -26,4 +29,5 @@ namespace SimpleMessageBus.Samples.OnPrem
         }
 
     }
+
 }

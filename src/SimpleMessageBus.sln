@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.28705.295
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Core", "SimpleMessageBus.Core\SimpleMessageBus.Core.csproj", "{2F75D45F-C9B1-460E-B717-D521359FF5E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Publish", "SimpleMessageBus.Publisher\SimpleMessageBus.Publish.csproj", "{5F7F9EBA-02D6-4AC3-A16F-CA431A377AF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Publish", "SimpleMessageBus.Publish\SimpleMessageBus.Publish.csproj", "{5F7F9EBA-02D6-4AC3-A16F-CA431A377AF1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Dispatch", "SimpleMessageBus.Dispatcher\SimpleMessageBus.Dispatch.csproj", "{FB52BD7F-C4F7-49B5-A76F-538D06A513C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Dispatch", "SimpleMessageBus.Dispatch\SimpleMessageBus.Dispatch.csproj", "{FB52BD7F-C4F7-49B5-A76F-538D06A513C6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A5A9E451-A428-44E0-A59E-AB2B2EE4B6C1}"
 	ProjectSection(SolutionItems) = preProject

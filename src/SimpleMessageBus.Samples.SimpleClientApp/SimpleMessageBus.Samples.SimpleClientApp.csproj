@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimpleMessageBus.Core\SimpleMessageBus.Core.csproj" />
-    <ProjectReference Include="..\SimpleMessageBus.Publisher\SimpleMessageBus.Publish.csproj" />
+    <ProjectReference Include="..\SimpleMessageBus.Publish\SimpleMessageBus.Publish.csproj" />
     <ProjectReference Include="..\SimpleMessageBus.Samples.Core\SimpleMessageBus.Samples.Core.csproj" />
   </ItemGroup>
 

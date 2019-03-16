@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimpleMessageBus.Core\SimpleMessageBus.Core.csproj" />
-    <ProjectReference Include="..\SimpleMessageBus.Dispatcher\SimpleMessageBus.Dispatch.csproj" />
+    <ProjectReference Include="..\SimpleMessageBus.Dispatch\SimpleMessageBus.Dispatch.csproj" />
     <ProjectReference Include="..\SimpleMessageBus.Samples.Core\SimpleMessageBus.Samples.Core.csproj" />
   </ItemGroup>
 

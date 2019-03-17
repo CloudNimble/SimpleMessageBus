@@ -46,11 +46,11 @@ your needs do.
    - Azure Functions (Azure's "serverless" offering)
 
 ### Queues Supported
-SimpleMessageBus currently supports two backing queues: the **local file system**, and **Azure Storage Queues**. This allows the Dispatcher to run entirely 
+**SimpleMessageBus** currently supports two backing queues: the **local file system**, and **Azure Storage Queues**. This allows the Dispatcher to run entirely 
 on-prem with no Azure dependencies, but still get the same durability and reliability through local poison queues and completed event storage.
 
 ### Scenarios Supported
-SimpleMessageBus was designed to streamline the following scenarios:
+**SimpleMessageBus** was designed to streamline the following scenarios:
  - User-created long-latency events (post-registration emails, share notifications, etc)
  - Incoming webhook processing (Stripe, SendGrid, GitHub, etc)
  - Very-long-running tasks (batch processing, cron jobs, etc)
@@ -58,7 +58,7 @@ SimpleMessageBus was designed to streamline the following scenarios:
 You can read more about these scenarios in our blog post.
 
 ## Getting Started
-The process of getting SimpleMessageBus working in your app is very straightforward.
+The process of getting **SimpleMessageBus** working in your app is as easy as the name suggests.
   1. Create a new .NET Standard 2.0 project to that will hold your defined Message types, install the `SimpleMessageBus.Core` NuGet package, and build out 
      your Message types.
   2. Install the `SimpleMessageBus.Publish` NuGet package into your app, reference the library you created in Step 1, and modify your workflows to publish 

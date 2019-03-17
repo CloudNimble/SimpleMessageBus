@@ -35,7 +35,7 @@ namespace SimpleMessageBus.Samples.OnPrem
             })
             .ConfigureServices(services =>
             {
-                services.AddSingleton<IMessageHandler, TestMessageHandler>();
+                services.AddSingleton<IMessageHandler, EmailMessageHandler>();
             });
 
             var host = builder.Build();

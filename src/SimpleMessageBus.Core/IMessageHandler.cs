@@ -13,6 +13,7 @@ namespace CloudNimble.SimpleMessageBus.Core
         /// <summary>
         /// Specifies which <see cref="IMessage"/> types are handled by this <see cref="IMessageHandler"/>.
         /// </summary>
+        /// <returns>An <see cref="IEnumerable{Type}"/> containing all of the <see cref="IMessage"/> types this <see cref="IMessageHandler"/> supports.</returns>
         IEnumerable<Type> GetHandledMessageTypes();
 
         /// <summary>

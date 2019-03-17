@@ -66,6 +66,20 @@ namespace CloudNimble.SimpleMessageBus.Core
 
         #endregion
 
+        #region Public Methods
+
+        /// <summary>
+        /// Retrieves the <see cref="MessageContent" /> deserialized into an <see cref="IMessage"/> of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="IMessage"/> type represented by the <see cref="MessageContent"/>.</typeparam>
+        /// <returns>A concrete <typeparamref name="T"/> instance populated with the data from the <see cref="MessageContent"/>.</returns>
+        public T GetMessage<T>() where T: IMessage
+        {
+            return JsonConvert.DeserializeObject<T>(MessageContent);
+        }
+
+        #endregion
+
     }
 
 }

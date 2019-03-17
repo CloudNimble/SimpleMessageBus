@@ -62,7 +62,7 @@ The process of getting **SimpleMessageBus** working in your app is as easy as th
   1. Create a new .NET Standard 2.0 project to that will hold your defined Message types, install the `SimpleMessageBus.Core` NuGet package, and build out 
      your Message types.
   2. Install the `SimpleMessageBus.Publish` NuGet package into your app, reference the library you created in Step 1, and modify your workflows to publish 
-     messages in response to events.
+     Messages in response to events.
   3. Create a new .NET Standard 2.0 project that will hold your MessageHandlers, install the `SimpleMessageBus.Core` NuGet package, and build out your 
      MessageHandlers.
   4. Create a new Unit Test project, reference the library you created in Step 3, and test your MessageHandler library with a variety of synthetic Messages.

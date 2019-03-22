@@ -46,7 +46,6 @@ namespace CloudNimble.SimpleMessageBus.Publish
 
         #region Public Methods
 
-
         /// <summary>
         /// Publishes the specified <see cref="IMessage"/> to a queue.
         /// </summary>

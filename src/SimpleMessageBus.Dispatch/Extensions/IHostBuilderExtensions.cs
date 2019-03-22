@@ -1,7 +1,9 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
 using CloudNimble.SimpleMessageBus.Dispatch;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 
 namespace Microsoft.Extensions.Hosting
@@ -86,15 +88,12 @@ namespace Microsoft.Extensions.Hosting
 
             builder.ConfigureWebJobs(config =>
             {
-                config.AddFiles(options =>
-                {
-                    //TODO: RWM: Pull this from configuration.
-                    options.RootPath = @"D:\Scratch\Queue\";
-                });
+                config.AddFiles();
             })
             .ConfigureServices(services =>
             {
                 services.Configure(fileSystemOptions);
+                services.AddSingleton<IConfigureOptions<FilesOptions>, FilesOptionsConfiguration>();
                 services.AddSingleton<INameResolver, FileSystemNameResolver>(); ;
                 services.AddSingleton<IQueueProcessor, FileSystemQueueProcessor>();
             })

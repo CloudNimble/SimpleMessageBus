@@ -1,4 +1,5 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         {
             await Task.Run(() =>
             {
-                Parallel.ForEach(_messageHandlers.Where(c => c.GetHandledMessageTypes().Any(d => d.Name == messageEnvelope.MessageType)), handler =>
+                Parallel.ForEach(_messageHandlers.Where(c => c.GetHandledMessageTypes().Any(d => d.SimpleAssemblyQualifiedName() == messageEnvelope.MessageType)), handler =>
                 {
                     handler.OnNextAsync(messageEnvelope);
                 });

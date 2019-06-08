@@ -24,7 +24,7 @@ namespace CloudNimble.SimpleMessageBus.Core
         public string MessageContent { get; set; }
 
         /// <summary>
-        /// A string representing the type name of the message, usually represented by "IMessage.GetType().Name".
+        /// A string representing the type name of the message. Defaults to IMessage.GetType().AssemblyQualifiedName".
         /// </summary>
         public string MessageType { get; set; }
 
@@ -60,7 +60,7 @@ namespace CloudNimble.SimpleMessageBus.Core
         /// <param name="message">The <see cref="IMessage"/> instance that will be wrapped in a <see cref="MessageEnvelope"/> to be posted to the SimpleMessageBus.</param>
         public MessageEnvelope(IMessage message)
         {
-            MessageType = message.GetType().Name;
+            MessageType = message.GetType().SimpleAssemblyQualifiedName();
             MessageContent = JsonConvert.SerializeObject(message);
         }
 

@@ -38,15 +38,20 @@ namespace SimpleMessageBus.Samples.OnPrem
         public async Task OnNextAsync(MessageEnvelope messageEnvelope)
         {
             var result = false;
+            var messageType = Type.GetType(messageEnvelope.MessageType);
 
-            switch (messageEnvelope.MessageType)
+            switch (messageType)
             {
-                case nameof(NewUserMessage):
+                case Type newUserMessage when newUserMessage == typeof(NewUserMessage):
                     result = await SendNewUserEmailAsync(messageEnvelope.GetMessage<NewUserMessage>());
                     break;
             }
+
             //RWM: Throw an exception to get the message tossed in the poison queue.
-            if (!result) { throw new Exception("Message processing failed."); }
+            if (!result)
+            {
+                throw new Exception("Message processing failed.");
+            }
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <param name="messageEnvelope">The <see cref="MessageEnvelope"/> instance to be processed.</param>
         public async Task Dispatch(MessageEnvelope messageEnvelope)
         {
-            foreach (var handler in _messageHandlers.Where(c => c.GetHandledMessageTypes().Any(d => d.Name == messageEnvelope.MessageType)))
+            foreach (var handler in _messageHandlers.Where(c => c.GetHandledMessageTypes().Any(d => d.SimpleAssemblyQualifiedName() == messageEnvelope.MessageType)))
             {
                 await handler.OnNextAsync(messageEnvelope).ConfigureAwait(false);
             }

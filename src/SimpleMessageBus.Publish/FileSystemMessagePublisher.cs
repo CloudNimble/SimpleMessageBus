@@ -64,6 +64,12 @@ namespace CloudNimble.SimpleMessageBus.Publish
                 };
 
                 var payload = JsonConvert.SerializeObject(envelope);
+
+                if (!Directory.Exists(_options.QueueFolderPath))
+                {
+                    Directory.CreateDirectory(_options.QueueFolderPath);
+                }
+
                 File.WriteAllText(Path.Combine(_options.QueueFolderPath, $"{message.Id}.json"), payload);
             }).ConfigureAwait(false);
         }

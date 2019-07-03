@@ -41,6 +41,11 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <param name="messageEnvelope">The <see cref="MessageEnvelope"/> instance to be processed.</param>
         public async Task Dispatch(MessageEnvelope messageEnvelope)
         {
+            if (messageEnvelope == null)
+            {
+                throw new ArgumentNullException(nameof(messageEnvelope));
+            }
+
             foreach (var handler in _messageHandlers.Where(c => c.GetHandledMessageTypes().Any(d => d.SimpleAssemblyQualifiedName() == messageEnvelope.MessageType)))
             {
                 await handler.OnNextAsync(messageEnvelope).ConfigureAwait(false);

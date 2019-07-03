@@ -93,13 +93,16 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
                 //converted = messageEnvelopeJson;
                 //error = null;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
                 if (logger != null)
                 {
                     logger.LogCritical(ex, "An error occurred dispatching the MessageEnvelope with ID {0}", messageEnvelope?.Id);
                 }
                 File.WriteAllText(Path.Combine(_options.RootFolder, _options.ErrorFolderPath), messageEnvelopeJson);
+                //throw;
             }
         }
 

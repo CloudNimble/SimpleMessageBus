@@ -17,6 +17,10 @@ namespace System
         /// <returns>A string containing the <paramref name="type"/> name in the format "FullTypeName, SimpleAssemblyName".</returns>
         public static string SimpleAssemblyQualifiedName(this Type type)
         {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
             return $"{type.FullName}, {type.Assembly.GetName().Name}";
         }
 

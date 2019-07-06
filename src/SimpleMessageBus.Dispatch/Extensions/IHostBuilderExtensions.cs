@@ -2,9 +2,12 @@
 using CloudNimble.SimpleMessageBus.Dispatch;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Files;
+using Microsoft.Azure.WebJobs.Extensions.Timers;
+using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 
 namespace Microsoft.Extensions.Hosting
 {
@@ -47,6 +50,7 @@ namespace Microsoft.Extensions.Hosting
             {
                 config.AddAzureStorageCoreServices();
                 config.AddAzureStorage();
+                config.AddTimers();
             })
             .ConfigureServices(services =>
             {
@@ -89,9 +93,15 @@ namespace Microsoft.Extensions.Hosting
             builder.ConfigureWebJobs(config =>
             {
                 config.AddFiles();
+                config.AddTimers();
             })
             .ConfigureServices(services =>
             {
+                // RWM: The WebJobs SDK registers the Azure ScheduleMonitor by default. For the local filesystem, we need to rip that out and replace it.
+                var oldMonitor = services.First(c => c.ServiceType.Name == nameof(ScheduleMonitor));
+                services.Remove(oldMonitor);
+                services.AddSingleton<ScheduleMonitor, FileSystemScheduleMonitor>();
+
                 services.Configure(fileSystemOptions);
                 services.AddSingleton<IConfigureOptions<FilesOptions>, FilesOptionsConfiguration>();
                 services.AddSingleton<INameResolver, FileSystemNameResolver>(); ;

@@ -29,10 +29,7 @@ namespace SimpleMessageBus.Samples.OnPrem
             })
             .UseFileSystemQueueProcessor(options =>
             {
-                options.RootFolder = @"D:\Scratch\Queue";
-                options.QueueFolderPath = FileSystemConstants.Queue;
-                options.CompletedFolderPath = FileSystemConstants.Completed;
-                options.ErrorFolderPath = FileSystemConstants.Error;
+                options.RootFolder = @"D:\Scratch\SimpleMessageBus";
             })
             .UseOrderedMessageDispatcher()
             .ConfigureLogging((context, b) =>

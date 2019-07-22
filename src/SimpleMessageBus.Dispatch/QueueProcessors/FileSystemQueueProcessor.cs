@@ -47,22 +47,20 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
             {
                 throw new ArgumentNullException(nameof(options.Value.RootFolder), "Please specify the root path that will contain the folders for processing the queue.");
             }
-            if (string.IsNullOrWhiteSpace(options.Value.QueueFolderPath))
-            {
-                throw new ArgumentNullException(nameof(options.Value.QueueFolderPath), "Please specify the folder that will store queue items.");
-            }
-            if (string.IsNullOrWhiteSpace(options.Value.CompletedFolderPath))
-            {
-                throw new ArgumentNullException(nameof(options.Value.CompletedFolderPath), "Please specify the folder that will store items that completed successfully.");
-            }
-            if (string.IsNullOrWhiteSpace(options.Value.ErrorFolderPath))
-            {
-                throw new ArgumentNullException(nameof(options.Value.ErrorFolderPath), "Please specify the folder that will store items that could not be processed.");
-            }
 
             _options = options.Value;
             _dispatcher = dispatcher;
             _serviceProvider = serviceProvider;
+
+            if (!Directory.Exists(_options.CompletedFolderPath))
+            {
+                Directory.CreateDirectory(_options.CompletedFolderPath);
+            }
+
+            if (!Directory.Exists(_options.ErrorFolderPath))
+            {
+                Directory.CreateDirectory(_options.ErrorFolderPath);
+            }
         }
 
         #endregion
@@ -88,7 +86,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
                     //message.AttemptsCount = dequeueCount;
                     //message.ProcessLog = log;
                     _dispatcher.Dispatch(messageEnvelope).GetAwaiter().GetResult();
-                    File.WriteAllText(Path.Combine(_options.RootFolder, _options.CompletedFolderPath, $"{messageEnvelope.Id}.json"), messageEnvelopeJson);
+                    File.WriteAllText(Path.Combine(_options.CompletedFolderPath, $"{messageEnvelope.Id}.json"), messageEnvelopeJson);
                 }
                 //converted = messageEnvelopeJson;
                 //error = null;
@@ -101,8 +99,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
                 {
                     logger.LogCritical(ex, "An error occurred dispatching the MessageEnvelope with ID {0}", messageEnvelope?.Id);
                 }
-                File.WriteAllText(Path.Combine(_options.RootFolder, _options.ErrorFolderPath), messageEnvelopeJson);
-                //throw;
+                File.WriteAllText(Path.Combine(_options.ErrorFolderPath, $"{messageEnvelope.Id}.json"), messageEnvelopeJson);
             }
         }
 

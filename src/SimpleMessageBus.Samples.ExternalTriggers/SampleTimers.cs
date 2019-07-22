@@ -21,7 +21,7 @@ namespace SimpleMessageBus.Samples.ExternalTriggers
         /// in order for Functions in separate assemblies to be located and called properly. The name you specify can be anything you like, and does not have to match the
         /// actual name of the method.
         /// </remarks>
-        [FunctionName("YourFunctionNameHere")]
+        [FunctionName(nameof(Run))]
         public void Run([TimerTrigger("00:00:05", UseMonitor = true)]TimerInfo myTimer, ILogger log)
         {
             if (myTimer.IsPastDue)

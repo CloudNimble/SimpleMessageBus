@@ -34,12 +34,17 @@ namespace CloudNimble.SimpleMessageBus.Publish
             {
                 throw new ArgumentNullException(nameof(options), "Please register a FileSystemOptions instance with your DI container.");
             }
-            if (string.IsNullOrWhiteSpace(options.Value.QueueFolderPath))
+            if (string.IsNullOrWhiteSpace(options.Value.RootFolder))
             {
-                throw new ArgumentNullException(nameof(options.Value.QueueFolderPath), "Please specify the path to the folder that will store queue items.");
+                throw new ArgumentNullException(nameof(options.Value.RootFolder), "Please specify the path to the folder that will store queue items.");
             }
 
             _options = options.Value;
+
+            if (!Directory.Exists(_options.QueueFolderPath))
+            {
+                Directory.CreateDirectory(_options.QueueFolderPath);
+            }
         }
 
         #endregion
@@ -64,12 +69,6 @@ namespace CloudNimble.SimpleMessageBus.Publish
                 };
 
                 var payload = JsonConvert.SerializeObject(envelope);
-
-                if (!Directory.Exists(_options.QueueFolderPath))
-                {
-                    Directory.CreateDirectory(_options.QueueFolderPath);
-                }
-
                 File.WriteAllText(Path.Combine(_options.QueueFolderPath, $"{message.Id}.json"), payload);
             }).ConfigureAwait(false);
         }

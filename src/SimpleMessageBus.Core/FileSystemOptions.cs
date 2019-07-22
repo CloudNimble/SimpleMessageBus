@@ -1,4 +1,6 @@
-﻿namespace CloudNimble.SimpleMessageBus.Core
+﻿using System.IO;
+
+namespace CloudNimble.SimpleMessageBus.Core
 {
 
     /// <summary>
@@ -17,17 +19,17 @@
         /// <summary>
         /// The folder segment where successfully-processed queue items will be moved to upon completion.
         /// </summary>
-        public string CompletedFolderPath { get; set; }
+        public string CompletedFolderPath => Path.Combine(RootFolder, FileSystemConstants.Completed);
 
         /// <summary>
         /// The folder segment where items will be stored while they are waiting to be processed.
         /// </summary>
-        public string QueueFolderPath { get; set; }
+        public string QueueFolderPath => Path.Combine(RootFolder, FileSystemConstants.Queue);
 
         /// <summary>
         /// The folder segment where failed items will be stored while they are waiting to be analyzed and reprocessed.
         /// </summary>
-        public string ErrorFolderPath { get; set; }
+        public string ErrorFolderPath => Path.Combine(RootFolder, FileSystemConstants.Error);
 
         #endregion
 
@@ -38,9 +40,6 @@
         /// </summary>
         public FileSystemOptions()
         {
-            QueueFolderPath = FileSystemConstants.Queue;
-            CompletedFolderPath = FileSystemConstants.Completed;
-            ErrorFolderPath = FileSystemConstants.Error;
         }
 
         #endregion

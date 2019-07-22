@@ -1,11 +1,9 @@
-﻿using CloudNimble.SimpleMessageBus.Core;
-using CloudNimble.SimpleMessageBus.Publish;
+﻿using CloudNimble.SimpleMessageBus.Publish;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SimpleMessageBus.Samples.Core;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace SimpleMessageBus.Samples.SimpleClientApp
@@ -21,7 +19,7 @@ namespace SimpleMessageBus.Samples.SimpleClientApp
             .UseEnvironment("Development")
             .UseFileSystemMessagePublisher(options =>
             {
-                options.QueueFolderPath = Path.Combine(@"D:\Scratch\Queue\", FileSystemConstants.Queue);
+                options.RootFolder = @"D:\Scratch\SimpleMessageBus\";
             })
             .ConfigureLogging((context, b) =>
             {

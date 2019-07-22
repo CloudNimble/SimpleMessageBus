@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CloudNimble.SimpleMessageBus.Core
+﻿namespace CloudNimble.SimpleMessageBus.Core
 {
 
     /// <summary>
@@ -14,17 +10,17 @@ namespace CloudNimble.SimpleMessageBus.Core
         /// <summary>
         /// 
         /// </summary>
-        public const string Queue = "queue";
+        public const string Queue = "Queue";
 
         /// <summary>
         /// 
         /// </summary>
-        public const string Completed = "completed";
+        public const string Completed = "Completed";
 
         /// <summary>
         /// 
         /// </summary>
-        public const string Error = "error";
+        public const string Error = "Error";
 
     }
 

@@ -69,7 +69,7 @@ namespace CloudNimble.SimpleMessageBus.Publish
                 };
 
                 var payload = JsonConvert.SerializeObject(envelope);
-                File.WriteAllText(Path.Combine(_options.QueueFolderPath, $"{message.Id}.json"), payload);
+                File.WriteAllText(Path.Combine(_options.QueueFolderPath, $"{envelope.Id}.json"), payload);
             }).ConfigureAwait(false);
         }
 

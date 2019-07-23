@@ -10,7 +10,7 @@ namespace System
     {
 
         /// <summary>
-        /// Guarantees the creation of an AssemblyQualifiedName that does not contain version or key details. That way when AssemblyVersions are incremented.
+        /// Guarantees the creation of an AssemblyQualifiedName that does not contain version or key details. That way when AssemblyVersions are incremented,
         /// the system will still attempt to process the <see cref="IMessage"/>.
         /// </summary>
         /// <param name="type"></param>

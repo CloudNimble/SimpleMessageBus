@@ -1,6 +1,7 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -65,15 +66,15 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// </summary>
         /// <param name="messageEnvelopeJson"></param>
         /// <param name="dequeueCount"></param>
-        /// <param name="log"></param>
+        /// <param name="logger"></param>
         /// <returns>A <see cref="Task"/> reference for the asynchronous function.</returns>
-        public async Task ProcessQueue([QueueTrigger("%queue%")] string messageEnvelopeJson, int dequeueCount, TextWriter log)
+        public async Task ProcessQueue([QueueTrigger("%queue%")] string messageEnvelopeJson, int dequeueCount, ILogger logger)
         {
             using (var lifetimeScope = _serviceProvider.CreateScope())
             {
                 var message = JsonConvert.DeserializeObject<MessageEnvelope>(messageEnvelopeJson);
                 message.AttemptsCount = dequeueCount;
-                message.ProcessLog = log;
+                message.ProcessLog = logger;
                 await _dispatcher.Dispatch(message).ConfigureAwait(false);
             }
         }

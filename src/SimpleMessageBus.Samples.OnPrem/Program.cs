@@ -27,6 +27,10 @@ namespace SimpleMessageBus.Samples.OnPrem
                 services.AddTimerDependencies();
                 services.AddSingleton<IMessageHandler, EmailMessageHandler>();
             })
+            .UseFileSystemMessagePublisher(options =>
+            {
+                options.RootFolder = @"D:\Scratch\SimpleMessageBus";
+            })
             .UseFileSystemQueueProcessor(options =>
             {
                 options.RootFolder = @"D:\Scratch\SimpleMessageBus";

@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
-using System.IO;
 
 namespace CloudNimble.SimpleMessageBus.Core
 {
@@ -41,7 +41,8 @@ namespace CloudNimble.SimpleMessageBus.Core
         /// <summary>
         /// The processing log for this particular message across all MessageHandlers.
         /// </summary>
-        public TextWriter ProcessLog { get; set; }
+        [JsonIgnore]
+        public ILogger ProcessLog { get; set; }
 
         #endregion
 

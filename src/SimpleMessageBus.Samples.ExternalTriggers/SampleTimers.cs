@@ -1,6 +1,9 @@
-﻿using Microsoft.Azure.WebJobs;
+﻿using CloudNimble.SimpleMessageBus.Publish;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
+using SimpleMessageBus.Samples.Core;
 using System;
+using System.Threading.Tasks;
 
 namespace SimpleMessageBus.Samples.ExternalTriggers
 {
@@ -10,6 +13,17 @@ namespace SimpleMessageBus.Samples.ExternalTriggers
     /// </summary>
     public class SampleTimers
     {
+
+        IMessagePublisher _publisher;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="publisher"></param>
+        public SampleTimers(IMessagePublisher publisher)
+        {
+            _publisher = publisher;
+        }
 
         /// <summary>
         /// A sample function to show how to trigger jobs that run at specific times or specific frequencies.
@@ -22,13 +36,20 @@ namespace SimpleMessageBus.Samples.ExternalTriggers
         /// actual name of the method.
         /// </remarks>
         [FunctionName(nameof(Run))]
-        public void Run([TimerTrigger("00:00:05", UseMonitor = true)]TimerInfo myTimer, ILogger log)
+        public async Task Run([TimerTrigger("00:00:10", UseMonitor = true)]TimerInfo myTimer, ILogger log)
         {
             if (myTimer.IsPastDue)
             {
                 log.LogInformation("Timer is running late!");
             }
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+
+            var message = new NewUserMessage()
+            {
+                Id = Guid.NewGuid(),
+                Email = "timertest@simplemessagebus"
+            };
+            await _publisher.PublishAsync(message);
         }
 
     }

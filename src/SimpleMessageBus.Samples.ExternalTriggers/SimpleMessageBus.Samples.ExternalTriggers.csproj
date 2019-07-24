@@ -8,4 +8,9 @@
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="3.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleMessageBus.Publish\SimpleMessageBus.Publish.csproj" />
+    <ProjectReference Include="..\SimpleMessageBus.Samples.Core\SimpleMessageBus.Samples.Core.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -3,7 +3,6 @@ using CloudNimble.SimpleMessageBus.Dispatch;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Extensions.Timers;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
@@ -56,8 +55,8 @@ namespace Microsoft.Extensions.Hosting
             {
                 services.AddSingleton<INameResolver, AzureQueueNameResolver>();
                 services.AddSingleton<IQueueProcessor, AzureStorageQueueProcessor>();
-            })
-            .UseConsoleLifetime();
+            });
+            //.UseConsoleLifetime();
 
             return builder;
         }
@@ -106,8 +105,8 @@ namespace Microsoft.Extensions.Hosting
                 services.AddSingleton<IConfigureOptions<FilesOptions>, FilesOptionsConfiguration>();
                 services.AddSingleton<INameResolver, FileSystemNameResolver>(); ;
                 services.AddSingleton<IQueueProcessor, FileSystemQueueProcessor>();
-            })
-            .UseConsoleLifetime();
+            });
+            //.UseConsoleLifetime();
 
             return builder;
         }

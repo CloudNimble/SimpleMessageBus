@@ -18,6 +18,9 @@ namespace SimpleMessageBus.Samples.OnPrem
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+
+            var rootFolder = @"D:\Scratch\SimpleMessageBus";
+
             var builder = new HostBuilder()
             .UseEnvironment("Development")
 
@@ -29,11 +32,11 @@ namespace SimpleMessageBus.Samples.OnPrem
             })
             .UseFileSystemMessagePublisher(options =>
             {
-                options.RootFolder = @"D:\Scratch\SimpleMessageBus";
+                options.RootFolder = rootFolder;
             })
             .UseFileSystemQueueProcessor(options =>
             {
-                options.RootFolder = @"D:\Scratch\SimpleMessageBus";
+                options.RootFolder = rootFolder;
             })
             .UseOrderedMessageDispatcher()
             .ConfigureLogging((context, b) =>
@@ -41,6 +44,12 @@ namespace SimpleMessageBus.Samples.OnPrem
                 b.SetMinimumLevel(LogLevel.Debug);
                 b.AddConsole();
             });
+
+#if netcore3_0
+            builder.UseSimpleMessageBusLifetime();
+#else
+            builder.UseConsoleLifetime();
+#endif
 
             var host = builder.Build();
             using (host)

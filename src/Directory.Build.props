@@ -15,7 +15,8 @@
 
   <PropertyGroup>
     <Product>SimpleMessageBus</Product>
-
+    <Version>1.0.0-beta.1</Version>
+    
     <Authors>CloudNimble</Authors>
     <Company>CloudNimble, Inc.</Company>
     <RpmPackageVendor>CloudNimble</RpmPackageVendor>

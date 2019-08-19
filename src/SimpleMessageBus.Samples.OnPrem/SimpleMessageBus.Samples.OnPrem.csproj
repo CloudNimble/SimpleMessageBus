@@ -2,15 +2,22 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.2;net472</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0;netcoreapp2.2;net472</TargetFrameworks>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
+    <DefineConstants>NETCORE3_0</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.10" />
+    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.11" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="3.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" Condition="'$(TargetFramework)'!='netcoreapp3.0'" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" Condition="'$(TargetFramework)'!='netcoreapp3.0'" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview8.19405.4" Condition="'$(TargetFramework)'=='netcoreapp3.0'" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0-preview8.19405.4" Condition="'$(TargetFramework)'=='netcoreapp3.0'" />
+
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +25,10 @@
     <ProjectReference Include="..\SimpleMessageBus.Dispatch\SimpleMessageBus.Dispatch.csproj" />
     <ProjectReference Include="..\SimpleMessageBus.Samples.Core\SimpleMessageBus.Samples.Core.csproj" />
     <ProjectReference Include="..\SimpleMessageBus.Samples.ExternalTriggers\SimpleMessageBus.Samples.ExternalTriggers.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
+    <ProjectReference Include="..\SimpleMessageBus.Hosting\SimpleMessageBus.Hosting.csproj" />
   </ItemGroup>
 
 </Project>

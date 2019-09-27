@@ -1,0 +1,69 @@
+{
+  "author": "CloudNimble, Inc.",
+  "classifications": [
+    "EasyAF"
+  ],
+  "name": "EasyAF Complete Solution",
+  "identity": "CloudNimble.EasyAF.Complete",
+  "shortName": "easyaf",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "preferNameDirectory": true,
+  "sourceName": "CloudNimble.EasyAF.Templates",
+  //"groupIdentity": "CloudNimble.EasyAF", // This is to differentiate between language templates
+  "guids": [
+    "B09C1303-BB7A-4D85-9B3F-DBF13506A040",
+    "79F3D1CC-DCDB-4FED-B302-95C0E66E31B2",
+    "93F639F7-F0BD-4F30-8B71-1B5972CA0432",
+    "2C1BE235-C831-4D57-972A-2BF444219251",
+    "22B0161A-3788-4C84-80A5-DCC040E58C46",
+    "8EC118B5-EE06-4DCD-8D7E-37E4E686DB1E",
+    "EE20C0B8-FFCE-42E4-8360-B49453B71BFD",
+    "62F7BCDD-A427-4D1C-9EA8-C23CCCDF2812",
+    "C9306A2E-D8C4-42E7-A977-3CE1AF6A904F",
+    "98175BF5-1AA6-4AF3-862D-4E427FE22DA2",
+    "9ECD9161-CACB-4405-87CB-511399B3F82E",
+    "B09295D8-712E-4AD7-AD00-6D338DB8BDCE",
+    "6422F5C6-985F-4011-AF5C-43A66CE952AA",
+    "7A4A5AD4-2407-4BE7-BB49-11DF14D0D368",
+    "7601169c-9f9b-45d2-a641-6f5bae3c10c2"
+  ],
+  "primaryOutputs": [
+    {
+      "path": "CloudNimble.EasyAF.Templates.Business\\CloudNimble.EasyAF.Templates.Business.csproj"
+    },
+    {
+      "path": "CloudNimble.EasyAF.Templates.Core\\CloudNimble.EasyAF.Templates.Core.csproj"
+    },
+    {
+      "path": "CloudNimble.EasyAF.Templates.Data\\CloudNimble.EasyAF.Templates.Data.csproj"
+    },
+    {
+      "path": "CloudNimble.EasyAF.Templates.Data\\CloudNimble.EasyAF.Templates.Database.sqlproj"
+    },
+    {
+      "path": "CloudNimble.EasyAF.Templates.RestService\\CloudNimble.EasyAF.Templates.RestService.csproj"
+    },
+    {
+      "path": "CloudNimble.EasyAF.Templates.RestService.Clients.DotNet\\CloudNimble.EasyAF.Templates.RestService.Clients.DotNet.csproj"
+    },
+    {
+      "path": "CloudNimble.EasyAF.Templates.ViewModels\\CloudNimble.EasyAF.Templates.ViewModels.csproj"
+    }
+  ],
+  "exclude": [ "**/[Bb]in/**", "**/[Oo]bj/**", ".template.config/**/*", "**/*.lock.json" ],
+
+  "postActions": [
+    {
+      "condition": "(!skipRestore)",
+      "description": "Restore NuGet packages required by this project.",
+      "manualInstructions": [
+        { "text": "Run 'dotnet restore'" }
+      ],
+      "actionId": "84C0DA21-51C8-4541-9940-6CA19AF04EE6",
+      "continueOnError": true
+    }
+  ]
+}

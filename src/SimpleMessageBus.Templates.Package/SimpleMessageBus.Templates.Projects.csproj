@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>dotnet new templates targeting Particular tools and libraries</Description>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <PackageType>Template</PackageType>
+    <NoWarn>$(NoWarn);NU5017</NoWarn>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <Content Include="..\*.Templates.*\**\*.*" Exclude="**\*.Templates.Package\**\*.*;**\bin\**\*.*;**\obj\**\*.*;**\*.vspscc" Pack="true" PackagePath="content" />
+  </ItemGroup>
+
+</Project>

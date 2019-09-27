@@ -24,7 +24,17 @@ namespace Microsoft.Extensions.Hosting
         /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
         public static IHostBuilder UseAzureStorageQueueProcessor(this IHostBuilder builder)
         {
-            return builder.UseAzureStorageQueueProcessor(o => { });
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            return builder
+                .ConfigureServices((hostContext, services) => 
+                 {
+                     services.Configure<AzureQueueOptions>(hostContext.Configuration.GetSection(typeof(AzureQueueOptions).Name));
+                 })
+                 .UseAzureStorageQueueProcessor(o => { });
         }
 
         /// <summary>
@@ -68,7 +78,17 @@ namespace Microsoft.Extensions.Hosting
         /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
         public static IHostBuilder UseFileSystemQueueProcessor(this IHostBuilder builder)
         {
-            return builder.UseFileSystemQueueProcessor(o => { });
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            return builder
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.Configure<FileSystemOptions>(hostContext.Configuration.GetSection(typeof(FileSystemOptions).Name));
+                })
+                .UseFileSystemQueueProcessor(o => { });
         }
 
         /// <summary>

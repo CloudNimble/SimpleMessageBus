@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 		global.json = global.json
 		..\README.md = ..\README.md
+		simplemessagebus.snk = simplemessagebus.snk
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{40B123DC-AD1F-4741-B09B-71068BAB40E9}"
@@ -31,6 +32,20 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Samples.ExternalTriggers", "SimpleMessageBus.Samples.ExternalTriggers\SimpleMessageBus.Samples.ExternalTriggers.csproj", "{C9474D29-089B-48E7-A4D1-3F34A4DD90E7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Hosting", "SimpleMessageBus.Hosting\SimpleMessageBus.Hosting.csproj", "{A5123A0B-E742-42CF-850B-93F9FD74AA43}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{D36FD65B-EAA0-4369-B47E-CD94F6B931A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Templates.AzureWebJob", "SimpleMessageBus.Templates.AzureWebJob\SimpleMessageBus.Templates.AzureWebJob.csproj", "{FE1A07D1-A822-4B39-8B87-322CE640C32E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Templates.Dispatch", "SimpleMessageBus.Templates.Dispatch\SimpleMessageBus.Templates.Dispatch.csproj", "{675A2EB2-B7E7-41AD-8819-55A3B655E714}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Templates.Projects", "SimpleMessageBus.Templates.Package\SimpleMessageBus.Templates.Projects.csproj", "{E5CCE1AD-DC3C-49BD-A595-358A2476F3C9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Templates.WindowsService", "SimpleMessageBus.Templates.WindowsService\SimpleMessageBus.Templates.WindowsService.csproj", "{47200EA9-ACC2-4598-AB64-0466D0ABC750}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{51035D66-4F14-4C41-AFBC-BE066ADABCB9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Tools", "SimpleMessageBus.Tools\SimpleMessageBus.Tools.csproj", "{9EBFBD2B-A47B-4865-A572-B88E4C56032C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +85,26 @@ Global
 		{A5123A0B-E742-42CF-850B-93F9FD74AA43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5123A0B-E742-42CF-850B-93F9FD74AA43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5123A0B-E742-42CF-850B-93F9FD74AA43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE1A07D1-A822-4B39-8B87-322CE640C32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE1A07D1-A822-4B39-8B87-322CE640C32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE1A07D1-A822-4B39-8B87-322CE640C32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE1A07D1-A822-4B39-8B87-322CE640C32E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{675A2EB2-B7E7-41AD-8819-55A3B655E714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{675A2EB2-B7E7-41AD-8819-55A3B655E714}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{675A2EB2-B7E7-41AD-8819-55A3B655E714}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{675A2EB2-B7E7-41AD-8819-55A3B655E714}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5CCE1AD-DC3C-49BD-A595-358A2476F3C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5CCE1AD-DC3C-49BD-A595-358A2476F3C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5CCE1AD-DC3C-49BD-A595-358A2476F3C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5CCE1AD-DC3C-49BD-A595-358A2476F3C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47200EA9-ACC2-4598-AB64-0466D0ABC750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47200EA9-ACC2-4598-AB64-0466D0ABC750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47200EA9-ACC2-4598-AB64-0466D0ABC750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47200EA9-ACC2-4598-AB64-0466D0ABC750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EBFBD2B-A47B-4865-A572-B88E4C56032C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EBFBD2B-A47B-4865-A572-B88E4C56032C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EBFBD2B-A47B-4865-A572-B88E4C56032C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EBFBD2B-A47B-4865-A572-B88E4C56032C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +118,11 @@ Global
 		{6BF93828-84AD-40F5-97E3-CA577A0841A5} = {367A637D-4058-4111-ABA8-31138453FB69}
 		{C9474D29-089B-48E7-A4D1-3F34A4DD90E7} = {367A637D-4058-4111-ABA8-31138453FB69}
 		{A5123A0B-E742-42CF-850B-93F9FD74AA43} = {445A670B-D3F8-4618-9331-F2A7AFC445EF}
+		{FE1A07D1-A822-4B39-8B87-322CE640C32E} = {D36FD65B-EAA0-4369-B47E-CD94F6B931A4}
+		{675A2EB2-B7E7-41AD-8819-55A3B655E714} = {D36FD65B-EAA0-4369-B47E-CD94F6B931A4}
+		{E5CCE1AD-DC3C-49BD-A595-358A2476F3C9} = {D36FD65B-EAA0-4369-B47E-CD94F6B931A4}
+		{47200EA9-ACC2-4598-AB64-0466D0ABC750} = {D36FD65B-EAA0-4369-B47E-CD94F6B931A4}
+		{9EBFBD2B-A47B-4865-A572-B88E4C56032C} = {51035D66-4F14-4C41-AFBC-BE066ADABCB9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA85B2D3-B7E9-4BA9-85DF-04483B569AA8}

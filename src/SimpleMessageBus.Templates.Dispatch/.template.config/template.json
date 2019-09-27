@@ -1,0 +1,29 @@
+{
+  "author": "CloudNimble, Inc.",
+  "classifications": [
+    "EasyAF",
+    "SimpleMessageBus",
+    "Library"
+  ],
+  "name": "SimpleMessageBus Dispatch Library",
+  "identity": "CloudNimble.SimpleMessageBus.Dispatch",
+  "shortName": "simplemessagebus-dispatch",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "preferNameDirectory": true,
+  "sourceName": "CloudNimble.SimpleMessageBus.Templates.Dispatch",
+  //"groupIdentity": "CloudNimble.EasyAF", // This is to differentiate between language templates
+  "postActions": [
+    {
+      "condition": "(!skipRestore)",
+      "description": "Restore NuGet packages required by this project.",
+      "manualInstructions": [
+        { "text": "Run 'dotnet restore'" }
+      ],
+      "actionId": "84C0DA21-51C8-4541-9940-6CA19AF04EE6",
+      "continueOnError": true
+    }
+  ]
+}

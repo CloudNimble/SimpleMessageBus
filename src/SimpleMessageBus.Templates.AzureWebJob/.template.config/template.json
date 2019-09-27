@@ -1,0 +1,29 @@
+{
+  "author": "CloudNimble, Inc.",
+  "classifications": [
+    "EasyAF",
+    "SimpleMessageBus",
+    "Azure"
+  ],
+  "name": "SimpleMessageBus Azure WebJob",
+  "identity": "CloudNimble.SimpleMessageBus.WebJob",
+  "shortName": "simplemessagebus-webjob",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "preferNameDirectory": true,
+  "sourceName": "CloudNimble.SimpleMessageBus.Templates.AzureWebJob",
+  //"groupIdentity": "CloudNimble.EasyAF", // This is to differentiate between language templates
+  "postActions": [
+    {
+      "condition": "(!skipRestore)",
+      "description": "Restore NuGet packages required by this project.",
+      "manualInstructions": [
+        { "text": "Run 'dotnet restore'" }
+      ],
+      "actionId": "84C0DA21-51C8-4541-9940-6CA19AF04EE6",
+      "continueOnError": true
+    }
+  ]
+}

@@ -69,7 +69,21 @@ namespace CloudNimble.SimpleMessageBus.Publish
                 };
 
                 var payload = JsonConvert.SerializeObject(envelope);
-                File.WriteAllText(Path.Combine(_options.QueueFolderPath, $"{envelope.Id}.json"), payload);
+                var filePath = Path.Combine(_options.QueueFolderPath, $"{envelope.Id}.json");
+
+                //RWM: If it's a network path, the write may be streamed and the file in use before the Dispatcher picks it up.
+                //     So in that case, let's write to a temp file and then rename it when it's done.
+                if (_options.IsNetworkPath)
+                {
+                    var tempFile = Path.Combine(_options.QueueFolderPath, $"{envelope.Id}.tmpmsg");
+                    File.WriteAllText(tempFile, payload);
+                    File.Move(tempFile, filePath);
+                }
+                else
+                {
+                    File.WriteAllText(filePath, payload);
+                }
+
             }).ConfigureAwait(false);
         }
 

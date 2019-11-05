@@ -9,6 +9,8 @@ namespace CloudNimble.SimpleMessageBus.Core
     public class FileSystemOptions
     {
 
+        private bool? _isNetworkPath;
+
         #region Properties
 
         /// <summary>
@@ -30,6 +32,29 @@ namespace CloudNimble.SimpleMessageBus.Core
         /// The folder segment where failed items will be stored while they are waiting to be analyzed and reprocessed.
         /// </summary>
         public string ErrorFolderPath => Path.Combine(RootFolder, FileSystemConstants.Error);
+
+        /// <summary>
+        /// Gets a boolean specifying whether or not the <see cref="RootFolder"/> is a network path (either a UNC or mapped drive).
+        /// </summary>
+        public bool IsNetworkPath
+        {
+            get
+            {
+                if (_isNetworkPath != null) return _isNetworkPath.Value;
+
+                string root = Path.GetPathRoot(RootFolder);
+
+                _isNetworkPath = true switch
+                {
+                    // Check if root starts with "\\", clearly an UNC
+                    true when root.StartsWith(@"\\") => true,
+                    // Check if the drive is a network drive
+                    true when new DriveInfo(root).DriveType == DriveType.Network => true,
+                    _ => false,
+                };
+                return _isNetworkPath.Value;
+            }
+        }
 
         #endregion
 

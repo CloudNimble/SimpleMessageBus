@@ -73,7 +73,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <param name="messageEnvelopeJson"></param>
         /// <param name="logger"></param>
         public void ProcessQueue(
-            [FileTrigger(@"queue\{name}", "*.json", autoDelete: true)] string messageEnvelopeJson, ILogger logger)
+            [FileTrigger(@"queue\{name}", "*.json", WatcherChangeTypes.Created | WatcherChangeTypes.Renamed, autoDelete: true)] string messageEnvelopeJson, ILogger logger)
             //[File(@"%completed%\{name}", FileAccess.Write)] out string converted,
             //[File(@"%error%\{name}", FileAccess.Write)] out string error)
         {

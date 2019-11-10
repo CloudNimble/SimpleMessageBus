@@ -1,11 +1,12 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
-using Microsoft.Azure.WebJobs;
+using CloudNimble.SimpleMessageBus.Dispatch.Triggers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CloudNimble.SimpleMessageBus.Dispatch
 {
@@ -71,21 +72,39 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// 
         /// </summary>
         /// <param name="messageEnvelopeJson"></param>
+        /// <param name="fileTrigger"></param>
         /// <param name="logger"></param>
-        public void ProcessQueue(
-            [FileTrigger(@"queue\{name}", "*.json", WatcherChangeTypes.Created | WatcherChangeTypes.Renamed, autoDelete: true)] string messageEnvelopeJson, ILogger logger)
-            //[File(@"%completed%\{name}", FileAccess.Write)] out string converted,
-            //[File(@"%error%\{name}", FileAccess.Write)] out string error)
+        public async Task ProcessQueue(
+#pragma warning disable IDE0060 // Remove unused parameter
+            [SimpleMessageBusFileTrigger(@"queue\{name}", "*.json", WatcherChangeTypes.Created | WatcherChangeTypes.Renamed, true)] string messageEnvelopeJson, FileSystemEventArgs fileTrigger, ILogger logger)
+#pragma warning restore IDE0060 // Remove unused parameter
+                               //[File(@"%completed%\{name}", FileAccess.Write)] out string converted,
+                               //[File(@"%error%\{name}", FileAccess.Write)] out string error)
         {
+            if (string.IsNullOrEmpty(messageEnvelopeJson))
+            {
+                throw new ArgumentException("message", nameof(messageEnvelopeJson));
+            }
+
+            if (fileTrigger is null)
+            {
+                throw new ArgumentNullException(nameof(fileTrigger));
+            }
+
+            if (logger is null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
             MessageEnvelope messageEnvelope = null;
             try
             {
                 using (var lifetimeScope = _serviceProvider.CreateScope())
                 {
                     messageEnvelope = JsonConvert.DeserializeObject<MessageEnvelope>(messageEnvelopeJson);
-                    //message.AttemptsCount = dequeueCount;
+                    //messageEnvelope.AttemptsCount = dequeueCount;
                     messageEnvelope.ProcessLog = logger;
-                    _dispatcher.Dispatch(messageEnvelope).GetAwaiter().GetResult();
+                    await _dispatcher.Dispatch(messageEnvelope);
                     File.WriteAllText(Path.Combine(_options.CompletedFolderPath, $"{messageEnvelope.Id}.json"), messageEnvelopeJson);
                 }
                 //converted = messageEnvelopeJson;
@@ -102,7 +121,6 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
                 File.WriteAllText(Path.Combine(_options.ErrorFolderPath, $"{messageEnvelope.Id}.json"), messageEnvelopeJson);
             }
         }
-
 
         #endregion
 

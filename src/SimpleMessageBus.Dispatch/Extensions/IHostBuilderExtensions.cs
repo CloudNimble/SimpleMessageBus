@@ -1,5 +1,6 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
 using CloudNimble.SimpleMessageBus.Dispatch;
+using CloudNimble.SimpleMessageBus.Dispatch.Triggers;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Extensions.Timers;
@@ -111,7 +112,7 @@ namespace Microsoft.Extensions.Hosting
 
             builder.ConfigureWebJobs(config =>
             {
-                config.AddFiles();
+                config.AddSimpleMessageBusFiles();
                 config.AddTimers();
             })
             .ConfigureServices(services =>

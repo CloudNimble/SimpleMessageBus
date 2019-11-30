@@ -17,7 +17,7 @@ your needs do.
 ### Benefits
  - Allows you to build more user-responsive apps.
  - Increases testability by decoupling long-latency events from UI-generated workflows.
- - Pushes third-party depedencies to the edges of your app, streamlining deployments.
+ - Pushes third-party dependencies to the edges of your app, streamlining deployments.
  - Increases fault-tolerance by allowing you to easily track and replay failed messages.
 
 ### Architecture

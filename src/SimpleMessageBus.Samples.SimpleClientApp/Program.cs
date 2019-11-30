@@ -15,8 +15,7 @@ namespace SimpleMessageBus.Samples.SimpleClientApp
 
         static async Task Main(string[] args)
         {
-            var builder = new HostBuilder()
-            .UseEnvironment("Development")
+            var builder = Host.CreateDefaultBuilder()
             .UseFileSystemMessagePublisher(options =>
             {
                 options.RootFolder = @"D:\Scratch\SimpleMessageBus\";

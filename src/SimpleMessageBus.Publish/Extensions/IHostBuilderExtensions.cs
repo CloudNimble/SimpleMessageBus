@@ -40,7 +40,7 @@ namespace Microsoft.Extensions.Hosting
                 throw new ArgumentNullException(nameof(azureQueueOptions));
             }
 
-            builder.ConfigureServices(services =>
+            builder.ConfigureServices((hostContext, services) =>
             {
                 services.Configure(azureQueueOptions);
                 services.AddSingleton<IMessagePublisher, AzureQueueMessagePublisher>();
@@ -77,7 +77,7 @@ namespace Microsoft.Extensions.Hosting
                 throw new ArgumentNullException(nameof(fileSystemOptions));
             }
 
-            builder.ConfigureServices(services =>
+            builder.ConfigureServices((hostContext, services) =>
             {
                 services.Configure(fileSystemOptions);
                 services.AddSingleton<IMessagePublisher, FileSystemMessagePublisher>();

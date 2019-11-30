@@ -4,9 +4,13 @@ using CloudNimble.SimpleMessageBus.Dispatch.Triggers;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Extensions.Timers;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.EnvironmentVariables;
+using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Microsoft.Extensions.Hosting
@@ -17,6 +21,8 @@ namespace Microsoft.Extensions.Hosting
     /// </summary>
     public static class IHostBuilderExtensions
     {
+
+        #region Public Methods
 
         /// <summary>
         /// Configures SimpleMessageBus to use Azure Storage Queues as the backing queue and registers the <see cref="AzureStorageQueueProcessor"/> with the DI container.
@@ -62,12 +68,15 @@ namespace Microsoft.Extensions.Hosting
                 config.AddAzureStorage();
                 config.AddTimers();
             })
-            .ConfigureServices(services =>
+
+            .ConfigureServices((hostContext, services) =>
             {
+                //RWM: This is a total hack, but I can't figure out why there are more than 1 in here, so we're hacking for now.
+                hostContext.FixWebJobsRegistration();
+
                 services.AddSingleton<INameResolver, AzureQueueNameResolver>();
                 services.AddSingleton<IQueueProcessor, AzureStorageQueueProcessor>();
             });
-            //.UseConsoleLifetime();
 
             return builder;
         }
@@ -115,8 +124,11 @@ namespace Microsoft.Extensions.Hosting
                 config.AddSimpleMessageBusFiles();
                 config.AddTimers();
             })
-            .ConfigureServices(services =>
+            .ConfigureServices((hostContext, services) =>
             {
+                //RWM: This is a total hack, but I can't figure out why there are more than 1 in here, so we're hacking for now.
+                hostContext.FixWebJobsRegistration();
+
                 // RWM: The WebJobs SDK registers the Azure ScheduleMonitor by default. For the local filesystem, we need to rip that out and replace it.
                 var oldMonitor = services.First(c => c.ServiceType.Name == nameof(ScheduleMonitor));
                 services.Remove(oldMonitor);
@@ -127,7 +139,6 @@ namespace Microsoft.Extensions.Hosting
                 services.AddSingleton<INameResolver, FileSystemNameResolver>(); ;
                 services.AddSingleton<IQueueProcessor, FileSystemQueueProcessor>();
             });
-            //.UseConsoleLifetime();
 
             return builder;
         }
@@ -161,6 +172,32 @@ namespace Microsoft.Extensions.Hosting
             });
             return builder;
         }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// The WebJobs SDK (for some reason) calls the Host.AddAppConfiguration for you. The holders for those methods are internal, and the last entry in the pipe overrides previous merging.
+        /// So we have to delete the unnecessary ConfigurationProviders until the WebJobs team fixes their mistake.
+        /// </summary>
+        /// <param name="hostContext"></param>
+        private static void FixWebJobsRegistration(this HostBuilderContext hostContext)
+        {
+            var configProviders = ((hostContext.Configuration as ConfigurationRoot).Providers as List<IConfigurationProvider>);
+
+            if (configProviders.Count(c => c.GetType() == typeof(JsonConfigurationProvider) && (c as JsonConfigurationProvider).Source.Path == "appsettings.json") > 1)
+            {
+                configProviders.Remove(configProviders.Last(c => c.GetType() == typeof(JsonConfigurationProvider) && (c as JsonConfigurationProvider).Source.Path == "appsettings.json"));
+            }
+
+            if (configProviders.Count(c => c.GetType() == typeof(EnvironmentVariablesConfigurationProvider)) > 1)
+            {
+                configProviders.Remove(configProviders.Last(c => c.GetType() == typeof(EnvironmentVariablesConfigurationProvider)));
+            }
+        }
+
+        #endregion
 
     }
 

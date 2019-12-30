@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -75,6 +76,7 @@ namespace CloudNimble.SimpleMessageBus.Publish
                 //     So in that case, let's write to a temp file and then rename it when it's done.
                 if (_options.IsNetworkPath)
                 {
+                    Trace.TraceInformation("Network path detected.");
                     var tempFile = Path.Combine(_options.QueueFolderPath, $"{envelope.Id}.tmpmsg");
                     File.WriteAllText(tempFile, payload);
                     File.Move(tempFile, filePath);

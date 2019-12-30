@@ -1,0 +1,29 @@
+{
+  "author": "CloudNimble, Inc.",
+  "classifications": [
+    "EasyAF",
+    "Core",
+    "Library"
+  ],
+  "name": "EasyAF Core Objects Library",
+  "identity": "CloudNimble.EasyAF.Core",
+  "shortName": "easyaf-core",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "preferNameDirectory": true,
+  "sourceName": "CloudNimble.EasyAF.Templates.Core",
+  //"groupIdentity": "CloudNimble.EasyAF", // This is to differentiate between language templates
+  "postActions": [
+    {
+      "condition": "(!skipRestore)",
+      "description": "Restore NuGet packages required by this project.",
+      "manualInstructions": [
+        { "text": "Run 'dotnet restore'" }
+      ],
+      "actionId": "84C0DA21-51C8-4541-9940-6CA19AF04EE6",
+      "continueOnError": true
+    }
+  ]
+}

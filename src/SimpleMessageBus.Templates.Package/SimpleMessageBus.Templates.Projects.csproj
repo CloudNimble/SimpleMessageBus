@@ -1,16 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageId>SimpleMessageBus.ProjectTemplates</PackageId>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>dotnet new templates targeting Particular tools and libraries</Description>
+    <Description>dotnet new templates for the CloudNimble SimpleMessageBus</Description>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageType>Template</PackageType>
     <NoWarn>$(NoWarn);NU5017</NoWarn>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\*.Templates.*\**\*.*" Exclude="**\*.Templates.Package\**\*.*;**\bin\**\*.*;**\obj\**\*.*;**\*.vspscc" Pack="true" PackagePath="content" />
+    <Content Include="..\*.Templates.*\**\*.*" Exclude="**\*.Templates.Projects\**\*.*;**\bin\**\*.*;**\obj\**\*.*;**\*.vspscc" Pack="true" PackagePath="content" />
+    <Content Include=".template.config\*.*" Pack="true" PackagePath="content\.template.config" />
+    <!--<Content Include="*.Templates.sln" Pack="true" PackagePath="content" />-->
   </ItemGroup>
 
 </Project>

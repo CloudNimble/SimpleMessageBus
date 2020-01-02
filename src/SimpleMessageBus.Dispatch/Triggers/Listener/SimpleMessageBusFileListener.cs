@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Timers;
+using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Host.Executors;
@@ -25,7 +26,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         private readonly SimpleMessageBusFileTriggerAttribute _attribute;
         private readonly ITriggeredFunctionExecutor _triggerExecutor;
         private readonly CancellationTokenSource _cancellationTokenSource;
-        private readonly IOptions<FilesOptions> _options;
+        private readonly IOptions<FileSystemOptions> _options;
         private readonly string _watchPath;
         private readonly ILogger _logger;
         private readonly ISimpleMessageBusFileProcessorFactory _fileProcessorFactory;
@@ -36,7 +37,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         private FileSystemWatcher _watcher;
         private bool _disposed;
 
-        public SimpleMessageBusFileListener(IOptions<FilesOptions> options, SimpleMessageBusFileTriggerAttribute attribute, ITriggeredFunctionExecutor triggerExecutor, ILogger logger, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
+        public SimpleMessageBusFileListener(IOptions<FileSystemOptions> options, SimpleMessageBusFileTriggerAttribute attribute, ITriggeredFunctionExecutor triggerExecutor, ILogger logger, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
@@ -46,16 +47,16 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 
             _cancellationTokenSource = new CancellationTokenSource();
 
-            if (string.IsNullOrEmpty(_options.Value.RootPath) || !Directory.Exists(_options.Value.RootPath))
+            if (string.IsNullOrEmpty(_options.Value.RootFolder) || !Directory.Exists(_options.Value.RootFolder))
             {
-                throw new InvalidOperationException(string.Format("Path '{0}' is invalid. FilesConfiguration.RootPath must be set to a valid directory location.", _options.Value.RootPath));
+                throw new InvalidOperationException(string.Format("Path '{0}' is invalid. FilesConfiguration.RootPath must be set to a valid directory location.", _options.Value.RootFolder));
             }
 
             //RWM: Use reflection because _attribute.GetRootPath() is internal.
             var dynMethod = _attribute.GetType().GetMethod("GetRootPath", BindingFlags.NonPublic | BindingFlags.Instance);
             var attributePath = dynMethod.Invoke(_attribute, null);
 
-            _watchPath = Path.Combine(_options.Value.RootPath, attributePath.ToString());
+            _watchPath = Path.Combine(_options.Value.RootFolder, attributePath.ToString());
         }
 
         // for testing
@@ -245,6 +246,13 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 
         private async Task ProcessWorkItem(FileSystemEventArgs e)
         {
+
+            // RWM: Account for issues with virus scanners locking the file as it is being manipulated.
+            if (_options.Value.VirusScanDelayInSeconds > 0)
+            {
+                Thread.Sleep(_options.Value.VirusScanDelayInSeconds * 1000);
+            }
+
             await _processor.ProcessFileAsync(e, _cancellationTokenSource.Token);
 
             // Whenever we finish processing a file, reset the cleanup timer

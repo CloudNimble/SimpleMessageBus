@@ -9,24 +9,18 @@ namespace CloudNimble.SimpleMessageBus.Core
     public class FileSystemOptions
     {
 
+        #region Private members
+
         private bool? _isNetworkPath;
 
-        #region Properties
+        #endregion
 
-        /// <summary>
-        /// A string representing the folder that will hold the three required queue folders.
-        /// </summary>
-        public string RootFolder { get; set; }
+        #region Properties
 
         /// <summary>
         /// The folder segment where successfully-processed queue items will be moved to upon completion.
         /// </summary>
         public string CompletedFolderPath => Path.Combine(RootFolder, FileSystemConstants.Completed);
-
-        /// <summary>
-        /// The folder segment where items will be stored while they are waiting to be processed.
-        /// </summary>
-        public string QueueFolderPath => Path.Combine(RootFolder, FileSystemConstants.Queue);
 
         /// <summary>
         /// The folder segment where failed items will be stored while they are waiting to be analyzed and reprocessed.
@@ -55,6 +49,21 @@ namespace CloudNimble.SimpleMessageBus.Core
                 return _isNetworkPath.Value;
             }
         }
+
+        /// <summary>
+        /// The folder segment where items will be stored while they are waiting to be processed.
+        /// </summary>
+        public string QueueFolderPath => Path.Combine(RootFolder, FileSystemConstants.Queue);
+
+        /// <summary>
+        /// A string representing the folder that will hold the three required queue folders.
+        /// </summary>
+        public string RootFolder { get; set; }
+
+        /// <summary>
+        /// An integr representing the number of seconds to wait before firing FileSystemWatcher events to process the Queue.
+        /// </summary>
+        public int VirusScanDelayInSeconds { get; set; } = 0;
 
         #endregion
 

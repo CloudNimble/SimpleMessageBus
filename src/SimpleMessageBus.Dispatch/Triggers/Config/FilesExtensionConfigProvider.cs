@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Description;
 using Microsoft.Azure.WebJobs.Extensions.Files;
@@ -15,11 +16,11 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
     [Extension("SimpleMessageBusFiles")]
     internal class SimpleMessageBusFilesExtensionConfigProvider : IExtensionConfigProvider, IConverter<SimpleMessageBusFileAttribute, Stream>
     {
-        private readonly IOptions<FilesOptions> _options;
+        private readonly IOptions<FileSystemOptions> _options;
         private readonly ILoggerFactory _loggerFactory;
         private readonly ISimpleMessageBusFileProcessorFactory _fileProcessorFactory;
 
-        public SimpleMessageBusFilesExtensionConfigProvider(IOptions<FilesOptions> options, ILoggerFactory loggerFactory, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
+        public SimpleMessageBusFilesExtensionConfigProvider(IOptions<FileSystemOptions> options, ILoggerFactory loggerFactory, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
         {
             _options = options;
             _loggerFactory = loggerFactory;
@@ -29,7 +30,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         private FileInfo GetFileInfo(SimpleMessageBusFileAttribute attribute)
         {
             var boundFileName = attribute.Path;
-            var filePath = Path.Combine(_options.Value.RootPath, boundFileName);
+            var filePath = Path.Combine(_options.Value.RootFolder, boundFileName);
             var fileInfo = new FileInfo(filePath);
             return fileInfo;
         }

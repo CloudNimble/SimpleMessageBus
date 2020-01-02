@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Azure.WebJobs.Host.Listeners;
@@ -20,13 +21,13 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
     {
         private readonly ParameterInfo _parameter;
         private readonly SimpleMessageBusFileTriggerAttribute _attribute;
-        private readonly IOptions<FilesOptions> _options;
+        private readonly IOptions<FileSystemOptions> _options;
         private readonly IReadOnlyDictionary<string, Type> _bindingContract;
         private readonly BindingDataProvider _bindingDataProvider;
         private readonly ISimpleMessageBusFileProcessorFactory _fileProcessorFactory;
         private readonly ILogger _logger;
 
-        public SimpleMessageBusFileTriggerBinding(IOptions<FilesOptions> options, ParameterInfo parameter, ILogger logger, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
+        public SimpleMessageBusFileTriggerBinding(IOptions<FileSystemOptions> options, ParameterInfo parameter, ILogger logger, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
         {
             _options = options;
             _parameter = parameter;
@@ -90,7 +91,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         public ParameterDescriptor ToParameterDescriptor()
         {
             // These path values are validated later during startup.
-            string triggerPath = Path.Combine(_options.Value.RootPath ?? string.Empty, _attribute.Path ?? string.Empty);
+            string triggerPath = Path.Combine(_options.Value.RootFolder ?? string.Empty, _attribute.Path ?? string.Empty);
 
             return new SimpleMessageBusFileTriggerParameterDescriptor
             {

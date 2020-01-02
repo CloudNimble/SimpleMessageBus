@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Host.Executors;
@@ -22,7 +23,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
     /// </summary>
     public class SimpleMessageBusFileProcessor
     {
-        private readonly FilesOptions _options;
+        private readonly FileSystemOptions _options;
         private readonly SimpleMessageBusFileTriggerAttribute _attribute;
         private readonly ILogger _logger;
         private readonly ITriggeredFunctionExecutor _executor;
@@ -50,7 +51,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
             var dynMethod = _attribute.GetType().GetMethod("GetRootPath", BindingFlags.NonPublic | BindingFlags.Instance);
             var attributePath = dynMethod.Invoke(_attribute, null);
 
-            _filePath = Path.Combine(_options.RootPath, attributePath.ToString());
+            _filePath = Path.Combine(_options.RootFolder, attributePath.ToString());
 
             var settings = new JsonSerializerSettings
             {

@@ -47,6 +47,7 @@ namespace SimpleMessageBus.Tests.Dispatch
                 .UseFileSystemQueueProcessor(options =>
                 {
                     options.RootFolder = filePath;
+                    options.VirusScanDelayInSeconds = 5;
                 })
                 .UseOrderedMessageDispatcher()
 
@@ -71,6 +72,8 @@ namespace SimpleMessageBus.Tests.Dispatch
             var publisher = _host.Services.GetRequiredService<IMessagePublisher>();
             await publisher.PublishAsync(new TestMessage());
             Thread.Sleep(3000);
+            MessageCount.Should().Be(0);
+            Thread.Sleep(3000);
             MessageCount.Should().Be(1);
             MessageCount = 0;
         }
@@ -94,6 +97,8 @@ namespace SimpleMessageBus.Tests.Dispatch
             Thread.Sleep(200);
             File.Move(Path.Combine(options.Value.QueueFolderPath, $"{time}.tmpmsg"), Path.Combine(options.Value.QueueFolderPath, $"{time}.json"));
 
+            Thread.Sleep(3000);
+            MessageCount.Should().Be(0);
             Thread.Sleep(3000);
             MessageCount.Should().Be(1);
             MessageCount = 0;

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Azure.WebJobs.Extensions.Bindings;
 using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Host.Triggers;
@@ -19,11 +20,11 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 {
     internal class SimpleMessageBusFileTriggerAttributeBindingProvider : ITriggerBindingProvider
     {
-        private readonly IOptions<FilesOptions> _options;
+        private readonly IOptions<FileSystemOptions> _options;
         private readonly ILogger _logger;
         private readonly ISimpleMessageBusFileProcessorFactory _fileProcessorFactory;
 
-        public SimpleMessageBusFileTriggerAttributeBindingProvider(IOptions<FilesOptions> options, ILoggerFactory loggerFactory, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
+        public SimpleMessageBusFileTriggerAttributeBindingProvider(IOptions<FileSystemOptions> options, ILoggerFactory loggerFactory, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _logger = loggerFactory?.CreateLogger(LogCategories.CreateTriggerCategory("File"));

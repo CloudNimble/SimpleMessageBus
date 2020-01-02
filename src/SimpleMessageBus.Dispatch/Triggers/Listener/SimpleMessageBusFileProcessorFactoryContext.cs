@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using System;
+using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Host.Executors;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         /// <param name="attribute">The <see cref="SimpleMessageBusFileTriggerAttribute"/></param>
         /// <param name="executor">The function executor.</param>
         /// <param name="logger">The <see cref="ILogger"/>.</param>
-        public SimpleMessageBusFileProcessorFactoryContext(FilesOptions options, SimpleMessageBusFileTriggerAttribute attribute, ITriggeredFunctionExecutor executor, ILogger logger)
+        public SimpleMessageBusFileProcessorFactoryContext(FileSystemOptions options, SimpleMessageBusFileTriggerAttribute attribute, ITriggeredFunctionExecutor executor, ILogger logger)
         {
             Options = options ?? throw new ArgumentNullException(nameof(options));
             Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
@@ -31,7 +32,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         /// <summary>
         /// Gets the <see cref="FilesOptions"/>
         /// </summary>
-        public FilesOptions Options { get; private set; }
+        public FileSystemOptions Options { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="SimpleMessageBusFileTriggerAttribute"/>

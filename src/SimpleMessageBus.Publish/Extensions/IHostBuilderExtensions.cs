@@ -19,7 +19,12 @@ namespace Microsoft.Extensions.Hosting
         /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
         public static IHostBuilder UseAzureQueueMessagePublisher(this IHostBuilder builder)
         {
-            return builder.UseAzureQueueMessagePublisher(o => { });
+            return builder
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.Configure<AzureQueueOptions>(hostContext.Configuration.GetSection(typeof(AzureQueueOptions).Name));
+                })
+                .UseAzureQueueMessagePublisher(o => { });
         }
 
         /// <summary>

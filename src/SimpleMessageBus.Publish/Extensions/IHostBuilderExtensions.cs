@@ -19,6 +19,11 @@ namespace Microsoft.Extensions.Hosting
         /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
         public static IHostBuilder UseAzureQueueMessagePublisher(this IHostBuilder builder)
         {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
             return builder
                 .ConfigureServices((hostContext, services) =>
                 {
@@ -61,7 +66,17 @@ namespace Microsoft.Extensions.Hosting
         /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
         public static IHostBuilder UseFileSystemMessagePublisher(this IHostBuilder builder)
         {
-            return builder.UseFileSystemMessagePublisher(o => { });
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            return builder
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.Configure<FileSystemOptions>(hostContext.Configuration.GetSection(typeof(FileSystemOptions).Name));
+                })
+                .UseFileSystemMessagePublisher(o => { });
         }
 
         /// <summary>

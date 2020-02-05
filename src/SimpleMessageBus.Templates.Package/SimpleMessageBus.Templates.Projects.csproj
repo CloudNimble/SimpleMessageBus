@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>SimpleMessageBus.ProjectTemplates</PackageId>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Description>dotnet new templates for the CloudNimble SimpleMessageBus</Description>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageType>Template</PackageType>

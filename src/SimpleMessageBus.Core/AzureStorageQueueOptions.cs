@@ -4,7 +4,7 @@
     /// <summary>
     /// Specifies the options required to leverage Azure Queue Storage as the SimpleMessageBus backing queue.
     /// </summary>
-    public class AzureQueueOptions
+    public class AzureStorageQueueOptions
     {
 
         #region Properties
@@ -18,6 +18,11 @@
         public string QueueName { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public string CompletedQueueName { get; set; }
+
+        /// <summary>
         /// A string representing the Connection String for your Azure Storage account.
         /// </summary>
         public string StorageConnectionString { get; set; }
@@ -27,11 +32,12 @@
         #region Constructors
 
         /// <summary>
-        /// The default constructor, which sets the default values equal to the values specified in <see cref="AzureQueueConstants"/>.
+        /// The default constructor, which sets the default values equal to the values specified in <see cref="AzureStorageQueueConstants"/>.
         /// </summary>
-        public AzureQueueOptions()
+        public AzureStorageQueueOptions()
         {
-            QueueName = AzureQueueConstants.Queue;
+            QueueName = AzureStorageQueueConstants.Queue;
+            CompletedQueueName = AzureStorageQueueConstants.CompletedQueue;
         }
 
         #endregion

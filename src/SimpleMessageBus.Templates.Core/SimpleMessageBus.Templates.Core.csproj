@@ -12,8 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SimpleMessageBus.Core" Version="1.0.1" />
-    <PackageReference Update="Microsoft.CodeQuality.Analyzers" Version="2.9.8" />
+    <PackageReference Include="SimpleMessageBus.Core" Version="1.0.3" />
+    <PackageReference Update="Microsoft.CodeQuality.Analyzers" Version="3.3.0" />
   </ItemGroup>
 
 </Project>

@@ -63,7 +63,7 @@ namespace CloudNimble.SimpleMessageBus.Core
         /// <summary>
         /// An integr representing the number of seconds to wait before firing FileSystemWatcher events to process the Queue.
         /// </summary>
-        public int VirusScanDelayInSeconds { get; set; } = 0;
+        public int VirusScanDelayInSeconds { get; set; }
 
         #endregion
 

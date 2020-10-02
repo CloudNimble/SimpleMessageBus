@@ -1,10 +1,10 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
+using Microsoft.Azure.Storage.Queue;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace CloudNimble.SimpleMessageBus.Dispatch
@@ -34,27 +34,6 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         {
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher), "Please call \".UseOrderedMessageDispatcher()\" or \".UseParallelMessageDispatcher()\" in your Dependency Injection service registration.");
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(dispatcher), "The DependencyInjection IServiceProvider could not be found. Please ensure you've properly registered DI.");
-
-            //// RWM: This needs to refactor to an extension method on IHostBuilder.
-            //var builder = new HostBuilder();
-            //builder.ConfigureWebJobs(config =>
-            //{
-            //    config.AddAzureStorageCoreServices();
-            //    config.AddAzureStorage(o =>
-            //    {
-            //        o.MaxDequeueCount = 1;
-            //    });
-            //});
-            //builder.ConfigureServices(s => s.AddSingleton<INameResolver>(new AzureQueueNameResolver(options)));
-            //_host = builder.Build();
-
-
-            //var config = new JobHostConfiguration();
-            //config.JobActivator = this;
-            //config.DashboardConnectionString = configuration.DashboardConnectionString;
-            //config.StorageConnectionString = configuration.StorageConnectionString;
-            //config.Queues.BatchSize = configuration.BatchSize; //16
-            //config.Queues.MaxDequeueCount = 1; //5
         }
 
         #endregion
@@ -64,19 +43,18 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="messageEnvelopeJson"></param>
-        /// <param name="dequeueCount"></param>
+        /// <param name="queueMessage"></param>
         /// <param name="logger"></param>
         /// <returns>A <see cref="Task"/> reference for the asynchronous function.</returns>
-        public async Task ProcessQueue([QueueTrigger("%queue%")] string messageEnvelopeJson, int dequeueCount, ILogger logger)
+        [return: Queue(AzureStorageQueueConstants.CompletedQueueAttribute)]
+        public async Task<CloudQueueMessage> ProcessQueue([QueueTrigger(AzureStorageQueueConstants.QueueTriggerAttribute)] CloudQueueMessage queueMessage, ILogger logger)
         {
-            using (var lifetimeScope = _serviceProvider.CreateScope())
-            {
-                var message = JsonConvert.DeserializeObject<MessageEnvelope>(messageEnvelopeJson);
-                message.AttemptsCount = dequeueCount;
-                message.ProcessLog = logger;
-                await _dispatcher.Dispatch(message).ConfigureAwait(false);
-            }
+            using var lifetimeScope = _serviceProvider.CreateScope();
+            var message = JsonConvert.DeserializeObject<MessageEnvelope>(queueMessage.AsString);
+            message.AttemptsCount = queueMessage.DequeueCount;
+            message.ProcessLog = logger;
+            await _dispatcher.Dispatch(message).ConfigureAwait(false);
+            return queueMessage;
         }
 
         #endregion

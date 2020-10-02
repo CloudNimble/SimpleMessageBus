@@ -4,13 +4,10 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using SimpleMessageBus.Tests.Shared;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,14 +18,12 @@ namespace SimpleMessageBus.Tests.Dispatch
     /// 
     /// </summary>
     [TestClass]
-    public class FileSystemQueueProcessorTests
+    public partial class AzureStorageQueueProcessorTests
     {
 
         public static int MessageCount = 0;
 
         private static IHost _host;
-
-        private const string filePath = @"D:\Scratch\SimpleMessageBus\";
 
         [TestInitialize]
         public void TestInit()
@@ -39,16 +34,8 @@ namespace SimpleMessageBus.Tests.Dispatch
                 {
                     services.AddSingleton<IMessageHandler, TestMessageHandler>();
                 })
-
-                .UseFileSystemMessagePublisher(options =>
-                {
-                    options.RootFolder = filePath;
-                })
-                .UseFileSystemQueueProcessor(options =>
-                {
-                    options.RootFolder = filePath;
-                    options.VirusScanDelayInSeconds = 5;
-                })
+                .UseAzureStorageQueueMessagePublisher()
+                .UseAzureStorageQueueProcessor()
                 .UseOrderedMessageDispatcher()
 
                 .ConfigureLogging((context, b) =>
@@ -70,39 +57,12 @@ namespace SimpleMessageBus.Tests.Dispatch
         public async Task RegularMessagePublisherWorks()
         {
             var publisher = _host.Services.GetRequiredService<IMessagePublisher>();
+
             await publisher.PublishAsync(new TestMessage());
-            Thread.Sleep(3000);
             MessageCount.Should().Be(0);
             Thread.Sleep(3000);
             MessageCount.Should().Be(1);
             MessageCount = 0;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [TestMethod]
-        public async Task SimulatedNetworkMessagePublisherWorks()
-        {
-            var options = _host.Services.GetRequiredService<IOptions<FileSystemOptions>>();
-            var time = DateTime.Now.ToString("HHmmss");
-
-            var envelope = new MessageEnvelope(new TestMessage())
-            {
-                Id = Guid.NewGuid(),
-                DatePublished = DateTimeOffset.UtcNow
-            };
-
-            File.WriteAllText(Path.Combine(options.Value.QueueFolderPath, $"{time}.tmpmsg"), JsonConvert.SerializeObject(envelope));
-            Thread.Sleep(200);
-            File.Move(Path.Combine(options.Value.QueueFolderPath, $"{time}.tmpmsg"), Path.Combine(options.Value.QueueFolderPath, $"{time}.json"));
-
-            Thread.Sleep(3000);
-            MessageCount.Should().Be(0);
-            Thread.Sleep(3000);
-            MessageCount.Should().Be(1);
-            MessageCount = 0;
-            await Task.FromResult(0);
         }
 
         private class TestMessageHandler : IMessageHandler

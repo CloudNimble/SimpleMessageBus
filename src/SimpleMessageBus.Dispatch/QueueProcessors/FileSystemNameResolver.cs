@@ -21,7 +21,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of the <see cref="AzureQueueNameResolver"/>
+        /// Creates a new instance of the <see cref="AzureStorageQueueNameResolver"/>
         /// </summary>
         /// <param name="options">The <see cref="IOptions{FileSystemOptions}"/> instance injected from the DI container.</param>
         public FileSystemNameResolver(IOptions<FileSystemOptions> options)

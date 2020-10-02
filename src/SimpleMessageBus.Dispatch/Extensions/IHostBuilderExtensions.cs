@@ -39,7 +39,7 @@ namespace Microsoft.Extensions.Hosting
             return builder
                 .ConfigureServices((hostContext, services) => 
                  {
-                     services.Configure<AzureQueueOptions>(hostContext.Configuration.GetSection(typeof(AzureQueueOptions).Name));
+                     services.Configure<AzureStorageQueueOptions>(hostContext.Configuration.GetSection(typeof(AzureStorageQueueOptions).Name));
                  })
                  .UseAzureStorageQueueProcessor(o => { });
         }
@@ -50,7 +50,7 @@ namespace Microsoft.Extensions.Hosting
         /// <param name="builder">The <see cref="IHostBuilder"/> instance to extend.</param>
         /// <param name="azureQueueOptions">An <see cref="Action{AzureQueueOptions}"/> that gives you a fluent interface for configuring the options for a queue backed by Azure Queue Storage.</param>
         /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
-        public static IHostBuilder UseAzureStorageQueueProcessor(this IHostBuilder builder, Action<AzureQueueOptions> azureQueueOptions)
+        public static IHostBuilder UseAzureStorageQueueProcessor(this IHostBuilder builder, Action<AzureStorageQueueOptions> azureQueueOptions)
         {
             if (builder == null)
             {
@@ -74,7 +74,7 @@ namespace Microsoft.Extensions.Hosting
                 //RWM: This is a total hack, but I can't figure out why there are more than 1 in here, so we're hacking for now.
                 hostContext.FixWebJobsRegistration();
 
-                services.AddSingleton<INameResolver, AzureQueueNameResolver>();
+                services.AddSingleton<INameResolver, AzureStorageQueueNameResolver>();
                 services.AddSingleton<IQueueProcessor, AzureStorageQueueProcessor>();
             });
 

@@ -1,7 +1,7 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Extensions.Options;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Queue;
+using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.Queue;
 using System;
 using System.Threading.Tasks;
 
@@ -11,12 +11,12 @@ namespace CloudNimble.SimpleMessageBus.Publish
     /// <summary>
     /// Manages the process of publishing MessageBus messages to Azure Queue Storage.
     /// </summary>
-    public class AzureQueueMessagePublisher : IMessagePublisher
+    public class AzureStorageQueueMessagePublisher : IMessagePublisher
     {
 
         #region Private Members
 
-        private readonly AzureQueueOptions _options;
+        private readonly AzureStorageQueueOptions _options;
         private CloudQueue _queue;
 
         #endregion
@@ -43,12 +43,12 @@ namespace CloudNimble.SimpleMessageBus.Publish
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of the <see cref="AzureQueueMessagePublisher"/>.
+        /// Creates a new instance of the <see cref="AzureStorageQueueMessagePublisher"/>.
         /// </summary>
-        /// <param name="options">The <see cref="AzureQueueOptions"/> instance to use to configure the Azure Storage Queue. Should be registered with your Dependency Injection container.</param>
+        /// <param name="options">The <see cref="AzureStorageQueueOptions"/> instance to use to configure the Azure Storage Queue. Should be registered with your Dependency Injection container.</param>
         /// <exception cref="ArgumentNullException"><paramref name="options"/>.QueueName is <see langword="null" />.</exception>
         /// <exception cref="ArgumentException">The connection string you specified was not found in the ConnectionStrings collection.</exception>
-        public AzureQueueMessagePublisher(IOptions<AzureQueueOptions> options)
+        public AzureStorageQueueMessagePublisher(IOptions<AzureStorageQueueOptions> options)
         {
             if (options == null)
             {

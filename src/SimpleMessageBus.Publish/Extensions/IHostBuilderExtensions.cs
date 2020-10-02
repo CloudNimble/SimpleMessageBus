@@ -17,7 +17,7 @@ namespace Microsoft.Extensions.Hosting
         /// </summary>
         /// <param name="builder">The <see cref="IHostBuilder"/> instance to extend.</param>
         /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
-        public static IHostBuilder UseAzureQueueMessagePublisher(this IHostBuilder builder)
+        public static IHostBuilder UseAzureStorageQueueMessagePublisher(this IHostBuilder builder)
         {
             if (builder == null)
             {
@@ -27,9 +27,9 @@ namespace Microsoft.Extensions.Hosting
             return builder
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.Configure<AzureQueueOptions>(hostContext.Configuration.GetSection(typeof(AzureQueueOptions).Name));
+                    services.Configure<AzureStorageQueueOptions>(hostContext.Configuration.GetSection(typeof(AzureStorageQueueOptions).Name));
                 })
-                .UseAzureQueueMessagePublisher(o => { });
+                .UseAzureStorageQueueMessagePublisher(o => { });
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Microsoft.Extensions.Hosting
         /// <param name="builder">The <see cref="IHostBuilder"/> instance to extend.</param>
         /// <param name="azureQueueOptions"></param>
         /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
-        public static IHostBuilder UseAzureQueueMessagePublisher(this IHostBuilder builder, Action<AzureQueueOptions> azureQueueOptions)
+        public static IHostBuilder UseAzureStorageQueueMessagePublisher(this IHostBuilder builder, Action<AzureStorageQueueOptions> azureQueueOptions)
         {
             if (builder == null)
             {
@@ -53,7 +53,7 @@ namespace Microsoft.Extensions.Hosting
             builder.ConfigureServices((hostContext, services) =>
             {
                 services.Configure(azureQueueOptions);
-                services.AddSingleton<IMessagePublisher, AzureQueueMessagePublisher>();
+                services.AddSingleton<IMessagePublisher, AzureStorageQueueMessagePublisher>();
             });
 
             return builder;

@@ -16,7 +16,7 @@ namespace SimpleMessageBus.Samples.AzureWebJobs
                     services.AddTimerDependencies();
                     services.AddSingleton<IMessageHandler, EmailMessageHandler>();
                 })
-                .UseAzureQueueMessagePublisher()
+                .UseAzureStorageQueueMessagePublisher()
                 .UseAzureStorageQueueProcessor()
                 .UseOrderedMessageDispatcher()
                 .ConfigureLogging((context, b) =>

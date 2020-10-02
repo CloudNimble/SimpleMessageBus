@@ -99,14 +99,12 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
             MessageEnvelope messageEnvelope = null;
             try
             {
-                using (var lifetimeScope = _serviceProvider.CreateScope())
-                {
-                    messageEnvelope = JsonConvert.DeserializeObject<MessageEnvelope>(messageEnvelopeJson);
-                    //messageEnvelope.AttemptsCount = dequeueCount;
-                    messageEnvelope.ProcessLog = logger;
-                    await _dispatcher.Dispatch(messageEnvelope);
-                    File.WriteAllText(Path.Combine(_options.CompletedFolderPath, $"{messageEnvelope.Id}.json"), messageEnvelopeJson);
-                }
+                using var lifetimeScope = _serviceProvider.CreateScope();
+                messageEnvelope = JsonConvert.DeserializeObject<MessageEnvelope>(messageEnvelopeJson);
+                //messageEnvelope.AttemptsCount = dequeueCount;
+                messageEnvelope.ProcessLog = logger;
+                await _dispatcher.Dispatch(messageEnvelope);
+                File.WriteAllText(Path.Combine(_options.CompletedFolderPath, $"{messageEnvelope.Id}.json"), messageEnvelopeJson);
                 //converted = messageEnvelopeJson;
                 //error = null;
             }

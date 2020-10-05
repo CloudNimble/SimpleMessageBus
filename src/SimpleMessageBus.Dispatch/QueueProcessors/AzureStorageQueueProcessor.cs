@@ -54,7 +54,8 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
             message.AttemptsCount = queueMessage.DequeueCount;
             message.ProcessLog = logger;
             await _dispatcher.Dispatch(message).ConfigureAwait(false);
-            return queueMessage;
+            //RWM: https://stackoverflow.com/questions/62333063/webjob-queuetrigger-does-not-delete-message-from-the-queue
+            return new CloudQueueMessage(queueMessage.AsString);
         }
 
         #endregion

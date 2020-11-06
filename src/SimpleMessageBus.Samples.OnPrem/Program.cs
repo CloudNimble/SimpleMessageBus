@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using System.IO;
 
 namespace SimpleMessageBus.Samples.OnPrem
@@ -40,6 +41,7 @@ namespace SimpleMessageBus.Samples.OnPrem
                 // RWM: Configure the services before you call Use____QueueProcessor so that the assembly is loaded into memory before the Reflection happens.
                 .ConfigureServices((hostContext, services) =>
                 {
+                    Console.WriteLine($"SimpleMessageBus starting in the {hostContext.HostingEnvironment.EnvironmentName} Environment");
                     services.AddTimerDependencies();
                     services.AddSingleton<IMessageHandler, EmailMessageHandler>();
                 })

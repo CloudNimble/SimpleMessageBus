@@ -4,6 +4,7 @@ using CloudNimble.SimpleMessageBus.Dispatch.Triggers;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Extensions.Timers;
+using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.EnvironmentVariables;
 using Microsoft.Extensions.Configuration.Json;
@@ -74,6 +75,8 @@ namespace Microsoft.Extensions.Hosting
                 //RWM: This is a total hack, but I can't figure out why there are more than 1 in here, so we're hacking for now.
                 hostContext.FixWebJobsRegistration();
 
+                services.Configure(azureQueueOptions);
+                services.AddSingleton<IConfigureOptions<QueuesOptions>, QueuesOptionsConfiguration>();
                 services.AddSingleton<INameResolver, AzureStorageQueueNameResolver>();
                 services.AddSingleton<IQueueProcessor, AzureStorageQueueProcessor>();
             });

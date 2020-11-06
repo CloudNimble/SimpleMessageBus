@@ -27,6 +27,11 @@
         /// </summary>
         public string StorageConnectionString { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public int ConcurrentJobs { get; set; } = 16;
+
         #endregion
 
         #region Constructors

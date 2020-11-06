@@ -29,13 +29,13 @@ namespace SimpleMessageBus.Tests.Dispatch
         public void TestInit()
         {
             var builder = new HostBuilder()
-                .UseEnvironment("Development")
+                //.UseEnvironment("Development")
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddSingleton<IMessageHandler, TestMessageHandler>();
                 })
                 .UseAzureStorageQueueMessagePublisher()
-                .UseAzureStorageQueueProcessor()
+                .UseAzureStorageQueueProcessor(options => options.ConcurrentJobs = 1)
                 .UseOrderedMessageDispatcher()
 
                 .ConfigureLogging((context, b) =>

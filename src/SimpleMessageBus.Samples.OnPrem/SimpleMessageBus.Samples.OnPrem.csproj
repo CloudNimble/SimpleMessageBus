@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.1;net472</TargetFrameworks>
+    <TargetFrameworks>net5.0;netcoreapp3.1;net472</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
+  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.0' OR '$(TargetFramework)'=='net5.0'">
     <DefineConstants>NETCORE3_0</DefineConstants>
   </PropertyGroup>
 
@@ -21,13 +21,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.22" />
+    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.23" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="4.0.1" />
     <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
     <!--<PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" Condition="'$(TargetFramework)'!='netcoreapp3.0'" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" Condition="'$(TargetFramework)'!='netcoreapp3.0'" />-->
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.0" Condition="'$(TargetFramework)'=='netcoreapp3.0'" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.0" Condition="'$(TargetFramework)'=='netcoreapp3.0'" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" Condition="'$(TargetFramework)'=='net5.0'" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" Condition="'$(TargetFramework)'=='net5.0'" />
+
   </ItemGroup>
 
   <ItemGroup>
@@ -37,7 +40,7 @@
     <ProjectReference Include="..\SimpleMessageBus.Samples.ExternalTriggers\SimpleMessageBus.Samples.ExternalTriggers.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1' OR '$(TargetFramework)'=='net5.0'">
     <ProjectReference Include="..\SimpleMessageBus.Hosting\SimpleMessageBus.Hosting.csproj" />
   </ItemGroup>
 

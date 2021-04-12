@@ -15,8 +15,14 @@ namespace SimpleMessageBus.Samples.SimpleClientApp
 
         static async Task Main(string[] args)
         {
-            var builder = Host.CreateDefaultBuilder()
-            .UseFileSystemMessagePublisher(options =>
+            var builder = Host.CreateDefaultBuilder();
+            builder.ConfigureServices((hostContext, services) =>
+            {
+                Console.WriteLine($"SimpleMessageBus starting in the {hostContext.HostingEnvironment.EnvironmentName} Environment");
+                Console.WriteLine($"Queue ConnectionString:  {hostContext.Configuration["AzureStorageQueueOptions:StorageConnectionString"]}");
+                Console.WriteLine($"WebJob ConnectionString: {hostContext.Configuration["ConnectionStrings:AzureWebJobsStorage"]}");
+            });
+            builder.UseFileSystemMessagePublisher(options =>
             {
                 options.RootFolder = @"D:\Scratch\SimpleMessageBus\";
             })

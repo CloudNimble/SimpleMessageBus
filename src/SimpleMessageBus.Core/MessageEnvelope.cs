@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace CloudNimble.SimpleMessageBus.Core
 {
@@ -67,7 +68,7 @@ namespace CloudNimble.SimpleMessageBus.Core
             }
 
             MessageType = message.GetType().SimpleAssemblyQualifiedName();
-            MessageContent = JsonConvert.SerializeObject(message);
+            MessageContent = JsonSerializer.Serialize(message);
         }
 
         #endregion
@@ -81,7 +82,7 @@ namespace CloudNimble.SimpleMessageBus.Core
         /// <returns>A concrete <typeparamref name="T"/> instance populated with the data from the <see cref="MessageContent"/>.</returns>
         public T GetMessage<T>() where T: IMessage
         {
-            return JsonConvert.DeserializeObject<T>(MessageContent);
+            return JsonSerializer.Deserialize<T>(MessageContent);
         }
 
         #endregion

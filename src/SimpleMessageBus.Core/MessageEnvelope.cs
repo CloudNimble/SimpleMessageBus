@@ -30,6 +30,13 @@ namespace CloudNimble.SimpleMessageBus.Core
         public string MessageType { get; set; }
 
         /// <summary>
+        /// A container to help track the state of a message as it flows between <see cref="IMessageHandler">IMessageHandlers</see>. This value is ignored by the 
+        /// serializer and will not be persisted between failed message runs.
+        /// </summary>
+        [JsonIgnore]
+        public dynamic MessageState { get; private set; }
+
+        /// <summary>
         /// The UTC date and time that this nessage was published to the queue.
         /// </summary>
         public DateTimeOffset DatePublished { get; set; }

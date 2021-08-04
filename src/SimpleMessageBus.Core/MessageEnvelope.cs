@@ -75,7 +75,7 @@ namespace CloudNimble.SimpleMessageBus.Core
             }
 
             MessageType = message.GetType().SimpleAssemblyQualifiedName();
-            MessageContent = JsonSerializer.Serialize(message);
+            MessageContent = JsonSerializer.Serialize(message, message.GetType());
         }
 
         #endregion

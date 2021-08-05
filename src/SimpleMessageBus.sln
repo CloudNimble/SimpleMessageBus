@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28705.295
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31521.260
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Core", "SimpleMessageBus.Core\SimpleMessageBus.Core.csproj", "{2F75D45F-C9B1-460E-B717-D521359FF5E7}"
 EndProject
@@ -56,7 +56,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Samples.Az
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Templates.Core", "SimpleMessageBus.Templates.Core\SimpleMessageBus.Templates.Core.csproj", "{C80C23F9-A614-4221-AFA5-814DE60378F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMessageBus.Tests.Publish", "SimpleMessageBus.Tests.Publish\SimpleMessageBus.Tests.Publish.csproj", "{82695090-D3AD-4E5A-98D9-A559E52D4B1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Tests.Publish", "SimpleMessageBus.Tests.Publish\SimpleMessageBus.Tests.Publish.csproj", "{82695090-D3AD-4E5A-98D9-A559E52D4B1B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMessageBus.Tests.Core", "SimpleMessageBus.Tests.Core\SimpleMessageBus.Tests.Core.csproj", "{58A5B3CD-1C1C-49C4-A2C9-541CB9370536}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,6 +138,10 @@ Global
 		{82695090-D3AD-4E5A-98D9-A559E52D4B1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82695090-D3AD-4E5A-98D9-A559E52D4B1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82695090-D3AD-4E5A-98D9-A559E52D4B1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58A5B3CD-1C1C-49C4-A2C9-541CB9370536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58A5B3CD-1C1C-49C4-A2C9-541CB9370536}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58A5B3CD-1C1C-49C4-A2C9-541CB9370536}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58A5B3CD-1C1C-49C4-A2C9-541CB9370536}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,6 +165,7 @@ Global
 		{363B5144-86DA-4F1A-88AC-AD5CF05E9994} = {367A637D-4058-4111-ABA8-31138453FB69}
 		{C80C23F9-A614-4221-AFA5-814DE60378F9} = {D36FD65B-EAA0-4369-B47E-CD94F6B931A4}
 		{82695090-D3AD-4E5A-98D9-A559E52D4B1B} = {40B123DC-AD1F-4741-B09B-71068BAB40E9}
+		{58A5B3CD-1C1C-49C4-A2C9-541CB9370536} = {40B123DC-AD1F-4741-B09B-71068BAB40E9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA85B2D3-B7E9-4BA9-85DF-04483B569AA8}

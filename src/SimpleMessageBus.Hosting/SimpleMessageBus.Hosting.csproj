@@ -1,7 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <AssemblyName>CloudNimble.SimpleMessageBus.Hosting</AssemblyName>
+    <RootNamespace>CloudNimble.SimpleMessageBus.Hosting</RootNamespace>
     <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
+    <DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>SimpleMessageBus.Hosting</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

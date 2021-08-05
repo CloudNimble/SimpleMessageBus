@@ -1,9 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>CloudNimble.SimpleMessageBus.Core</RootNamespace>
     <AssemblyName>CloudNimble.SimpleMessageBus.Core</AssemblyName>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <PackageId>SimpleMessageBus.Core</PackageId>
   </PropertyGroup>
 

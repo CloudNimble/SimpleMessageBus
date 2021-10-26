@@ -53,6 +53,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
             var message = JsonConvert.DeserializeObject<MessageEnvelope>(queueMessage.AsString);
             message.AttemptsCount = queueMessage.DequeueCount;
             message.ProcessLog = logger;
+            message.ServiceScope = lifetimeScope;
             await _dispatcher.Dispatch(message).ConfigureAwait(false);
             //RWM: https://stackoverflow.com/questions/62333063/webjob-queuetrigger-does-not-delete-message-from-the-queue
             return new CloudQueueMessage(queueMessage.AsString);

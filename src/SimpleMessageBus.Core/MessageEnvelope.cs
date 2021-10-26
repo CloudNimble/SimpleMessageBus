@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -20,6 +21,16 @@ namespace CloudNimble.SimpleMessageBus.Core
         public int AttemptsCount { get; set; }
 
         /// <summary>
+        /// The UTC date and time that this nessage was published to the queue.
+        /// </summary>
+        public DateTimeOffset DatePublished { get; set; }
+
+        /// <summary>
+        /// A <see cref="Guid"/> uniquely identifying this message on the queue. Helps when looking at logs or correlating from telemetry. 
+        /// </summary>
+        public Guid Id { get; set; }
+
+        /// <summary>
         /// The serialized content of the <see cref="IMessage"/>.
         /// </summary>
         public string MessageContent { get; set; }
@@ -37,20 +48,16 @@ namespace CloudNimble.SimpleMessageBus.Core
         public dynamic MessageState { get; private set; }
 
         /// <summary>
-        /// The UTC date and time that this nessage was published to the queue.
+        /// The processing log for this particular message across all MessageHandlers.
         /// </summary>
-        public DateTimeOffset DatePublished { get; set; }
-
-        /// <summary>
-        /// A <see cref="Guid"/> uniquely identifying this message on the queue. Helps when looking at logs or correlating from telemetry. 
-        /// </summary>
-        public Guid Id { get; set; }
+        [JsonIgnore]
+        public ILogger ProcessLog { get; set; }
 
         /// <summary>
         /// The processing log for this particular message across all MessageHandlers.
         /// </summary>
         [JsonIgnore]
-        public ILogger ProcessLog { get; set; }
+        public IServiceScope ServiceScope { get; set; }
 
         #endregion
 

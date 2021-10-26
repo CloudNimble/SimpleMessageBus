@@ -103,6 +103,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
                 messageEnvelope = JsonConvert.DeserializeObject<MessageEnvelope>(messageEnvelopeJson);
                 //messageEnvelope.AttemptsCount = dequeueCount;
                 messageEnvelope.ProcessLog = logger;
+                messageEnvelope.ServiceScope = lifetimeScope;
                 await _dispatcher.Dispatch(messageEnvelope);
                 File.WriteAllText(Path.Combine(_options.CompletedFolderPath, $"{messageEnvelope.Id}.json"), messageEnvelopeJson);
                 //converted = messageEnvelopeJson;

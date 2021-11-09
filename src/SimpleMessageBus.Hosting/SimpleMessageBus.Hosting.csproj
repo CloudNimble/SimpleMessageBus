@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>CloudNimble.SimpleMessageBus.Hosting</AssemblyName>
     <RootNamespace>CloudNimble.SimpleMessageBus.Hosting</RootNamespace>
-    <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
     <DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
@@ -14,7 +14,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[3.1.0, 4.0.0)" Condition="'$(TargetFramework)'=='netcoreapp3.1'" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[5.0.0, 6.0.0)" Condition="'$(TargetFramework)'=='net5.0'" />
-
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[5.0.0, 6.0.0)" Condition="'$(TargetFramework)'=='net6.0'" />
   </ItemGroup>
 
   <ItemGroup>

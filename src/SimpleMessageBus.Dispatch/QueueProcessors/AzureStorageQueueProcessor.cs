@@ -1,9 +1,8 @@
-﻿using CloudNimble.SimpleMessageBus.Core;
-using Microsoft.Azure.Storage.Queue;
+﻿using Azure.Storage.Queues.Models;
+using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
@@ -47,16 +46,17 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <param name="logger"></param>
         /// <returns>A <see cref="Task"/> reference for the asynchronous function.</returns>
         [return: Queue(AzureStorageQueueConstants.CompletedQueueAttribute)]
-        public async Task<CloudQueueMessage> ProcessQueue([QueueTrigger(AzureStorageQueueConstants.QueueTriggerAttribute)] CloudQueueMessage queueMessage, ILogger logger)
+        public async Task<QueueMessage> ProcessQueue([QueueTrigger(AzureStorageQueueConstants.QueueTriggerAttribute)] QueueMessage queueMessage, ILogger logger)
         {
             using var lifetimeScope = _serviceProvider.CreateScope();
-            var message = JsonConvert.DeserializeObject<MessageEnvelope>(queueMessage.AsString);
+            var message = queueMessage.Body.ToObjectFromJson<MessageEnvelope>();
             message.AttemptsCount = queueMessage.DequeueCount;
             message.ProcessLog = logger;
             message.ServiceScope = lifetimeScope;
             await _dispatcher.Dispatch(message).ConfigureAwait(false);
             //RWM: https://stackoverflow.com/questions/62333063/webjob-queuetrigger-does-not-delete-message-from-the-queue
-            return new CloudQueueMessage(queueMessage.AsString);
+            //return new QueueMessage(queueMessage.AsString);
+            return queueMessage;
         }
 
         #endregion

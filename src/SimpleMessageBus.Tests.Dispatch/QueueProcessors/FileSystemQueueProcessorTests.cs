@@ -1,3 +1,4 @@
+using CloudNimble.Breakdance.Assemblies;
 using CloudNimble.SimpleMessageBus.Core;
 using CloudNimble.SimpleMessageBus.Publish;
 using FluentAssertions;
@@ -21,19 +22,17 @@ namespace SimpleMessageBus.Tests.Dispatch
     /// 
     /// </summary>
     [TestClass]
-    public class FileSystemQueueProcessorTests
+    public class FileSystemQueueProcessorTests : BreakdanceTestBase
     {
 
         public static int MessageCount = 0;
-
-        private static IHost _host;
 
         private const string filePath = @"D:\Scratch\SimpleMessageBus\";
 
         [TestInitialize]
         public void TestInit()
         {
-            var builder = new HostBuilder()
+            TestHostBuilder
                 .UseEnvironment("Development")
                 .ConfigureServices((hostContext, services) =>
                 {
@@ -58,8 +57,8 @@ namespace SimpleMessageBus.Tests.Dispatch
                 })
                 .UseConsoleLifetime();
 
-            _host = builder.Build();
-            _host.Start();
+            TestSetup();
+            _ = TestHost.RunAsync();
         }
 
 
@@ -69,7 +68,7 @@ namespace SimpleMessageBus.Tests.Dispatch
         [TestMethod]
         public async Task RegularMessagePublisherWorks()
         {
-            var publisher = _host.Services.GetRequiredService<IMessagePublisher>();
+            var publisher = TestHost.Services.GetRequiredService<IMessagePublisher>();
             await publisher.PublishAsync(new TestMessage());
             Thread.Sleep(3000);
             MessageCount.Should().Be(0);
@@ -84,7 +83,7 @@ namespace SimpleMessageBus.Tests.Dispatch
         [TestMethod]
         public async Task SimulatedNetworkMessagePublisherWorks()
         {
-            var options = _host.Services.GetRequiredService<IOptions<FileSystemOptions>>();
+            var options = TestHost.Services.GetRequiredService<IOptions<FileSystemOptions>>();
             var time = DateTime.Now.ToString("HHmmss");
 
             var envelope = new MessageEnvelope(new TestMessage())

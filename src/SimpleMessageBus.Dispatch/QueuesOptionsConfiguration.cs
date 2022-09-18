@@ -1,5 +1,4 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
-using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Options;
 
@@ -7,7 +6,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
 {
 
     /// <summary>
-    /// Leverages the DI framework to make the injected <see cref="AzureStorageQueueOptions"/> available to the <see cref="QueuesOptions"/> to the default values can be set.
+    /// Leverages the DI framework to make the injected <see cref="AzureStorageQueueOptions"/> available to the QueuesOptions to the default values can be set.
     /// </summary>
     /// <remarks>
     /// From https://benjamincollins.com/blog/using-dependency-injection-while-configuring-services/
@@ -37,12 +36,13 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         #region Public Methods
 
         /// <summary>
-        /// Configures a given <see cref="QueuesOptions"/> object with the passed-in values from <see cref="AzureStorageQueueOptions"/>.
+        /// Configures a given QueuesOptions object with the passed-in values from <see cref="AzureStorageQueueOptions"/>.
         /// </summary>
         /// <param name="options"></param>
         public void Configure(QueuesOptions options)
         {
             options.BatchSize = _azureStorageQueueOptions.Value.ConcurrentJobs;
+            options.MessageEncoding = (Azure.Storage.Queues.QueueMessageEncoding)(int)_azureStorageQueueOptions.Value.MessageEncoding;
         }
 
         #endregion

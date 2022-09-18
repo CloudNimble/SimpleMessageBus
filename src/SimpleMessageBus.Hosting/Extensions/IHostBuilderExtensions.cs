@@ -7,7 +7,7 @@ namespace Microsoft.Extensions.Hosting
     /// <summary>
     /// A set of <see cref="IHostBuilder"/> extension methods that make it easy to register SimpleMessageBus with a DI container.
     /// </summary>
-    public static class IHostBuilderExtensions
+    public static class SimpleMessageBus_Hosting_IHostBuilderExtensions
     {
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.Hosting
     /// <summary>
     /// 
     /// </summary>
-    public static class IHostBuilderExtensions
+    public static class SimpleMessageBus_Publish_IHostBuilderExtensions
     {
 
         /// <summary>

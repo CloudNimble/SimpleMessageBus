@@ -5,11 +5,13 @@ using SimpleMessageBus.Tests.Shared;
 
 namespace SimpleMessageBus.Tests.Core
 {
+
     [TestClass]
-    public class MessageEnvelopTests
+    public class MessageEnvelopeTests
     {
+
         [TestMethod]
-        public void MessageEnvelop_SerializesMessageContent()
+        public void MessageEnvelope_SerializesMessageContent()
         {
             var testMessage = new TestMessage
             {
@@ -27,4 +29,5 @@ namespace SimpleMessageBus.Tests.Core
         }
 
     }
+
 }

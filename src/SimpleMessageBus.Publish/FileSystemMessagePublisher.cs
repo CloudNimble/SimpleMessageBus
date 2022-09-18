@@ -1,6 +1,5 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -69,7 +68,7 @@ namespace CloudNimble.SimpleMessageBus.Publish
                     DatePublished = DateTimeOffset.UtcNow
                 };
 
-                var payload = JsonConvert.SerializeObject(envelope);
+                var payload = envelope.ToString();
                 var filePath = Path.Combine(_options.QueueFolderPath, $"{envelope.Id}.json");
 
                 //RWM: If it's a network path, the write may be streamed and the file in use before the Dispatcher picks it up.

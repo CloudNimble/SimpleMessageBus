@@ -66,7 +66,8 @@ namespace Microsoft.Extensions.Hosting
             builder.ConfigureWebJobs(config =>
             {
                 config.AddAzureStorageCoreServices();
-                config.AddAzureStorage();
+                config.AddBuiltInBindings();
+                config.AddAzureStorageQueues();
                 config.AddTimers();
             })
 

@@ -1,3 +1,4 @@
+using CloudNimble.Breakdance.Assemblies;
 using CloudNimble.SimpleMessageBus.Core;
 using CloudNimble.SimpleMessageBus.Publish;
 using FluentAssertions;
@@ -18,24 +19,21 @@ namespace SimpleMessageBus.Tests.Dispatch
     /// 
     /// </summary>
     [TestClass]
-    public partial class AzureStorageQueueProcessorTests
+    public partial class AzureStorageQueueProcessorTests : BreakdanceTestBase
     {
 
         public static int MessageCount = 0;
 
-        private static IHost _host;
-
-        [TestInitialize]
-        public void TestInit()
+        public void TestSetup(AzureStorageQueueEncoding encoding)
         {
-            var builder = new HostBuilder()
+            TestHostBuilder
                 //.UseEnvironment("Development")
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddSingleton<IMessageHandler, TestMessageHandler>();
                 })
                 .UseAzureStorageQueueMessagePublisher()
-                .UseAzureStorageQueueProcessor(options => options.ConcurrentJobs = 1)
+                .UseAzureStorageQueueProcessor(options => { options.ConcurrentJobs = 1; options.MessageEncoding = encoding; })
                 .UseOrderedMessageDispatcher()
 
                 .ConfigureLogging((context, b) =>
@@ -44,9 +42,8 @@ namespace SimpleMessageBus.Tests.Dispatch
                     b.AddConsole();
                 })
                 .UseConsoleLifetime();
-
-            _host = builder.Build();
-            _host.Start();
+            TestSetup();
+            _ = TestHost.RunAsync();
         }
 
 
@@ -54,9 +51,28 @@ namespace SimpleMessageBus.Tests.Dispatch
         /// 
         /// </summary>
         [TestMethod]
-        public async Task RegularMessagePublisherWorks()
+        public async Task MessagePublisher_NoEncoding_WorksAsDesigned()
         {
-            var publisher = _host.Services.GetRequiredService<IMessagePublisher>();
+            TestSetup(AzureStorageQueueEncoding.None);
+
+            var publisher = TestHost.Services.GetRequiredService<IMessagePublisher>();
+
+            await publisher.PublishAsync(new TestMessage());
+            MessageCount.Should().Be(0);
+            Thread.Sleep(3000);
+            MessageCount.Should().Be(1);
+            MessageCount = 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [TestMethod]
+        public async Task MessagePublisher_Base64Encoding_WorksAsDesigned()
+        {
+            TestSetup(AzureStorageQueueEncoding.Base64);
+
+            var publisher = TestHost.Services.GetRequiredService<IMessagePublisher>();
 
             await publisher.PublishAsync(new TestMessage());
             MessageCount.Should().Be(0);

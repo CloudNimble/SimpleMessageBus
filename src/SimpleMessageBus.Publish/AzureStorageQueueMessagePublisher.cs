@@ -1,7 +1,6 @@
-﻿using CloudNimble.SimpleMessageBus.Core;
+﻿using Azure.Storage.Queues;
+using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Extensions.Options;
-using Microsoft.Azure.Storage;
-using Microsoft.Azure.Storage.Queue;
 using System;
 using System.Threading.Tasks;
 
@@ -17,23 +16,20 @@ namespace CloudNimble.SimpleMessageBus.Publish
         #region Private Members
 
         private readonly AzureStorageQueueOptions _options;
-        private CloudQueue _queue;
+        private QueueClient _queue;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// The <see cref="CloudQueue"/> instance this publisher will write to. 
+        /// The <see cref="QueueClient"/> instance this publisher will write to. 
         /// </summary>
-        internal CloudQueue Queue
+        internal QueueClient Queue
         {
             get
             {
-                if (_queue == null)
-                {
-                    _queue = GetQueue(_options.QueueName, _options.StorageConnectionString);
-                }
+                _queue ??= GetQueue(_options.QueueName, _options.StorageConnectionString);
                 return _queue;
             }
         }
@@ -90,7 +86,7 @@ namespace CloudNimble.SimpleMessageBus.Publish
             };
 
             //RWM: Push it onto the queue.
-            await Queue.AddMessageAsync(envelope.ToCloudQueueMessage()).ConfigureAwait(false);
+            await Queue.SendMessageAsync(envelope.ToString()).ConfigureAwait(false);
         }
 
         #endregion
@@ -102,25 +98,35 @@ namespace CloudNimble.SimpleMessageBus.Publish
         /// </summary>
         /// <param name="queueName">The name of the CloudQueue instance to get.</param>
         /// <param name="connectionString">The connection string for the Storage Account.</param>
-        internal static CloudQueue GetQueue(string queueName, string connectionString)
+        internal QueueClient GetQueue(string queueName, string connectionString)
         {
-            var storageAccount = CloudStorageAccount.Parse(connectionString);
-            var queueClient = storageAccount.CreateCloudQueueClient();
-            var queue = queueClient.GetQueueReference(queueName);
+            var queueClient = new QueueClient(connectionString, queueName, new QueueClientOptions
+            {
+                MessageEncoding = (QueueMessageEncoding)(int)_options.MessageEncoding
+            });
 
             try
             {
-                queue.CreateIfNotExists();
+                queueClient.CreateIfNotExists();
+
+                if (queueClient.Exists())
+                {
+                    Console.WriteLine($"Queue created: '{queueClient.Name}'");
+                }
+                else
+                {
+                    Console.WriteLine($"Make sure the Azurite storage emulator running and try again.");
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("AzureQueueMessagePublisher Error: " + ex.Message);
+                Console.WriteLine($"AzureQueueMessagePublisher Error: {ex.Message}");
                 //TODO: RWM: Add telemetry.
                 //_telemetryClient.TrackException(ex);
                 throw;
             }
 
-            return queue;
+            return queueClient;
         }
 
         #endregion

@@ -1,24 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AssemblyName>CloudNimble.SimpleMessageBus.Hosting</AssemblyName>
-    <RootNamespace>CloudNimble.SimpleMessageBus.Hosting</RootNamespace>
-    <TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
-    <DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<AssemblyName>CloudNimble.SimpleMessageBus.Hosting</AssemblyName>
+		<RootNamespace>CloudNimble.SimpleMessageBus.Hosting</RootNamespace>
+		<TargetFrameworks>net7.0;net6.0;netcoreapp3.1</TargetFrameworks>
+		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <PackageId>SimpleMessageBus.Hosting</PackageId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<PackageId>SimpleMessageBus.Hosting</PackageId>
+		<Title>SimpleMessageBus Hosting</Title>
+		<Summary>
+			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package helps the 
+			SimpleMessageBus runtime execute in the right context whether it's running as a Console app or a Windows Service.
+		</Summary>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[6.0.0, 7.0.0)" Condition="'$(TargetFramework)'=='net6.0'" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[5.0.0, 6.0.0)" Condition="'$(TargetFramework)'=='net5.0'" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[3.1.0, 4.0.0)" Condition="'$(TargetFramework)'=='netcoreapp3.1'" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
+		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[3.1.0, 8.0.0)" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SimpleMessageBus.Dispatch\SimpleMessageBus.Dispatch.csproj" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
+		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[6.0.0, 8.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
+		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[7.*-*, 8.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SimpleMessageBus.Dispatch\SimpleMessageBus.Dispatch.csproj" />
+	</ItemGroup>
 
 </Project>

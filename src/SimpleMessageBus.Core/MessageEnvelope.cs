@@ -18,7 +18,7 @@ namespace CloudNimble.SimpleMessageBus.Core
         /// <summary>
         /// The number of times the system has previously attempted to process this message.
         /// </summary>
-        public int AttemptsCount { get; set; }
+        public long AttemptsCount { get; set; }
 
         /// <summary>
         /// The UTC date and time that this nessage was published to the queue.
@@ -97,6 +97,12 @@ namespace CloudNimble.SimpleMessageBus.Core
         public T GetMessage<T>() where T: IMessage
         {
             return JsonSerializer.Deserialize<T>(MessageContent);
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize(this);
         }
 
         #endregion

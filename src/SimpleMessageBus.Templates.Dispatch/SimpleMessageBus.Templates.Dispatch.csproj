@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SimpleMessageBus.Dispatch" Version="1.0.3" />
+    <PackageReference Include="SimpleMessageBus.Dispatch" Version="*" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 <h4 align="center">A framework for reliable, distributed, scalable, cross-platform event processing on .NET.</h4>
 
 <div align="center">
-  
+
 [Releases](https://github.com/CloudNimble/SimpleMessageBus/releases)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Documentation&nbsp;&nbsp;&nbsp;
 
 [![Build Status][devops-build-img]][devops-build] [![Release Status][devops-release-img]][devops-release] [![Twitter][twitter-img]][twitter-intent]
@@ -59,15 +59,19 @@ You can read more about these scenarios in our blog post.
 
 ## Getting Started
 The process of getting **SimpleMessageBus** working in your app is as easy as the name suggests.
-  1. Create a new .NET Standard 2.0 project to that will hold your defined Message types, install the `SimpleMessageBus.Core` NuGet package, and build out 
+  1. Create a new .NET Standard 2.0, .NET 6 or .NET 7 project to that will hold your defined Message types, install the `SimpleMessageBus.Core` NuGet package, and build out 
      your Message types.
   2. Install the `SimpleMessageBus.Publish` NuGet package into your app, reference the library you created in Step 1, and modify your workflows to publish 
      Messages in response to events.
-  3. Create a new .NET Standard 2.0 project that will hold your MessageHandlers, install the `SimpleMessageBus.Core` NuGet package, and build out your 
+  3. Create a new .NET Standard 2.0, .NET 6 or .NET 7 project that will hold your MessageHandlers, install the `SimpleMessageBus.Core` NuGet package, and build out your 
      MessageHandlers.
   4. Create a new Unit Test project, reference the library you created in Step 3, and test your MessageHandler library with a variety of synthetic Messages.
   5. Create a new Console project, install the `SimpleMessageBus.Dispatch` NuGet package, reference the library you created in Step 3, and inject your 
      MessageHandlers into the DependencyInjection container.
+
+## Feedback
+
+Feel free to send us feedback on [Twitter](https://twitter.com/cloud_nimble) or [file an issue](https://github.com/CloudNimble/SimpleMessageBus/issues/new). Feature requests are always welcome. If you wish to contribute, please take a quick look at the [guidelines](./CONTRIBUTING.md)!
 
 <!--
 Link References
@@ -76,7 +80,7 @@ Link References
 [devops-build]:https://dev.azure.com/cloudnimble/SimpleMessageBus/_build/latest?definitionId=11
 [devops-release]:https://dev.azure.com/cloudnimble/SimpleMessageBus/_release?view=all&definitionId=1
 [nightly-feed]:https://www.myget.org/F/restier-nightly/api/v3/index.json
-[twitter-intent]:https://twitter.com/intent/tweet?via=robertmclaws&text=Check%20out%20SimpleMessageBus%2C%20the%20framework%20for%20reliable%2C%20distributed%2C%20scalable%2C%20cross-platform%20event%20processing%20on%20.NET.&hashtags=dotnetcore%2Cazure
+[twitter-intent]:https://twitter.com/intent/tweet?via=cloud_nimble&text=Check%20out%20SimpleMessageBus%2C%20the%20framework%20for%20reliable%2C%20distributed%2C%20scalable%2C%20cross-platform%20event%20processing%20on%20.NET.&hashtags=dotnetcore%2Cazure
 
 [devops-build-img]:https://img.shields.io/azure-devops/build/cloudnimble/simplemessagebus/11.svg?style=for-the-badge&logo=azuredevops
 [devops-release-img]:https://img.shields.io/azure-devops/release/cloudnimble/202d9877-a3b6-4c67-ae98-768f15eaf6d8/1/1.svg?style=for-the-badge&logo=azuredevops

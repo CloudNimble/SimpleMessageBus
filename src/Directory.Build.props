@@ -33,7 +33,7 @@
     <RpmPackageVendor>CloudNimble</RpmPackageVendor>
     <Copyright>© CloudNimble, Inc. All rights reserved.</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/OData/RESTier/master/License.txt</PackageLicenseUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/CloudNimble/SimpleMessageBus/master/LICENSE</PackageLicenseUrl>
     <!-- The SPDX name for the source license. See https://spdx.org/licenses/. -->
     <PackageLicenseType>MIT</PackageLicenseType>
     <!--
@@ -48,7 +48,7 @@
     <MaintainerEmail>opensource@nimbleapps.cloud</MaintainerEmail>
 
     <PackageIconUrl>https://go.microsoft.com/fwlink/?LinkID=288859</PackageIconUrl>
-    <PackageProjectUrl>https://restier.readthedocs.io/en/latest/</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/CloudNimble/SimpleMessageBus/</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageTags>messagebus;webjobs;azure;eventbus</PackageTags>
     <Serviceable>true</Serviceable>

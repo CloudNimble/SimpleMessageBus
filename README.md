@@ -57,6 +57,15 @@ on-prem with no Azure dependencies, but still get the same durability and reliab
 
 You can read more about these scenarios in our blog post.
 
+## Ecosystem
+
+| Project | Status | Description |
+|---------|--------|-------------|
+| [SimpleMessageBus.Core][smb-core-nuget]    | [![smb-core][smb-core-nuget-img]][smb-core-nuget] | Core components to provide messaging and file operations capabilities for On-Prem and Cloud environments.
+| [SimpleMessageBus.Dispatch][smb-dispatch-nuget]    | [![smb-dispatch][smb-dispatch-nuget-img]][smb-dispatch-nuget] | Messaging integration components with Azure WebJobs SDK dependency to accept and direct messages to proper message handler(s).
+| [SimpleMessageBus.Hosting][smb-hosting-nuget]    | [![smb-hosting][smb-hosting-nuget-img]][smb-hosting-nuget] | Configuration components to allow selection of hosting type (i.e: WindowsService vs. Console).
+| [SimpleMessageBus.Publish][smb-publish-nuget]    | [![smb-publish][smb-publish-nuget-img]][smb-publish-nuget] | Publishing integration component with Azure Queue Storag dependency to allow messages to be "put" on queues
+
 ## Getting Started
 The process of getting **SimpleMessageBus** working in your app is as easy as the name suggests.
   1. Create a new .NET Standard 2.0, .NET 6 or .NET 7 project to that will hold your defined Message types, install the `SimpleMessageBus.Core` NuGet package, and build out 
@@ -73,17 +82,34 @@ The process of getting **SimpleMessageBus** working in your app is as easy as th
 
 Feel free to send us feedback on [Twitter](https://twitter.com/cloud_nimble) or [file an issue](https://github.com/CloudNimble/SimpleMessageBus/issues/new). Feature requests are always welcome. If you wish to contribute, please take a quick look at the [guidelines](./CONTRIBUTING.md)!
 
+## Contributors
+
+Thank you to all the people who have contributed to the project.
+
+<a href="https://github.com/CloudNimble/SimpleMessageBus/graphs/contributors">Source code Contributors</a>
+
 <!--
-Link References
+Base Link References
 -->
 
 [devops-build]:https://dev.azure.com/cloudnimble/SimpleMessageBus/_build/latest?definitionId=11
 [devops-release]:https://dev.azure.com/cloudnimble/SimpleMessageBus/_release?view=all&definitionId=1
-[nightly-feed]:https://www.myget.org/F/restier-nightly/api/v3/index.json
 [twitter-intent]:https://twitter.com/intent/tweet?via=cloud_nimble&text=Check%20out%20SimpleMessageBus%2C%20the%20framework%20for%20reliable%2C%20distributed%2C%20scalable%2C%20cross-platform%20event%20processing%20on%20.NET.&hashtags=dotnetcore%2Cazure
 
 [devops-build-img]:https://img.shields.io/azure-devops/build/cloudnimble/simplemessagebus/11.svg?style=for-the-badge&logo=azuredevops
 [devops-release-img]:https://img.shields.io/azure-devops/release/cloudnimble/202d9877-a3b6-4c67-ae98-768f15eaf6d8/1/1.svg?style=for-the-badge&logo=azuredevops
-[nightly-feed-img]:https://img.shields.io/badge/continuous%20integration-feed-0495dc.svg?style=for-the-badge&logo=nuget&logoColor=fff
-[github-version-img]:https://img.shields.io/github/release/ryanoasis/nerd-fonts.svg?style=for-the-badge
 [twitter-img]:https://img.shields.io/badge/share-on%20twitter-55acee.svg?style=for-the-badge&logo=twitter
+
+<!--
+Ecosystem Link References
+-->
+
+[smb-core-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Core
+[smb-dispatch-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Dispatch
+[smb-hosting-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Hosting
+[smb-publish-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Publish
+
+[smb-core-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Core?label=NuGet&logo=NuGet&style=for-the-badge
+[smb-dispatch-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Dispatch?label=NuGet&logo=NuGet&style=for-the-badge
+[smb-hosting-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Hosting?label=NuGet&logo=NuGet&style=for-the-badge
+[smb-publish-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Publish?label=NuGet&logo=NuGet&style=for-the-badge

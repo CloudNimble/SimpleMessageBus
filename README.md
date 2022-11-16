@@ -20,6 +20,16 @@ your needs do.
  - Pushes third-party dependencies to the edges of your app, streamlining deployments.
  - Increases fault-tolerance by allowing you to easily track and replay failed messages.
 
+
+### Ecosystem
+
+| Project | Status | Description |
+|---------|--------|-------------|
+| [SimpleMessageBus.Core][smb-core-nuget]    | [![smb-core][smb-core-nuget-img]][smb-core-nuget] | Core components to provide messaging and file operations capabilities for On-Prem and Cloud environments.
+| [SimpleMessageBus.Dispatch][smb-dispatch-nuget]    | [![smb-dispatch][smb-dispatch-nuget-img]][smb-dispatch-nuget] | Messaging integration components with Azure WebJobs SDK dependency to accept and direct messages to proper message handler(s).
+| [SimpleMessageBus.Hosting][smb-hosting-nuget]    | [![smb-hosting][smb-hosting-nuget-img]][smb-hosting-nuget] | Configuration components to allow selection of hosting type (i.e: WindowsService vs. Console).
+| [SimpleMessageBus.Publish][smb-publish-nuget]    | [![smb-publish][smb-publish-nuget-img]][smb-publish-nuget] | Publishing integration component with Azure Queue Storag dependency to allow messages to be "put" on queues
+
 ### Architecture
 
 <p align="center">
@@ -57,15 +67,6 @@ on-prem with no Azure dependencies, but still get the same durability and reliab
 
 You can read more about these scenarios in our blog post.
 
-## Ecosystem
-
-| Project | Status | Description |
-|---------|--------|-------------|
-| [SimpleMessageBus.Core][smb-core-nuget]    | [![smb-core][smb-core-nuget-img]][smb-core-nuget] | Core components to provide messaging and file operations capabilities for On-Prem and Cloud environments.
-| [SimpleMessageBus.Dispatch][smb-dispatch-nuget]    | [![smb-dispatch][smb-dispatch-nuget-img]][smb-dispatch-nuget] | Messaging integration components with Azure WebJobs SDK dependency to accept and direct messages to proper message handler(s).
-| [SimpleMessageBus.Hosting][smb-hosting-nuget]    | [![smb-hosting][smb-hosting-nuget-img]][smb-hosting-nuget] | Configuration components to allow selection of hosting type (i.e: WindowsService vs. Console).
-| [SimpleMessageBus.Publish][smb-publish-nuget]    | [![smb-publish][smb-publish-nuget-img]][smb-publish-nuget] | Publishing integration component with Azure Queue Storag dependency to allow messages to be "put" on queues
-
 ## Getting Started
 The process of getting **SimpleMessageBus** working in your app is as easy as the name suggests.
   1. Create a new .NET Standard 2.0, .NET 6 or .NET 7 project to that will hold your defined Message types, install the `SimpleMessageBus.Core` NuGet package, and build out 
@@ -81,6 +82,13 @@ The process of getting **SimpleMessageBus** working in your app is as easy as th
 ## Feedback
 
 Feel free to send us feedback on [Twitter](https://twitter.com/cloud_nimble) or [file an issue](https://github.com/CloudNimble/SimpleMessageBus/issues/new). Feature requests are always welcome. If you wish to contribute, please take a quick look at the [guidelines](./CONTRIBUTING.md)!
+
+## Code of Conduct
+
+Please adhere to our [Code of Conduct](./CODE_OF_CONDUCT.md) during any interactions with 
+CloudNimble team members and community members. It is strictly enforced on all official CloudNimble
+repositories, websites, and resources. If you encounter someone violating
+these terms, please let us know via email at opensource@nimbleapps.cloud and we will address it as soon as possible.
 
 ## Contributors
 

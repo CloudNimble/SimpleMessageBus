@@ -96,7 +96,7 @@ Thank you to all the people who have contributed to the project.
 
 [Source code Contributors][contri-link]
 
-Please visit our Cont
+Please visit our [Contribution](./.github/CONTRIBUTING.md)
 
 <!-- Base Link References -->
 [project-link]: https://github.com/CloudNimble/SimpleMessageBus/

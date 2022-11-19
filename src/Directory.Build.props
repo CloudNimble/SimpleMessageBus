@@ -39,7 +39,7 @@
     <RpmPackageVendor>CloudNimble</RpmPackageVendor>
     <Copyright>Copyright © 2017 - 2023 CloudNimble, Inc. All rights reserved.</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
-	<PackageLicenseFile>https://raw.githubusercontent.com/CloudNimble/SimpleMessageBus/main/LICENSE</PackageLicenseFile>
+	<PackageLicenseUrl>https://raw.githubusercontent.com/CloudNimble/SimpleMessageBus/main/LICENSE</PackageLicenseUrl>
     <!-- The SPDX name for the source license. See https://spdx.org/licenses/. -->
     <PackageLicenseType>MIT</PackageLicenseType>
     <!--

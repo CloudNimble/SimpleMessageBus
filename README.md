@@ -92,11 +92,9 @@ these terms, please let us know via DM on [Twitter][twitter-link] or via email a
 
 ## Contributors
 
-Thank you to all the people who have contributed to the project.
+Thank you to all the people who have contributed to the project: [Source code Contributors][contri-link]
 
-[Source code Contributors][contri-link]
-
-Please visit our [Contribution](./.github/CONTRIBUTING.md)
+Please visit our [Contribution](./.github/CONTRIBUTING.md) document to start contributing to our project.
 
 <!-- Base Link References -->
 [project-link]: https://github.com/CloudNimble/SimpleMessageBus/

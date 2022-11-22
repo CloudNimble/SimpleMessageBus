@@ -20,13 +20,29 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)simplemessagebus.snk</AssemblyOriginatorKeyFile>
     
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>11.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <Product>SimpleMessageBus</Product>
     <Version>3.0.0</Version>
-    <PackageVersion>3.0.0-beta-1</PackageVersion>
+    <PackageVersion>3.0.0</PackageVersion>
+	  
+    <Authors>CloudNimble</Authors>
+    <Company>CloudNimble, Inc.</Company>
+    <RpmPackageVendor>CloudNimble</RpmPackageVendor>
+    <Copyright>Copyright © 2017-2023 CloudNimble, Inc. All rights reserved.</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+
+    <!-- The SPDX name for the source license. See https://spdx.org/licenses/. -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <!-- Suppress warnings about using SemVer 2.0. -->
+    <NoWarn>$(NoWarn);NU5048</NoWarn>
+
+    <!-- Contact email address for NuGet packages and Linux installers. -->
+    <MaintainerEmail>opensource@nimbleapps.cloud</MaintainerEmail>
+
 	<Summary>
 		SimpleMessageBus is a system for making applications more reliable and responsive to users by processing potentially long-running tasks out-of-band from the user's main workflow. 
 		It is designed to run either on-prem, or in the Microsoft Cloud, making it suitable for any application, and able to grow as your needs do.
@@ -34,25 +50,7 @@
 	<Description>
 	  $(Summary)
 	</Description>
-    <Authors>CloudNimble</Authors>
-    <Company>CloudNimble, Inc.</Company>
-    <RpmPackageVendor>CloudNimble</RpmPackageVendor>
-    <Copyright>Copyright © 2017 - 2023 CloudNimble, Inc. All rights reserved.</Copyright>
-    <NeutralLanguage>en-US</NeutralLanguage>
-	<PackageLicenseUrl>https://raw.githubusercontent.com/CloudNimble/SimpleMessageBus/main/LICENSE</PackageLicenseUrl>
-    <!-- The SPDX name for the source license. See https://spdx.org/licenses/. -->
-    <PackageLicenseType>MIT</PackageLicenseType>
-    <!--
-      Suppress a warning about upcoming deprecation of PackageLicenseUrl. When embedding licenses are supported,
-      replace PackageLicenseUrl with PackageLicenseExpression.
-    -->
-    <NoWarn>$(NoWarn);NU5125</NoWarn>
-    <!-- Suppress warnings about using SemVer 2.0. -->
-    <NoWarn>$(NoWarn);NU5105;NU5048;NU5014</NoWarn>
-
-    <!-- Contact email address for NuGet packages and Linux installers. -->
-    <MaintainerEmail>opensource@nimbleapps.cloud</MaintainerEmail>
-
+	  
     <PackageIconUrl>https://go.microsoft.com/fwlink/?LinkID=288859</PackageIconUrl>
     <PackageProjectUrl>https://github.com/CloudNimble/SimpleMessageBus/</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>

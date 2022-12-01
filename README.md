@@ -1,11 +1,14 @@
 <h1 align="center">SimpleMessageBus - By CloudNimble</h1>
+<br>
 <h4 align="center">A framework for reliable, distributed, scalable, cross-platform event processing on .NET.</h4>
 
 <div align="center">
 
-[Releases](https://github.com/CloudNimble/SimpleMessageBus/releases)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Documentation&nbsp;&nbsp;&nbsp;
+<br>
 
-[![Build Status][devops-build-img]][devops-build] [![Release Status][devops-release-img]][devops-release] [![Twitter][twitter-img]][twitter-intent]
+[Website][website-link] &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; [Releases][release-link] &nbsp;&nbsp;&nbsp;| &nbsp;&nbsp;&nbsp; [Documentation][doc-link] &nbsp;&nbsp;&nbsp;
+
+[![Build Status][devops-rtm-build-img]][devops-rtm-build] [![Release Status][devops-rtm-release-img]][devops-rtm-release] [![Twitter][twitter-img]][twitter-intent]
 
 </div>
 
@@ -19,6 +22,16 @@ your needs do.
  - Increases testability by decoupling long-latency events from UI-generated workflows.
  - Pushes third-party dependencies to the edges of your app, streamlining deployments.
  - Increases fault-tolerance by allowing you to easily track and replay failed messages.
+
+
+### Ecosystem
+
+| Project | Release | Latest | Description |
+|---------|--------|-------------|-------------|
+| [SimpleMessageBus.Core][smb-core-nuget]    | [![smb-core-rtm][smb-core-rtm-nuget-img]][smb-core-nuget] | [![smb-core-ci][smb-core-ci-nuget-img]][smb-core-nuget] | Core components to provide messaging and file operations capabilities for On-Prem and Cloud environments.
+| [SimpleMessageBus.Dispatch][smb-dispatch-nuget]    | [![smb-dispatch-rtm][smb-dispatch-rtm-nuget-img]][smb-dispatch-nuget] | [![smb-dispatch-ci][smb-dispatch-ci-nuget-img]][smb-dispatch-nuget] | Messaging integration components with Azure WebJobs SDK dependency to accept and direct messages to proper message handler(s).
+| [SimpleMessageBus.Hosting][smb-hosting-nuget]    | [![smb-hosting-rtm][smb-hosting-rtm-nuget-img]][smb-hosting-nuget] | [![smb-hosting-ci][smb-hosting-ci-nuget-img]][smb-hosting-nuget] | Configuration components to allow selection of hosting type (i.e: WindowsService vs. Console).
+| [SimpleMessageBus.Publish][smb-publish-nuget]    | [![smb-publish-rtm][smb-publish-rtm-nuget-img]][smb-publish-nuget] | [![smb-publish-ci][smb-publish-ci-nuget-img]][smb-publish-nuget] | Publishing integration component with Azure Queue Storag dependency to allow messages to be "put" on queues
 
 ### Architecture
 
@@ -71,19 +84,58 @@ The process of getting **SimpleMessageBus** working in your app is as easy as th
 
 ## Feedback
 
-Feel free to send us feedback on [Twitter](https://twitter.com/cloud_nimble) or [file an issue](https://github.com/CloudNimble/SimpleMessageBus/issues/new). Feature requests are always welcome. If you wish to contribute, please take a quick look at the [guidelines](./CONTRIBUTING.md)!
+Feel free to send us feedback on [Twitter][twitter-link] or [file an issue][issues-link]. Feature requests are always welcome. If you wish to contribute, please take a quick look at the [contribution guidelines](./.github/CONTRIBUTING.md).
 
-<!--
-Link References
--->
+## Code of Conduct
 
-[devops-build]:https://dev.azure.com/cloudnimble/SimpleMessageBus/_build/latest?definitionId=11
-[devops-release]:https://dev.azure.com/cloudnimble/SimpleMessageBus/_release?view=all&definitionId=1
-[nightly-feed]:https://www.myget.org/F/restier-nightly/api/v3/index.json
+Please adhere to our [Code of Conduct](./CODE_OF_CONDUCT.md) during any interactions with 
+CloudNimble team members and community members. It is strictly enforced on all official CloudNimble
+repositories, websites, and resources. If you encounter someone violating
+these terms, please let us know via DM on [Twitter][twitter-link] or via email at opensource@nimbleapps.cloud and we will address it as soon as possible.
+
+## Contributors
+
+Thank you to all the people who have contributed to the project: [Source code Contributors][contri-link]
+
+Please visit our [Contribution](./.github/CONTRIBUTING.md) document to start contributing to our project.
+
+
+<!-- Base Link References -->
+
+[website-link]: https://nimbleapps.cloud/
+[project-link]: https://github.com/CloudNimble/SimpleMessageBus/
+[release-link]: https://github.com/CloudNimble/SimpleMessageBus/releases
+[doc-link]: https://github.com/CloudNimble/SimpleMessageBus/tree/main/docs
+[contri-link]: https://github.com/CloudNimble/SimpleMessageBus/graphs/contributors
+[issues-link]: https://github.com/CloudNimble/SimpleMessageBus/issues
+
+[twitter-link]: https://twitter.com/cloud_nimble
 [twitter-intent]:https://twitter.com/intent/tweet?via=cloud_nimble&text=Check%20out%20SimpleMessageBus%2C%20the%20framework%20for%20reliable%2C%20distributed%2C%20scalable%2C%20cross-platform%20event%20processing%20on%20.NET.&hashtags=dotnetcore%2Cazure
-
-[devops-build-img]:https://img.shields.io/azure-devops/build/cloudnimble/simplemessagebus/11.svg?style=for-the-badge&logo=azuredevops
-[devops-release-img]:https://img.shields.io/azure-devops/release/cloudnimble/202d9877-a3b6-4c67-ae98-768f15eaf6d8/1/1.svg?style=for-the-badge&logo=azuredevops
-[nightly-feed-img]:https://img.shields.io/badge/continuous%20integration-feed-0495dc.svg?style=for-the-badge&logo=nuget&logoColor=fff
-[github-version-img]:https://img.shields.io/github/release/ryanoasis/nerd-fonts.svg?style=for-the-badge
 [twitter-img]:https://img.shields.io/badge/share-on%20twitter-55acee.svg?style=for-the-badge&logo=twitter
+
+<!-- CI/CD Link References -->
+
+[devops-rtm-build]: https://dev.azure.com/cloudnimble/SimpleMessageBus/_build/latest?definitionId=22
+[devops-rtm-release]: https://dev.azure.com/cloudnimble/SimpleMessageBus/_release?view=all&definitionId=2
+
+[devops-rtm-build-img]: https://img.shields.io/azure-devops/build/cloudnimble/SimpleMessageBus/22.svg?style=for-the-badge&logo=azuredevops
+[devops-rtm-release-img]: https://img.shields.io/azure-devops/release/cloudnimble/202d9877-a3b6-4c67-ae98-768f15eaf6d8/2/2?logo=Azure%20DevOps&style=for-the-badge
+
+<!-- Ecosystem Link References -->
+
+[smb-core-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Core
+[smb-dispatch-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Dispatch
+[smb-hosting-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Hosting
+[smb-publish-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Publish
+
+<!-- Badges -->
+
+[smb-core-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Core?label=&logo=NuGet&style=for-the-badge
+[smb-dispatch-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Dispatch?label=&logo=NuGet&style=for-the-badge
+[smb-hosting-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Hosting?label=&logo=NuGet&style=for-the-badge
+[smb-publish-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Publish?label=&logo=NuGet&style=for-the-badge
+
+[smb-core-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Core?label=&logo=NuGet&style=for-the-badge
+[smb-dispatch-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Dispatch?label=&logo=NuGet&style=for-the-badge
+[smb-hosting-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Hosting?label=&logo=NuGet&style=for-the-badge
+[smb-publish-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Publish?label=&logo=NuGet&style=for-the-badge

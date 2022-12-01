@@ -15,17 +15,17 @@
 			SimpleMessageBus runtime execute in the right context whether it's running as a Console app or a Windows Service.
 		</Summary>
 	</PropertyGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
-		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[3.1.0, 8.0.0)" />
+	
+	<ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
+		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[7.0.0, 8.0.0)" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[6.0.0, 8.0.0)" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
-		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[7.0.0, 8.0.0)" />
+	<ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
+		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[3.1.0, 8.0.0)" />
 	</ItemGroup>
 
 	<ItemGroup>

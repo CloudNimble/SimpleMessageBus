@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<AssemblyName>CloudNimble.SimpleMessageBus.Dispatch</AssemblyName>
 		<RootNamespace>CloudNimble.SimpleMessageBus.Dispatch</RootNamespace>
-		<TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0</TargetFrameworks>
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
 	</PropertyGroup>
 
@@ -18,9 +18,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="[4.3.0, 5.0)" />
-		<PackageReference Include="Microsoft.Azure.WebJobs" Version="[3.0.33, 3.1.0)" />
-		<PackageReference Include="Microsoft.Azure.WebJobs.Host.Storage" Version="4.1.0" />
-		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="[4.0.1, 5.0.0)" />
+		<PackageReference Include="Microsoft.Azure.WebJobs" Version="[3.0.37, 3.1.0)" />
+		<PackageReference Include="Microsoft.Azure.WebJobs.Host.Storage" Version="[5.0.0, 6.0.0)" />
+		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="[5.0.0, 6.0.0)" />
 		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage.Queues" Version="[5.0.0, 6.0.0)" />
 	</ItemGroup>
 

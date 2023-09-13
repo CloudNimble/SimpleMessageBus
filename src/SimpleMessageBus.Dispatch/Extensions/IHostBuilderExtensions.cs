@@ -74,7 +74,7 @@ namespace Microsoft.Extensions.Hosting
             .ConfigureServices((hostContext, services) =>
             {
                 //RWM: This is a total hack, but I can't figure out why there are more than 1 in here, so we're hacking for now.
-                hostContext.FixWebJobsRegistration();
+                //hostContext.FixWebJobsRegistration();
 
                 services.Configure(azureQueueOptions);
                 services.AddSingleton<IConfigureOptions<QueuesOptions>, QueuesOptionsConfiguration>();
@@ -131,7 +131,7 @@ namespace Microsoft.Extensions.Hosting
             .ConfigureServices((hostContext, services) =>
             {
                 //RWM: This is a total hack, but I can't figure out why there are more than 1 in here, so we're hacking for now.
-                hostContext.FixWebJobsRegistration();
+                //hostContext.FixWebJobsRegistration();
 
                 // RWM: The WebJobs SDK registers the Azure ScheduleMonitor by default. For the local filesystem, we need to rip that out and replace it.
                 var oldMonitor = services.First(c => c.ServiceType.Name == nameof(ScheduleMonitor));

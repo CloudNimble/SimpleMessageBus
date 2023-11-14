@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<AssemblyName>CloudNimble.SimpleMessageBus.Hosting</AssemblyName>
 		<RootNamespace>CloudNimble.SimpleMessageBus.Hosting</RootNamespace>
-		<TargetFrameworks>net7.0;net6.0;netcoreapp3.1</TargetFrameworks>
+		<TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
 	</PropertyGroup>
 
@@ -15,17 +15,17 @@
 			SimpleMessageBus runtime execute in the right context whether it's running as a Console app or a Windows Service.
 		</Summary>
 	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
+		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[8.*-*, 9.0.0)" />
+	</ItemGroup>
 	
 	<ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
-		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[7.0.0, 8.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[7.0.0, 9.0.0)" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[6.0.0, 8.0.0)" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
-		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[3.1.0, 8.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[6.0.0, 9.0.0)" />
 	</ItemGroup>
 
 	<ItemGroup>

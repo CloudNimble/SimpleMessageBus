@@ -1,113 +1,114 @@
 <Project>
-  <!--<Import Project="version.props" />-->
+	<!--<Import Project="version.props" />-->
 
-  <!-- Folder layout -->
-  <PropertyGroup>
-    <IsBenchmarkProject Condition="$(MSBuildProjectName.ToLower().EndsWith('.performance'))">true</IsBenchmarkProject>
-    <IsTestProject Condition="$(MSBuildProjectName.ToLower().Contains('.tests.'))">true</IsTestProject>
-    <IsTestAssetProject Condition="$(RepoRelativeProjectDir.Contains('testassets'))">true</IsTestAssetProject>
-    <IsSampleProject Condition="$(MSBuildProjectName.ToLower().Contains('.samples.'))">true</IsSampleProject>
-    <IsTemplateProject Condition="$(MSBuildProjectName.ToLower().Contains('.templates.'))">true</IsTemplateProject>
-    <IsToolsProject Condition="$(MSBuildProjectName.ToLower().EndsWith('.tools'))">true</IsToolsProject>
-    <IsPrimaryProject Condition=" '$(IsBenchmarkProject)' != 'true' And '$(IsTestProject)' != 'true' And '$(IsTestAssetProject)' != 'true' And '$(IsSampleProject)' != 'true' And '$(IsTemplateProject)' != 'true' And '$(IsToolsProject)' != 'true' ">true</IsPrimaryProject>
+	<!-- Folder layout -->
+	<PropertyGroup>
+		<IsBenchmarkProject Condition="$(MSBuildProjectName.ToLower().EndsWith('.performance'))">true</IsBenchmarkProject>
+		<IsTestProject Condition="$(MSBuildProjectName.ToLower().Contains('.tests.'))">true</IsTestProject>
+		<IsTestAssetProject Condition="$(RepoRelativeProjectDir.Contains('testassets'))">true</IsTestAssetProject>
+		<IsSampleProject Condition="$(MSBuildProjectName.ToLower().Contains('.samples.'))">true</IsSampleProject>
+		<IsTemplateProject Condition="$(MSBuildProjectName.ToLower().Contains('.templates.'))">true</IsTemplateProject>
+		<IsToolsProject Condition="$(MSBuildProjectName.ToLower().EndsWith('.tools'))">true</IsToolsProject>
+		<IsPrimaryProject Condition=" '$(IsBenchmarkProject)' != 'true' And '$(IsTestProject)' != 'true' And '$(IsTestAssetProject)' != 'true' And '$(IsSampleProject)' != 'true' And '$(IsTemplateProject)' != 'true' And '$(IsToolsProject)' != 'true' ">true</IsPrimaryProject>
 
-    <IncludeSource>false</IncludeSource>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSource>false</IncludeSource>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)simplemessagebus.snk</AssemblyOriginatorKeyFile>
-    
-    <LangVersion>11.0</LangVersion>
-  </PropertyGroup>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)simplemessagebus.snk</AssemblyOriginatorKeyFile>
 
-  <PropertyGroup>
-    <Product>SimpleMessageBus</Product>
-    <Version>3.0.0</Version>
-    <PackageVersion>3.0.0</PackageVersion>
-	  
-    <Authors>CloudNimble</Authors>
-    <Company>CloudNimble, Inc.</Company>
-    <RpmPackageVendor>CloudNimble</RpmPackageVendor>
-    <Copyright>Copyright © 2017-2023 CloudNimble, Inc. All rights reserved.</Copyright>
-    <NeutralLanguage>en-US</NeutralLanguage>
+		<LangVersion>11.0</LangVersion>
+	</PropertyGroup>
 
-    <!-- The SPDX name for the source license. See https://spdx.org/licenses/. -->
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PropertyGroup>
+		<Product>SimpleMessageBus</Product>
+		<Version>4.0.0</Version>
+		<PackageVersion>4.0.0</PackageVersion>
 
-    <!-- Suppress warnings about using SemVer 2.0. -->
-    <NoWarn>$(NoWarn);NU5048</NoWarn>
+		<Authors>CloudNimble</Authors>
+		<Company>CloudNimble, Inc.</Company>
+		<RpmPackageVendor>CloudNimble</RpmPackageVendor>
+		<Copyright>Copyright © 2017-2023 CloudNimble, Inc. All rights reserved.</Copyright>
+		<NeutralLanguage>en-US</NeutralLanguage>
 
-    <!-- Contact email address for NuGet packages and Linux installers. -->
-    <MaintainerEmail>opensource@nimbleapps.cloud</MaintainerEmail>
+		<!-- The SPDX name for the source license. See https://spdx.org/licenses/. -->
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-	<Summary>
-		SimpleMessageBus is a system for making applications more reliable and responsive to users by processing potentially long-running tasks out-of-band from the user's main workflow. 
-		It is designed to run either on-prem, or in the Microsoft Cloud, making it suitable for any application, and able to grow as your needs do.
-	</Summary>
-	<Description>
-	  $(Summary)
-	</Description>
-	  
-    <PackageIconUrl>https://go.microsoft.com/fwlink/?LinkID=288859</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/CloudNimble/SimpleMessageBus/</PackageProjectUrl>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageTags>messagebus;webjobs;azure;eventbus</PackageTags>
-    <Serviceable>true</Serviceable>
+		<!-- Suppress warnings about using SemVer 2.0. -->
+		<NoWarn>$(NoWarn);NU5048</NoWarn>
 
-    <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
-    <RepositoryUrl>https://github.com/CloudNimble/SimpleMessageBus.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
+		<!-- Contact email address for NuGet packages and Linux installers. -->
+		<MaintainerEmail>opensource@nimbleapps.cloud</MaintainerEmail>
 
-  <!-- Compilation options -->
-  <PropertyGroup>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<Summary>
+			SimpleMessageBus is a system for making applications more reliable and responsive to users by processing potentially long-running tasks out-of-band from the user's main workflow.
+			It is designed to run either on-prem, or in the Microsoft Cloud, making it suitable for any application, and able to grow as your needs do.
+		</Summary>
+		<Description>
+			$(Summary)
+		</Description>
 
-    <!-- Instructs the compiler to use SHA256 instead of SHA1 when adding file hashes to PDBs. -->
-    <ChecksumAlgorithm>SHA256</ChecksumAlgorithm>
+		<PackageIconUrl>https://go.microsoft.com/fwlink/?LinkID=288859</PackageIconUrl>
+		<PackageProjectUrl>https://github.com/CloudNimble/SimpleMessageBus/</PackageProjectUrl>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageTags>messagebus;webjobs;azure;eventbus</PackageTags>
+		<Serviceable>true</Serviceable>
 
-    <!-- Fixes a common error in targets implementing a NoBuild mode. -->
-    <BuildProjectReferences Condition=" '$(NoBuild)' == 'true' ">false</BuildProjectReferences>
+		<RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
+		<RepositoryUrl>https://github.com/CloudNimble/SimpleMessageBus.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+	</PropertyGroup>
 
-    <!-- Suppress warnings about uninstantiated classes. -->
-    <NoWarn>$(NoWarn);CA1812</NoWarn>
-  </PropertyGroup>
+	<!-- Compilation options -->
+	<PropertyGroup>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
-  <PropertyGroup Condition=" $(IsTestProject) == 'true' ">
-    <NoWarn>$(NoWarn);CA1001;CA1707;CA2007;CA1801</NoWarn>
-  </PropertyGroup>
-  
-    <PropertyGroup Condition=" $(IsSampleProject) == 'true' ">
-    <NoWarn>$(NoWarn);CA1001;CA1707;CA1716;CA1801;CA1822</NoWarn>
-  </PropertyGroup>
+		<!-- Instructs the compiler to use SHA256 instead of SHA1 when adding file hashes to PDBs. -->
+		<ChecksumAlgorithm>SHA256</ChecksumAlgorithm>
 
-  <PropertyGroup Condition=" '$(IsPrimaryProject)' == 'true' ">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)</DocumentationFile>
-  </PropertyGroup>
+		<!-- Fixes a common error in targets implementing a NoBuild mode. -->
+		<BuildProjectReferences Condition=" '$(NoBuild)' == 'true' ">false</BuildProjectReferences>
 
-  <PropertyGroup>
-    <StandardTestTfms>net7.0;net6.0;net472</StandardTestTfms>
-  </PropertyGroup>
+		<!-- Suppress warnings about uninstantiated classes. -->
+		<NoWarn>$(NoWarn);CA1812</NoWarn>
 
-  <ItemGroup Condition=" $(IsTestProject) != 'true' and  $(IsSampleProject) != 'true'">
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*" PrivateAssets="All" />
-    <!-- RWM: The code quality on the unit tests right now is not awesome, so let's skip checking it for now. -->
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.*-*">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>  
-  </ItemGroup>
+		<!-- Suppress warnings about pre-release packages -->
+		<NoWarn>$(NoWarn);NU5104</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup Condition=" $(IsTestProject) == 'true'  and  $(IsSampleProject) != 'true'">
-    <PackageReference Include="FluentAssertions" Version="6.*" PrivateAssets="All" />
-    <PackageReference Include="FluentAssertions.Analyzers" Version="0.*" PrivateAssets="All" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.*" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.*" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
-  </ItemGroup>
-  
+	<PropertyGroup Condition=" $(IsTestProject) == 'true' ">
+		<NoWarn>$(NoWarn);CA1001;CA1707;CA2007;CA1801</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" $(IsSampleProject) == 'true' ">
+		<NoWarn>$(NoWarn);CA1001;CA1707;CA1716;CA1801;CA1822</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(IsPrimaryProject)' == 'true' ">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)</DocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<StandardTestTfms>net472;net6.0;net7.0;net8.0;</StandardTestTfms>
+	</PropertyGroup>
+
+	<ItemGroup Condition=" $(IsTestProject) != 'true' and  $(IsSampleProject) != 'true'">
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*" PrivateAssets="All" />
+		<!-- RWM: The code quality on the unit tests right now is not awesome, so let's skip checking it for now. -->
+		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.*-*">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition=" $(IsTestProject) == 'true'  and  $(IsSampleProject) != 'true'">
+		<PackageReference Include="FluentAssertions" Version="6.*" PrivateAssets="All" />
+		<PackageReference Include="FluentAssertions.Analyzers" Version="0.*" PrivateAssets="All" />
+		<PackageReference Include="MSTest" Version="3.*" />
+	</ItemGroup>
+
 </Project>

@@ -6,7 +6,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Breakdance.Assemblies" Version="5.*-*" />
+		<PackageReference Include="Breakdance.Assemblies" Version="6.*-*" />
+		<PackageReference Include="EasyAF.Core" Version="2.*-*" />
 		<PackageReference Include="coverlet.collector" Version="*" />
 	</ItemGroup>
 

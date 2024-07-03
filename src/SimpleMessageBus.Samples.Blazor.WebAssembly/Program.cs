@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
-namespace SimpleMessageBus.Samples.Blazor
+namespace SimpleMessageBus.Samples.Blazor.WebAssembly
 {
     public class Program
     {

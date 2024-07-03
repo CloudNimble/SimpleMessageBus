@@ -17,7 +17,7 @@ namespace Microsoft.Extensions.Hosting
         /// </summary>
         /// <param name="builder">The <see cref="IHostBuilder"/> instance to extend.</param>
         /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
-        public static IHostBuilder UseFileSystemMessagePublisher(this IHostBuilder builder)
+        public static IHostBuilder UseAzureStorageQueueMessagePublisher(this IHostBuilder builder)
         {
             if (builder is null)
             {
@@ -27,33 +27,33 @@ namespace Microsoft.Extensions.Hosting
             return builder
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.Configure<FileSystemOptions>(hostContext.Configuration.GetSection(typeof(FileSystemOptions).Name));
+                    services.Configure<AzureStorageQueueOptions>(hostContext.Configuration.GetSection(typeof(AzureStorageQueueOptions).Name));
                 })
-                .UseFileSystemMessagePublisher(o => { });
+                .UseAzureStorageQueueMessagePublisher(o => { });
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="builder">The <see cref="IHostBuilder"/> instance to extend.</param>
-        /// <param name="fileSystemOptions"></param>
+        /// <param name="azureQueueOptions"></param>
         /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
-        public static IHostBuilder UseFileSystemMessagePublisher(this IHostBuilder builder, Action<FileSystemOptions> fileSystemOptions)
+        public static IHostBuilder UseAzureStorageQueueMessagePublisher(this IHostBuilder builder, Action<AzureStorageQueueOptions> azureQueueOptions)
         {
             if (builder is null)
             {
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            if (fileSystemOptions is null)
+            if (azureQueueOptions is null)
             {
-                throw new ArgumentNullException(nameof(fileSystemOptions));
+                throw new ArgumentNullException(nameof(azureQueueOptions));
             }
 
             builder.ConfigureServices((hostContext, services) =>
             {
-                services.Configure(fileSystemOptions);
-                services.AddSingleton<IMessagePublisher, FileSystemMessagePublisher>();
+                services.Configure(azureQueueOptions);
+                services.AddSingleton<IMessagePublisher, AzureStorageQueueMessagePublisher>();
             });
 
             return builder;

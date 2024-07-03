@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>CloudNimble.SimpleMessageBus.Dispatch.IndexedDb</AssemblyName>
+		<RootNamespace>CloudNimble.SimpleMessageBus.Dispatch.IndexedDb</RootNamespace>
+		<TargetFramework>net8.0</TargetFramework>
+		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="[8.*, 9.0.0)" />
+		<PackageReference Include="Tavenem.Blazor.IndexedDB" Version="[3.*, 4.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\SimpleMessageBus.Dispatch\SimpleMessageBus.Dispatch.csproj" />
+	  <ProjectReference Include="..\SimpleMessageBus.IndexedDb.Core\SimpleMessageBus.IndexedDb.Core.csproj" />
+	</ItemGroup>
+
+</Project>

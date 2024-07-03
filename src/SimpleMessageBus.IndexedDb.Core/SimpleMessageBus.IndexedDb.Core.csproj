@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>CloudNimble.SimpleMessageBus.IndexedDb.Core</AssemblyName>
+		<RootNamespace>CloudNimble.SimpleMessageBus.IndexedDb.Core</RootNamespace>
+		<TargetFramework>net8.0</TargetFramework>
+		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BlazorEssentials.IndexedDb" Version="[3.*-*, 4.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="[8.*, 9.0.0)" />
+	</ItemGroup>
+
+</Project>

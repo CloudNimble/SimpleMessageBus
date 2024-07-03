@@ -20,18 +20,18 @@
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)simplemessagebus.snk</AssemblyOriginatorKeyFile>
 
-		<LangVersion>11.0</LangVersion>
+		<LangVersion>12.0</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<Product>SimpleMessageBus</Product>
-		<Version>4.0.0</Version>
-		<PackageVersion>4.0.0</PackageVersion>
+		<Version>5.0.0</Version>
+		<PackageVersion>5.0.0</PackageVersion>
 
 		<Authors>CloudNimble</Authors>
 		<Company>CloudNimble, Inc.</Company>
 		<RpmPackageVendor>CloudNimble</RpmPackageVendor>
-		<Copyright>Copyright © 2017-2023 CloudNimble, Inc. All rights reserved.</Copyright>
+		<Copyright>Copyright © 2017-2025 CloudNimble, Inc. All rights reserved.</Copyright>
 		<NeutralLanguage>en-US</NeutralLanguage>
 
 		<!-- The SPDX name for the source license. See https://spdx.org/licenses/. -->
@@ -93,12 +93,16 @@
 		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)</DocumentationFile>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
 	<PropertyGroup>
 		<StandardTestTfms>net472;net6.0;net7.0;net8.0;</StandardTestTfms>
 	</PropertyGroup>
 
 	<ItemGroup Condition=" $(IsTestProject) != 'true' and  $(IsSampleProject) != 'true'">
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.*" PrivateAssets="All" />
 		<!-- RWM: The code quality on the unit tests right now is not awesome, so let's skip checking it for now. -->
 		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.*-*">
 			<PrivateAssets>all</PrivateAssets>

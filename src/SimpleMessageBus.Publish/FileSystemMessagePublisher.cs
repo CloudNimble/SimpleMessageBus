@@ -30,7 +30,7 @@ namespace CloudNimble.SimpleMessageBus.Publish
         /// <exception cref="ArgumentException">The connection string you specified was not found in the ConnectionStrings collection.</exception>
         public FileSystemMessagePublisher(IOptions<FileSystemOptions> options)
         {
-            if (options == null)
+            if (options is null)
             {
                 throw new ArgumentNullException(nameof(options), "Please register a FileSystemOptions instance with your DI container.");
             }

@@ -41,7 +41,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <param name="messageEnvelope">The <see cref="MessageEnvelope"/> instance to be processed.</param>
         public async Task Dispatch(MessageEnvelope messageEnvelope)
         {
-            if (messageEnvelope == null)
+            if (messageEnvelope is null)
             {
                 throw new ArgumentNullException(nameof(messageEnvelope));
             }

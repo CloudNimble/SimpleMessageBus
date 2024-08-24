@@ -1,16 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="5.*" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Azure.Identity" Version="1.*" />
+		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="5.*" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.*" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.*" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SimpleMessageBus.Publish\SimpleMessageBus.Publish.csproj" />
-    <ProjectReference Include="..\SimpleMessageBus.Samples.Core\SimpleMessageBus.Samples.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SimpleMessageBus.Publish\SimpleMessageBus.Publish.csproj" />
+		<ProjectReference Include="..\SimpleMessageBus.Samples.Core\SimpleMessageBus.Samples.Core.csproj" />
+	</ItemGroup>
 
 </Project>

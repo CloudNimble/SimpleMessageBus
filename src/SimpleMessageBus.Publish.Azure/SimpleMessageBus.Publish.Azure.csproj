@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<AssemblyName>CloudNimble.SimpleMessageBus.Publish.Azure</AssemblyName>
 		<RootNamespace>CloudNimble.SimpleMessageBus.Publish.Azure</RootNamespace>
-		<TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net9.0;net8.0;net6.0</TargetFrameworks>
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
 	</PropertyGroup>
 
@@ -17,7 +17,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="[4.5.0, 5.0)" />
+		<PackageReference Include="Azure.Identity" Version="1.*" />
+		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="[4.*, 5.0.0)" />
 		<PackageReference Include="Azure.Storage.Queues" Version="[12.*, 13.0.0)" />
 	</ItemGroup>
 

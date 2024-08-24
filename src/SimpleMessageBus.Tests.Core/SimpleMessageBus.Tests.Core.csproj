@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net9.0;net8.0;net6.0</TargetFrameworks>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="*" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="coverlet.collector" Version="*" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SimpleMessageBus.Core\SimpleMessageBus.Core.csproj" />
-    <ProjectReference Include="..\SimpleMessageBus.Tests.Shared\SimpleMessageBus.Tests.Shared.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SimpleMessageBus.Core\SimpleMessageBus.Core.csproj" />
+		<ProjectReference Include="..\SimpleMessageBus.Tests.Shared\SimpleMessageBus.Tests.Shared.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -7,6 +7,15 @@
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<PackageId>SimpleMessageBus.IndexedDb.Core</PackageId>
+		<Title>SimpleMessageBus Core Framework for Blazor IndexedDb</Title>
+		<Summary>
+			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
+			the logic necessary to create and manage the browser's IndexedDb SimpleMessageBus instance.
+		</Summary>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="BlazorEssentials.IndexedDb" Version="[3.*-*, 4.0.0)" />
 	</ItemGroup>

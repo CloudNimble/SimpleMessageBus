@@ -14,6 +14,12 @@
 			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package allows
 			client APIs and apps to publish domain messages onto the SimpleMessageBus queue while using minimal dependencies.
 		</Summary>
+		<PackageReleaseNotes>
+			Version 5.0:
+			- Changed the architecture to split out event stores in order to expand our capabilities. If you were using
+			Azure targets, you will need to change your Dispatch PackageReferences to use SimpleMessageBus.Publish.Azure
+			instead (the FileSystem publisher is still in this package).
+		</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>

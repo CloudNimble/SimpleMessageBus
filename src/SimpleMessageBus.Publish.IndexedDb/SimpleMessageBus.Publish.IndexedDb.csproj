@@ -8,6 +8,15 @@
 		<NoWarn>$(NoWarn);CS8002</NoWarn>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<PackageId>SimpleMessageBus.Publish.IndexedDb</PackageId>
+		<Title>SimpleMessageBus Publisher for Blazor IndexedDb</Title>
+		<Summary>
+			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
+			the logic necessary to publish Domain events to the browser's IndexedDb instance.
+		</Summary>
+	</PropertyGroup>
+
 	<ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="[9.*-*, 10.0.0)" />
 	</ItemGroup>

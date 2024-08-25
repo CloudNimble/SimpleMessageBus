@@ -14,6 +14,12 @@
 			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package is 
 			installed in your Runtime app to automatically process your Queues and call your registered IMessageHandlers.
 		</Summary>
+		<PackageReleaseNotes>
+			Version 5.0:
+			- Changed the architecture to split out event stores in order to expand our capabilities. If you were using
+			  Azure or File System targets, you will need to change your Dispatch PackageReferences to use
+			  the ones with the .Azure or .FileSystem suffix instead.
+		</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net9.0'">

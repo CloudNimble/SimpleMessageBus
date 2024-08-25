@@ -7,6 +7,16 @@
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<PackageId>SimpleMessageBus.Dispatch.IndexedDb</PackageId>
+		<Title>SimpleMessageBus Dispatcher for Blazor IndexedDb</Title>
+		<Summary>
+			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
+			the logic necessary to dispatch Domain events stored in the browser's IndexedDb instance through registered 
+			IMessageHandlers.
+		</Summary>
+	</PropertyGroup>
+
 	<ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="[9.*-*, 10.0.0)" />
 	</ItemGroup>

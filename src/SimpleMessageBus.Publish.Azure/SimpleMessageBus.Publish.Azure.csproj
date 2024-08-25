@@ -11,9 +11,14 @@
 		<PackageId>SimpleMessageBus.Publish.Azure</PackageId>
 		<Title>SimpleMessageBus Publisher for Azure</Title>
 		<Summary>
-			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package allows
-			client APIs and apps to publish domain messages onto the SimpleMessageBus queue while using minimal dependencies.
+			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
+			the logic necessary to cycle through Domain events stored in Azure and dispatch them to IMessageHandlers.
 		</Summary>
+		<PackageReleaseNotes>
+			Version 5.0:
+			- Changed the architecture to split out event stores in order to expand our capabilities. This package now
+			contains the required logic to publish events to Azure event stores.
+		</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>

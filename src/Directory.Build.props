@@ -115,4 +115,9 @@
 		<PackageReference Include="MSTest" Version="3.*" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<!--<None Include="$(MSBuildThisFileDirectory)sustainment-logo.png" Pack="true" PackagePath="\" Condition="'$(IsPrimaryProject)' == 'true'" />-->
+		<None Include="readme.md" Pack="true" PackagePath="\" Condition="$(IncludeReadmeFile) == 'true'" />
+	</ItemGroup>
+
 </Project>

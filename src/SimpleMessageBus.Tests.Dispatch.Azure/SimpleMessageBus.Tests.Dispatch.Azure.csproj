@@ -14,6 +14,9 @@
 	<ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.*-*" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.*-*" />
+		<!-- Transient package fixes to deal with .NET 9.0 RCs -->
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[9.*-*, 10.0.0)" />
+		<PackageReference Include="System.Text.Json" Version="[9.*-*, 10.0.0)" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net8.0'">

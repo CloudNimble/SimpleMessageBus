@@ -17,56 +17,9 @@ namespace Microsoft.Extensions.Hosting
         /// </summary>
         /// <param name="builder">The <see cref="IHostBuilder"/> instance to extend.</param>
         /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
-        public static IHostBuilder UseAzureStorageQueueMessagePublisher(this IHostBuilder builder)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            return builder
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.Configure<AzureStorageQueueOptions>(hostContext.Configuration.GetSection(typeof(AzureStorageQueueOptions).Name));
-                })
-                .UseAzureStorageQueueMessagePublisher(o => { });
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="builder">The <see cref="IHostBuilder"/> instance to extend.</param>
-        /// <param name="azureQueueOptions"></param>
-        /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
-        public static IHostBuilder UseAzureStorageQueueMessagePublisher(this IHostBuilder builder, Action<AzureStorageQueueOptions> azureQueueOptions)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            if (azureQueueOptions == null)
-            {
-                throw new ArgumentNullException(nameof(azureQueueOptions));
-            }
-
-            builder.ConfigureServices((hostContext, services) =>
-            {
-                services.Configure(azureQueueOptions);
-                services.AddSingleton<IMessagePublisher, AzureStorageQueueMessagePublisher>();
-            });
-
-            return builder;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="builder">The <see cref="IHostBuilder"/> instance to extend.</param>
-        /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
         public static IHostBuilder UseFileSystemMessagePublisher(this IHostBuilder builder)
         {
-            if (builder == null)
+            if (builder is null)
             {
                 throw new ArgumentNullException(nameof(builder));
             }
@@ -87,12 +40,12 @@ namespace Microsoft.Extensions.Hosting
         /// <returns>The <see cref="IHostBuilder"/> instance being configured, for fluent interaction.</returns>
         public static IHostBuilder UseFileSystemMessagePublisher(this IHostBuilder builder, Action<FileSystemOptions> fileSystemOptions)
         {
-            if (builder == null)
+            if (builder is null)
             {
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            if (fileSystemOptions == null)
+            if (fileSystemOptions is null)
             {
                 throw new ArgumentNullException(nameof(fileSystemOptions));
             }

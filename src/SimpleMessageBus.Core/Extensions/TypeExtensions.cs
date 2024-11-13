@@ -17,7 +17,7 @@ namespace System
         /// <returns>A string containing the <paramref name="type"/> name in the format "FullTypeName, SimpleAssemblyName".</returns>
         public static string SimpleAssemblyQualifiedName(this Type type)
         {
-            if (type == null)
+            if (type is null)
             {
                 throw new ArgumentNullException(nameof(type));
             }

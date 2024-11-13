@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net9.0;net8.0;net6.0</TargetFrameworks>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Breakdance.Assemblies" Version="7.*-*" />
+		<PackageReference Include="EasyAF.Core" Version="3.*-*" />
+		<PackageReference Include="coverlet.collector" Version="*" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.*-*" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.*-*" />
+		<!-- Transient package fixes to deal with .NET 9.0 RCs -->
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[9.*, 10.0.0)" />
+		<PackageReference Include="System.Text.Json" Version="[9.*, 10.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.*" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.*" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.*" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SimpleMessageBus.Core\SimpleMessageBus.Core.csproj" />
+		<ProjectReference Include="..\SimpleMessageBus.Dispatch.FileSystem\SimpleMessageBus.Dispatch.FileSystem.csproj" />
+		<ProjectReference Include="..\SimpleMessageBus.Dispatch\SimpleMessageBus.Dispatch.csproj" />
+		<ProjectReference Include="..\SimpleMessageBus.Publish\SimpleMessageBus.Publish.csproj" />
+		<ProjectReference Include="..\SimpleMessageBus.Tests.Shared\SimpleMessageBus.Tests.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>

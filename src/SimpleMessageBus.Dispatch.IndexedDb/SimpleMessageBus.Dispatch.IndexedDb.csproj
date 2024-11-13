@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>CloudNimble.SimpleMessageBus.Dispatch.IndexedDb</AssemblyName>
+		<RootNamespace>CloudNimble.SimpleMessageBus.Dispatch.IndexedDb</RootNamespace>
+		<TargetFrameworks>net9.0;net8.0;</TargetFrameworks>
+		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>SimpleMessageBus.Dispatch.IndexedDb</PackageId>
+		<Title>SimpleMessageBus Dispatcher for Blazor IndexedDb</Title>
+		<Summary>
+			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
+			the logic necessary to dispatch Domain events stored in the browser's IndexedDb instance through registered 
+			IMessageHandlers.
+		</Summary>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="[9.*, 10.0.0)" />
+		<!-- Transient package fixes to deal with .NET 9.0 RCs -->
+		<PackageReference Include="Microsoft.Extensions.Http" Version="[9.*, 10.0.0)" />
+		<PackageReference Include="System.Net.Http.Json" Version="[9.*, 10.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="[8.*, 10.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\SimpleMessageBus.Dispatch\SimpleMessageBus.Dispatch.csproj" />
+	  <ProjectReference Include="..\SimpleMessageBus.IndexedDb.Core\SimpleMessageBus.IndexedDb.Core.csproj" />
+	</ItemGroup>
+
+</Project>

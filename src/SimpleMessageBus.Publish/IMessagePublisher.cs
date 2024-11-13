@@ -15,7 +15,7 @@ namespace CloudNimble.SimpleMessageBus.Publish
         /// </summary>
         /// <param name="message">The message to add to the queue.</param>
         /// <param name="isSystemGenerated">
-        /// Specifies whether the message comes from the currently-authenticated user, or is a system-generated emssage.
+        /// Specifies whether the message comes from the currently-authenticated user, or is a system-generated message.
         /// </param>
         Task PublishAsync(IMessage message, bool isSystemGenerated = false);
 

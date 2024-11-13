@@ -10,6 +10,7 @@
 		<IsTemplateProject Condition="$(MSBuildProjectName.ToLower().Contains('.templates.'))">true</IsTemplateProject>
 		<IsToolsProject Condition="$(MSBuildProjectName.ToLower().EndsWith('.tools'))">true</IsToolsProject>
 		<IsPrimaryProject Condition=" '$(IsBenchmarkProject)' != 'true' And '$(IsTestProject)' != 'true' And '$(IsTestAssetProject)' != 'true' And '$(IsSampleProject)' != 'true' And '$(IsTemplateProject)' != 'true' And '$(IsToolsProject)' != 'true' ">true</IsPrimaryProject>
+		<IncludeReadmeFile Condition="Exists('$(MSBuildProjectDirectory)\readme.md')">true</IncludeReadmeFile>
 
 		<IncludeSource>false</IncludeSource>
 		<IncludeSymbols>true</IncludeSymbols>
@@ -20,18 +21,18 @@
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)simplemessagebus.snk</AssemblyOriginatorKeyFile>
 
-		<LangVersion>11.0</LangVersion>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<Product>SimpleMessageBus</Product>
-		<Version>4.0.0</Version>
-		<PackageVersion>4.0.0</PackageVersion>
+		<Version>5.0.0</Version>
+		<PackageVersion>5.0.0</PackageVersion>
 
 		<Authors>CloudNimble</Authors>
 		<Company>CloudNimble, Inc.</Company>
 		<RpmPackageVendor>CloudNimble</RpmPackageVendor>
-		<Copyright>Copyright © 2017-2023 CloudNimble, Inc. All rights reserved.</Copyright>
+		<Copyright>Copyright © 2017-2025 CloudNimble, Inc. All rights reserved.</Copyright>
 		<NeutralLanguage>en-US</NeutralLanguage>
 
 		<!-- The SPDX name for the source license. See https://spdx.org/licenses/. -->
@@ -93,22 +94,28 @@
 		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)</DocumentationFile>
 	</PropertyGroup>
 
-	<PropertyGroup>
-		<StandardTestTfms>net472;net6.0;net7.0;net8.0;</StandardTestTfms>
-	</PropertyGroup>
-
-	<ItemGroup Condition=" $(IsTestProject) != 'true' and  $(IsSampleProject) != 'true'">
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*" PrivateAssets="All" />
-		<!-- RWM: The code quality on the unit tests right now is not awesome, so let's skip checking it for now. -->
-		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.*-*">
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
+	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" $(IsTestProject) == 'true'  and  $(IsSampleProject) != 'true'">
+	<PropertyGroup>
+		<StandardTestTfms>net472;net9.0;net8.0;net6.0;</StandardTestTfms>
+	</PropertyGroup>
+
+	<ItemGroup Condition=" $(IsTestProject) != 'true' and $(IsSampleProject) != 'true' and $(IsTemplateProject) != 'true' ">
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.*" PrivateAssets="All" />
+		<!--<InternalsVisibleTo Include="$(AssemblyName.Replace('CloudNimble.SimpleMessageBus', 'CloudNimble.SimpleMessageBus.Tests')), $(StrongNamePublicKey)" />-->
+	</ItemGroup>
+
+	<ItemGroup Condition=" $(IsTestProject) == 'true' and $(IsSampleProject) != 'true' ">
 		<PackageReference Include="FluentAssertions" Version="6.*" PrivateAssets="All" />
 		<PackageReference Include="FluentAssertions.Analyzers" Version="0.*" PrivateAssets="All" />
 		<PackageReference Include="MSTest" Version="3.*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!--<None Include="$(MSBuildThisFileDirectory)simplemessagebus-logo.png" Pack="true" PackagePath="\" Condition="'$(IsTestProject)' != 'true'" />-->
+		<None Include="readme.md" Pack="true" PackagePath="\" Condition="$(IncludeReadmeFile) == 'true'" />
 	</ItemGroup>
 
 </Project>

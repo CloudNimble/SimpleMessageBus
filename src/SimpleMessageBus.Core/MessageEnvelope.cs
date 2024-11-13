@@ -76,7 +76,7 @@ namespace CloudNimble.SimpleMessageBus.Core
         /// <param name="message">The <see cref="IMessage"/> instance that will be wrapped in a <see cref="MessageEnvelope"/> to be posted to the SimpleMessageBus.</param>
         public MessageEnvelope(IMessage message)
         {
-            if (message == null)
+            if (message is null)
             {
                 throw new ArgumentNullException(nameof(message));
             }

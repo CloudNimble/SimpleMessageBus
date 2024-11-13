@@ -6,19 +6,22 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.39" />
+		<PackageReference Include="System.Drawing.Common" Version="4.*" />
+		<PackageReference Include="Microsoft.Azure.WebJobs" Version="3.*" />
 		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="5.*" />
 		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="5.*" />
 		<PackageReference Include="Microsoft.Azure.WebJobs.Host.Storage" Version="5.*" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.*-*" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.*-*" />
-		<PackageReference Include="Microsoft.Azure.WebJobs.Logging.ApplicationInsights" Version="3.0.35" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.*" />
+		<PackageReference Include="Microsoft.Azure.WebJobs.Logging.ApplicationInsights" Version="3.*" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\SimpleMessageBus.Core\SimpleMessageBus.Core.csproj" />
+		<ProjectReference Include="..\SimpleMessageBus.Dispatch.Azure\SimpleMessageBus.Dispatch.Azure.csproj" />
 		<ProjectReference Include="..\SimpleMessageBus.Dispatch\SimpleMessageBus.Dispatch.csproj" />
 		<ProjectReference Include="..\SimpleMessageBus.Hosting\SimpleMessageBus.Hosting.csproj" />
+		<ProjectReference Include="..\SimpleMessageBus.Publish.Azure\SimpleMessageBus.Publish.Azure.csproj" />
 		<ProjectReference Include="..\SimpleMessageBus.Samples.Core\SimpleMessageBus.Samples.Core.csproj" />
 		<ProjectReference Include="..\SimpleMessageBus.Samples.ExternalTriggers\SimpleMessageBus.Samples.ExternalTriggers.csproj" />
 	</ItemGroup>

@@ -10,6 +10,7 @@
 		<IsTemplateProject Condition="$(MSBuildProjectName.ToLower().Contains('.templates.'))">true</IsTemplateProject>
 		<IsToolsProject Condition="$(MSBuildProjectName.ToLower().EndsWith('.tools'))">true</IsToolsProject>
 		<IsPrimaryProject Condition=" '$(IsBenchmarkProject)' != 'true' And '$(IsTestProject)' != 'true' And '$(IsTestAssetProject)' != 'true' And '$(IsSampleProject)' != 'true' And '$(IsTemplateProject)' != 'true' And '$(IsToolsProject)' != 'true' ">true</IsPrimaryProject>
+		<IncludeReadmeFile Condition="Exists('$(MSBuildProjectDirectory)\readme.md')">true</IncludeReadmeFile>
 
 		<IncludeSource>false</IncludeSource>
 		<IncludeSymbols>true</IncludeSymbols>
@@ -20,7 +21,7 @@
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)simplemessagebus.snk</AssemblyOriginatorKeyFile>
 
-		<LangVersion>12.0</LangVersion>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -101,22 +102,19 @@
 		<StandardTestTfms>net472;net9.0;net8.0;net6.0;</StandardTestTfms>
 	</PropertyGroup>
 
-	<ItemGroup Condition=" $(IsTestProject) != 'true' and  $(IsSampleProject) != 'true'">
+	<ItemGroup Condition=" $(IsTestProject) != 'true' and $(IsSampleProject) != 'true' and $(IsTemplateProject) != 'true' ">
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.*" PrivateAssets="All" />
-		<!-- RWM: The code quality on the unit tests right now is not awesome, so let's skip checking it for now. -->
-		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.*-*">
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
+		<!--<InternalsVisibleTo Include="$(AssemblyName.Replace('CloudNimble.SimpleMessageBus', 'CloudNimble.SimpleMessageBus.Tests')), $(StrongNamePublicKey)" />-->
 	</ItemGroup>
 
-	<ItemGroup Condition=" $(IsTestProject) == 'true'  and  $(IsSampleProject) != 'true'">
+	<ItemGroup Condition=" $(IsTestProject) == 'true' and $(IsSampleProject) != 'true' ">
 		<PackageReference Include="FluentAssertions" Version="6.*" PrivateAssets="All" />
 		<PackageReference Include="FluentAssertions.Analyzers" Version="0.*" PrivateAssets="All" />
 		<PackageReference Include="MSTest" Version="3.*" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<!--<None Include="$(MSBuildThisFileDirectory)sustainment-logo.png" Pack="true" PackagePath="\" Condition="'$(IsPrimaryProject)' == 'true'" />-->
+		<!--<None Include="$(MSBuildThisFileDirectory)simplemessagebus-logo.png" Pack="true" PackagePath="\" Condition="'$(IsTestProject)' != 'true'" />-->
 		<None Include="readme.md" Pack="true" PackagePath="\" Condition="$(IncludeReadmeFile) == 'true'" />
 	</ItemGroup>
 

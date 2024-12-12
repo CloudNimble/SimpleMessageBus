@@ -1,6 +1,11 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+using CloudNimble.SimpleMessageBus.Core;
+using Microsoft.Azure.WebJobs.Host.Executors;
+using Microsoft.Azure.WebJobs.Host.Listeners;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 using System.Linq;
@@ -9,13 +14,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Timers;
-using CloudNimble.SimpleMessageBus.Core;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Files;
-using Microsoft.Azure.WebJobs.Host.Executors;
-using Microsoft.Azure.WebJobs.Host.Listeners;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 {
@@ -26,7 +24,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         private readonly SimpleMessageBusFileTriggerAttribute _attribute;
         private readonly ITriggeredFunctionExecutor _triggerExecutor;
         private readonly CancellationTokenSource _cancellationTokenSource;
-        private readonly IOptions<FileSystemOptions> _options;
+        private readonly FileSystemOptions _options;
         private readonly string _watchPath;
         private readonly ILogger _logger;
         private readonly ISimpleMessageBusFileProcessorFactory _fileProcessorFactory;
@@ -39,7 +37,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 
         public SimpleMessageBusFileListener(IOptions<FileSystemOptions> options, SimpleMessageBusFileTriggerAttribute attribute, ITriggeredFunctionExecutor triggerExecutor, ILogger logger, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
         {
-            _options = options ?? throw new ArgumentNullException(nameof(options));
+            _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
             _attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
             _triggerExecutor = triggerExecutor ?? throw new ArgumentNullException(nameof(triggerExecutor));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -47,16 +45,16 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 
             _cancellationTokenSource = new CancellationTokenSource();
 
-            if (string.IsNullOrEmpty(_options.Value.RootFolder) || !Directory.Exists(_options.Value.RootFolder))
+            if (string.IsNullOrEmpty(_options.RootFolder) || !Directory.Exists(_options.RootFolder))
             {
-                throw new InvalidOperationException(string.Format("Path '{0}' is invalid. FilesConfiguration.RootPath must be set to a valid directory location.", _options.Value.RootFolder));
+                throw new InvalidOperationException(string.Format("Path '{0}' is invalid. FilesConfiguration.RootPath must be set to a valid directory location.", _options.RootFolder));
             }
 
             //RWM: Use reflection because _attribute.GetRootPath() is internal.
             var dynMethod = _attribute.GetType().GetMethod("GetRootPath", BindingFlags.NonPublic | BindingFlags.Instance);
             var attributePath = dynMethod.Invoke(_attribute, null);
 
-            _watchPath = Path.Combine(_options.Value.RootFolder, attributePath.ToString());
+            _watchPath = Path.Combine(_options.RootFolder, attributePath.ToString());
         }
 
         // for testing
@@ -79,7 +77,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 
             CreateFileWatcher();
 
-            var context = new SimpleMessageBusFileProcessorFactoryContext(_options.Value, _attribute, _triggerExecutor, _logger);
+            var context = new SimpleMessageBusFileProcessorFactoryContext(_options, _attribute, _triggerExecutor, _logger);
             _processor = _fileProcessorFactory.CreateFileProcessor(context);
 
             var options = new ExecutionDataflowBlockOptions
@@ -105,7 +103,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
             _cleanupTimer.Elapsed += OnCleanupTimer;
             _cleanupTimer.Start();
 
-            await Task.FromResult<bool>(true);
+            await Task.FromResult(true);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -248,9 +246,9 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         {
 
             // RWM: Account for issues with virus scanners locking the file as it is being manipulated.
-            if (_options.Value.VirusScanDelayInSeconds > 0)
+            if (_options.VirusScanDelayInSeconds > 0)
             {
-                Thread.Sleep(_options.Value.VirusScanDelayInSeconds * 1000);
+                Thread.Sleep(_options.VirusScanDelayInSeconds * 1000);
             }
 
             await _processor.ProcessFileAsync(e, _cancellationTokenSource.Token);
@@ -306,5 +304,6 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
                 throw new ObjectDisposedException(null);
             }
         }
+
     }
 }

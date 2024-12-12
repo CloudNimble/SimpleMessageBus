@@ -40,9 +40,10 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// </param>
         public FileSystemQueueProcessor(IOptions<FileSystemOptions> options, IMessageDispatcher dispatcher, IServiceProvider serviceProvider)
         {
-            if (options is null)
+            if (options?.Value is null)
             {
-                throw new ArgumentNullException(nameof(options), "Please register a FileSystemOptions instance with your DI container.");
+                throw new ArgumentNullException(nameof(options), "Please call HostBuilder.AddFileSystemQueueProcessor() in your application startup, " +
+                    "and check that your appsettings.json file is set to be copied to the Output directory.");
             }
             if (string.IsNullOrWhiteSpace(options.Value.RootFolder))
             {
@@ -52,6 +53,11 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
             _options = options.Value;
             _dispatcher = dispatcher;
             _serviceProvider = serviceProvider;
+
+            if (!Directory.Exists(_options.QueueFolderPath))
+            {
+                Directory.CreateDirectory(_options.QueueFolderPath);
+            }
 
             if (!Directory.Exists(_options.CompletedFolderPath))
             {
@@ -113,10 +119,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
             catch (Exception ex)
 #pragma warning restore CA1031 // Do not catch general exception types
             {
-                if (logger is not null)
-                {
-                    logger.LogCritical(ex, "An error occurred dispatching the MessageEnvelope with ID {0}", messageEnvelope?.Id);
-                }
+                logger?.LogCritical(ex, "An error occurred dispatching the MessageEnvelope with ID {0}", messageEnvelope?.Id);
                 File.WriteAllText(Path.Combine(_options.ErrorFolderPath, $"{messageEnvelope.Id}.json"), messageEnvelopeJson);
             }
         }

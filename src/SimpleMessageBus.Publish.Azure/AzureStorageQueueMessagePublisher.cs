@@ -79,11 +79,7 @@ namespace CloudNimble.SimpleMessageBus.Publish
             }
 
             //RWM: Wrap the entity in a MessageEnvelope.
-            var envelope = new MessageEnvelope(message)
-            {
-                Id = Guid.NewGuid(),
-                DatePublished = DateTimeOffset.UtcNow
-            };
+            var envelope = new MessageEnvelope(message);
 
             //RWM: Push it onto the queue.
             await Queue.SendMessageAsync(envelope.ToString()).ConfigureAwait(false);

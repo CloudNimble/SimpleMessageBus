@@ -64,13 +64,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         /// Gets the file extension that will be used for the status files
         /// that are created for processed files.
         /// </summary>
-        public virtual string StatusFileExtension
-        {
-            get
-            {
-                return "status";
-            }
-        }
+        public virtual string StatusFileExtension => "status";
 
         /// <summary>
         /// Gets the maximum degree of parallelism that will be used
@@ -80,38 +74,20 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         /// Files are added to an internal processing queue as file events
         /// are detected, and they're processed in parallel based on this setting.
         /// </remarks>
-        public virtual int MaxDegreeOfParallelism
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public virtual int MaxDegreeOfParallelism => 5;
 
         /// <summary>
         /// Gets the bounds on the maximum number of files that can be queued
         /// up for processing at one time. When set to -1, the work queue is
         /// unbounded.
         /// </summary>
-        public virtual int MaxQueueSize
-        {
-            get
-            {
-                return -1;
-            }
-        }
+        public virtual int MaxQueueSize => -1;
 
         /// <summary>
         /// Gets the maximum number of times file processing will
         /// be attempted for a file.
         /// </summary>
-        public virtual int MaxProcessCount
-        {
-            get
-            {
-                return 3;
-            }
-        }
+        public virtual int MaxProcessCount => 3;
 
         /// <summary>
         /// Gets the current role instance ID. In Azure WebApps, this will be the
@@ -131,7 +107,11 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
                     }
                     else
                     {
+#if NET6_0_OR_GREATER
+                        _instanceId = Environment.ProcessId.ToString();
+#else
                         _instanceId = Process.GetCurrentProcess().Id.ToString();
+#endif
                     }
                 }
                 return _instanceId;
@@ -174,7 +154,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
                         if (result is not null)
                         {
                             var delay = GetRetryInterval(result, processCount);
-                            await Task.Delay(delay);
+                            await Task.Delay(delay, cancellationToken);
                         }
 
                         // write an entry indicating the file is being processed
@@ -265,7 +245,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
                 return true;
             }
 
-            StatusFileEntry statusEntry = null;
+            StatusFileEntry statusEntry;
             try
             {
                 GetLastStatus(statusFilePath, out statusEntry);
@@ -339,6 +319,13 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
             }
         }
 
+        /// <summary>
+        /// Attempts to acquire a lock on the status file for the specified file path.
+        /// </summary>
+        /// <param name="filePath">The path of the file to lock.</param>
+        /// <param name="changeType">The type of change detected on the file.</param>
+        /// <param name="statusEntry">The status entry of the file.</param>
+        /// <returns>A StreamWriter if the lock is acquired, null otherwise.</returns>
         internal StreamWriter AcquireStatusFileLock(string filePath, WatcherChangeTypes changeType, out StatusFileEntry statusEntry)
         {
             Stream stream = null;
@@ -385,13 +372,16 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
             }
             finally
             {
-                if (stream is not null)
-                {
-                    stream.Dispose();
-                }
+                stream?.Dispose();
             }
         }
 
+        /// <summary>
+        /// Gets the last status entry from the specified status file path.
+        /// </summary>
+        /// <param name="statusFilePath">The path of the status file.</param>
+        /// <param name="statusEntry">The last status entry of the file.</param>
+        /// <returns>True if the status entry is retrieved, false otherwise.</returns>
         internal bool GetLastStatus(string statusFilePath, out StatusFileEntry statusEntry)
         {
             statusEntry = null;
@@ -409,6 +399,11 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
             return statusEntry is not null;
         }
 
+        /// <summary>
+        /// Gets the last status entry from the specified status file stream.
+        /// </summary>
+        /// <param name="statusFileStream">The stream of the status file.</param>
+        /// <returns>The last status entry of the file.</returns>
         internal StatusFileEntry GetLastStatus(Stream statusFileStream)
         {
             StatusFileEntry statusEntry = null;
@@ -416,7 +411,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
             using (var reader = new StreamReader(statusFileStream, Encoding.UTF8, false, 1024, true))
             {
                 string text = reader.ReadToEnd();
-                string[] fileLines = text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                string[] fileLines = text.Split([Environment.NewLine], StringSplitOptions.RemoveEmptyEntries);
                 string lastLine = fileLines.LastOrDefault();
                 if (!string.IsNullOrEmpty(lastLine))
                 {
@@ -430,16 +425,28 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
             return statusEntry;
         }
 
-        internal string GetStatusFile(string file)
-        {
-            return file + "." + StatusFileExtension;
-        }
+        /// <summary>
+        /// Gets the status file path for the specified file.
+        /// </summary>
+        /// <param name="file">The file path.</param>
+        /// <returns>The status file path.</returns>
+        internal string GetStatusFile(string file) => $"{file}.{StatusFileExtension}";
 
+        /// <summary>
+        /// Determines whether the specified file is a status file.
+        /// </summary>
+        /// <param name="file">The file path.</param>
+        /// <returns>True if the file is a status file, false otherwise.</returns>
         internal bool IsStatusFile(string file)
         {
             return string.Compare(Path.GetExtension(file).Trim('.'), StatusFileExtension, StringComparison.OrdinalIgnoreCase) == 0;
         }
 
+        /// <summary>
+        /// Attempts to delete the specified file.
+        /// </summary>
+        /// <param name="filePath">The path of the file to delete.</param>
+        /// <returns>True if the file is deleted, false otherwise.</returns>
         private static bool TryDelete(string filePath)
         {
             try
@@ -452,5 +459,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
                 return false;
             }
         }
+
     }
+
 }

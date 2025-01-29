@@ -62,11 +62,7 @@ namespace CloudNimble.SimpleMessageBus.Publish
             await Task.Run(() =>
             {
                 //RWM: Wrap the entity in a MessageEnvelope.
-                var envelope = new MessageEnvelope(message)
-                {
-                    Id = Guid.NewGuid(),
-                    DatePublished = DateTimeOffset.UtcNow
-                };
+                var envelope = new MessageEnvelope(message);
 
                 var payload = envelope.ToString();
                 var filePath = Path.Combine(_options.QueueFolderPath, $"{envelope.Id}.json");

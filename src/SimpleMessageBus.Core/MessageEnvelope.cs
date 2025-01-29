@@ -81,6 +81,8 @@ namespace CloudNimble.SimpleMessageBus.Core
                 throw new ArgumentNullException(nameof(message));
             }
 
+            Id = Guid.NewGuid();
+            DatePublished = DateTimeOffset.UtcNow;
             MessageType = message.GetType().SimpleAssemblyQualifiedName();
             MessageContent = JsonSerializer.Serialize(message, message.GetType());
         }

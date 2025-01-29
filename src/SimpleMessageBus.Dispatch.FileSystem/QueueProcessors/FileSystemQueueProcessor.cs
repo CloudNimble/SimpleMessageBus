@@ -21,7 +21,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
 
         private readonly FileSystemOptions _options;
         private readonly IMessageDispatcher _dispatcher;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
         #endregion
 
@@ -34,11 +34,11 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// The injected <see cref="IOptions{FileSystemOptions}"/> specifying the options required to leverage the local file system as the SimpleMessageBus backing queue.
         /// </param>
         /// <param name="dispatcher"></param>
-        /// <param name="serviceProvider">
+        /// <param name="serviceScopeFactory">
         /// The Dependency Injection container's <see cref="IServiceProvider"/> instance, so that a "per-request" scope can be created that gives each <see cref="MessageEnvelope"/>
         /// its own set of isolated dependencies.
         /// </param>
-        public FileSystemQueueProcessor(IOptions<FileSystemOptions> options, IMessageDispatcher dispatcher, IServiceProvider serviceProvider)
+        public FileSystemQueueProcessor(IOptions<FileSystemOptions> options, IMessageDispatcher dispatcher, IServiceScopeFactory serviceScopeFactory)
         {
             if (options?.Value is null)
             {
@@ -52,7 +52,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
 
             _options = options.Value;
             _dispatcher = dispatcher;
-            _serviceProvider = serviceProvider;
+            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
             if (!Directory.Exists(_options.QueueFolderPath))
             {
@@ -82,7 +82,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <param name="logger"></param>
         public async Task ProcessQueue(
 #pragma warning disable IDE0060 // Remove unused parameter
-            [SimpleMessageBusFileTrigger(@"queue\{name}", "*.json", WatcherChangeTypes.Created | WatcherChangeTypes.Renamed, true)] string messageEnvelopeJson, FileSystemEventArgs fileTrigger, ILogger logger)
+            [SimpleMessageBusFileTrigger(@"queue/{name}", "*.json", WatcherChangeTypes.Created | WatcherChangeTypes.Renamed, true)] string messageEnvelopeJson, FileSystemEventArgs fileTrigger, ILogger logger)
 #pragma warning restore IDE0060 // Remove unused parameter
                                //[File(@"%completed%\{name}", FileAccess.Write)] out string converted,
                                //[File(@"%error%\{name}", FileAccess.Write)] out string error)
@@ -105,7 +105,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
             MessageEnvelope messageEnvelope = null;
             try
             {
-                using var lifetimeScope = _serviceProvider.CreateScope();
+                using var lifetimeScope = _serviceScopeFactory.CreateScope();
                 messageEnvelope = JsonConvert.DeserializeObject<MessageEnvelope>(messageEnvelopeJson);
                 //messageEnvelope.AttemptsCount = dequeueCount;
                 messageEnvelope.ProcessLog = logger;

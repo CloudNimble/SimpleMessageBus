@@ -17,6 +17,8 @@ using System.Timers;
 
 namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 {
+
+
     internal sealed class SimpleMessageBusFileListener : IListener
     {
         private readonly TimeSpan _changeEventDebounceInterval = TimeSpan.FromSeconds(1);

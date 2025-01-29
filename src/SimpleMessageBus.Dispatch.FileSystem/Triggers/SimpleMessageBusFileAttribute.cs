@@ -7,6 +7,7 @@ using Microsoft.Azure.WebJobs.Description;
 
 namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 {
+
     /// <summary>
     /// Attribute used to bind a parameter to a file.
     /// </summary>
@@ -91,5 +92,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         /// Gets the <see cref="FileMode"/> to use.
         /// </summary>
         public FileMode Mode { get; private set; }
+
     }
+
 }

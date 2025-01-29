@@ -8,11 +8,13 @@ using Newtonsoft.Json.Converters;
 
 namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 {
+
     /// <summary>
     /// Represents a single status entry in the status file.
     /// </summary>
     internal class StatusFileEntry
     {
+
         /// <summary>
         /// Gets or sets the current <see cref="ProcessingState"/>
         /// </summary>
@@ -46,5 +48,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         /// for this entry has been attempted.
         /// </summary>
         public int ProcessCount { get; set; }
+
     }
+
 }

@@ -7,6 +7,7 @@ using Microsoft.Azure.WebJobs.Description;
 
 namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 {
+
     /// <summary>
     /// Attribute used to mark a job function that should be invoked based
     /// on file events.
@@ -79,11 +80,13 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         {
             string path = Path.TrimEnd(System.IO.Path.DirectorySeparatorChar);
             int idx = path.LastIndexOf(System.IO.Path.DirectorySeparatorChar);
-            if (idx > 0 && path.IndexOfAny(new char[] { '{', '}' }, idx) > 0)
+            if (idx > 0 && path.IndexOfAny(['{', '}'], idx) > 0)
             {
                 return System.IO.Path.GetDirectoryName(path);
             }
             return Path;
         }
+
     }
+
 }

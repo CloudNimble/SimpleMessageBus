@@ -1,18 +1,18 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using System;
-using System.IO;
 using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Description;
-using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Host.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
+using System.IO;
 
 namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 {
+
     [Extension("SimpleMessageBusFiles")]
     internal class SimpleMessageBusFilesExtensionConfigProvider : IExtensionConfigProvider, IConverter<SimpleMessageBusFileAttribute, Stream>
     {
@@ -71,4 +71,5 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
             rule2.AddConverter<FileSystemEventArgs, Stream>(args => File.OpenRead(args.FullPath));
         }
     }
+
 }

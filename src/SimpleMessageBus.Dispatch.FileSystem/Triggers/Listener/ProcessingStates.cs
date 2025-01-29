@@ -3,6 +3,7 @@
 
 namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 {
+
     /// <summary>
     /// Enumeration of the possible processing states a
     /// file can be in.
@@ -24,4 +25,5 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         /// </summary>
         Failed
     }
+
 }

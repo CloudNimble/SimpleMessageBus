@@ -20,7 +20,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.IndexedDb
 
         private readonly SimpleMessageBusDb _database;
         private readonly IMessageDispatcher _dispatcher;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly BlockingCollection<MessageEnvelope> _queue;
         private bool disposedValue;
 
@@ -33,12 +33,12 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.IndexedDb
         /// </summary>
         /// <param name="database"></param>
         /// <param name="dispatcher"></param>
-        /// <param name="serviceProvider"></param>
-        public IndexedDbQueueProcessor(SimpleMessageBusDb database, IMessageDispatcher dispatcher, IServiceProvider serviceProvider)
+        /// <param name="serviceScopeFactory"></param>
+        public IndexedDbQueueProcessor(SimpleMessageBusDb database, IMessageDispatcher dispatcher, IServiceScopeFactory serviceScopeFactory)
         {
             _database = database;
             _dispatcher = dispatcher;
-            _serviceProvider = serviceProvider;
+            _serviceScopeFactory = serviceScopeFactory;
             _queue = [];
         }
 
@@ -98,7 +98,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.IndexedDb
         {
             try
             {
-                using var lifetimeScope = _serviceProvider.CreateScope();
+                using var lifetimeScope = _serviceScopeFactory.CreateScope();
                 messageEnvelope.AttemptsCount++;
                 messageEnvelope.ProcessLog = logger;
                 messageEnvelope.ServiceScope = lifetimeScope;

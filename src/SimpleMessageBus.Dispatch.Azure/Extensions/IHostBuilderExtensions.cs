@@ -65,9 +65,6 @@ namespace Microsoft.Extensions.Hosting
 
             .ConfigureServices((hostContext, services) =>
             {
-                //RWM: This is a total hack, but I can't figure out why there are more than 1 in here, so we're hacking for now.
-                //hostContext.FixWebJobsRegistration();
-
                 services.Configure(azureQueueOptions);
                 services.AddSingleton<IConfigureOptions<QueuesOptions>, QueuesOptionsConfiguration>();
                 services.AddSingleton<INameResolver, AzureStorageQueueNameResolver>();

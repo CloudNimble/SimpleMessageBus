@@ -18,7 +18,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         #region Private Members
 
         private readonly IMessageDispatcher _dispatcher;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
         #endregion
 
@@ -28,11 +28,12 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// 
         /// </summary>
         /// <param name="dispatcher"></param>
-        /// <param name="serviceProvider"></param>
-        public AzureStorageQueueProcessor(IMessageDispatcher dispatcher, IServiceProvider serviceProvider)
+        /// <param name="serviceScopeFactory"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public AzureStorageQueueProcessor(IMessageDispatcher dispatcher, IServiceScopeFactory serviceScopeFactory)
         {
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher), "Please call \".UseOrderedMessageDispatcher()\" or \".UseParallelMessageDispatcher()\" in your Dependency Injection service registration.");
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(dispatcher), "The DependencyInjection IServiceProvider could not be found. Please ensure you've properly registered DI.");
+            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(dispatcher), "The DependencyInjection IServiceProvider could not be found. Please ensure you've properly registered DI.");
         }
 
         #endregion
@@ -48,7 +49,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         [return: Queue(AzureStorageQueueConstants.CompletedQueueAttribute)]
         public async Task<QueueMessage> ProcessQueue([QueueTrigger(AzureStorageQueueConstants.QueueTriggerAttribute)] QueueMessage queueMessage, ILogger logger)
         {
-            using var lifetimeScope = _serviceProvider.CreateScope();
+            using var lifetimeScope = _serviceScopeFactory.CreateScope();
             var message = queueMessage.Body.ToObjectFromJson<MessageEnvelope>();
             message.AttemptsCount = queueMessage.DequeueCount;
             message.ProcessLog = logger;

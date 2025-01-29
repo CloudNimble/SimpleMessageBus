@@ -3,13 +3,11 @@
 
 using CloudNimble.SimpleMessageBus.Core;
 using Microsoft.Azure.WebJobs.Extensions.Bindings;
-using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Host.Triggers;
 using Microsoft.Azure.WebJobs.Logging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,12 +16,30 @@ using System.Threading.Tasks;
 
 namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 {
+
+    /// <summary>
+    /// Provides binding for the SimpleMessageBusFileTriggerAttribute.
+    /// </summary>
     internal class SimpleMessageBusFileTriggerAttributeBindingProvider : ITriggerBindingProvider
     {
+
+        #region Private Members
+
         private readonly IOptions<FileSystemOptions> _options;
         private readonly ILogger _logger;
         private readonly ISimpleMessageBusFileProcessorFactory _fileProcessorFactory;
 
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleMessageBusFileTriggerAttributeBindingProvider"/> class.
+        /// </summary>
+        /// <param name="options">The file system options.</param>
+        /// <param name="loggerFactory">The logger factory.</param>
+        /// <param name="fileProcessorFactory">The file processor factory.</param>
+        /// <exception cref="ArgumentNullException">Thrown when options or fileProcessorFactory is null.</exception>
         public SimpleMessageBusFileTriggerAttributeBindingProvider(IOptions<FileSystemOptions> options, ILoggerFactory loggerFactory, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
@@ -31,7 +47,18 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
             _fileProcessorFactory = fileProcessorFactory ?? throw new ArgumentNullException(nameof(fileProcessorFactory));
         }
 
+        #endregion
+
+        #region Public Methods
+
         /// <inheritdoc/>
+        /// <summary>
+        /// Attempts to create a trigger binding.
+        /// </summary>
+        /// <param name="context">The trigger binding provider context.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the trigger binding if successful; otherwise, null.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when context is null.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the parameter type is not supported.</exception>
         public Task<ITriggerBinding> TryCreateAsync(TriggerBindingProviderContext context)
         {
             if (context is null)
@@ -47,8 +74,9 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
             }
 
             // next, verify that the type is one of the types we support
-            IEnumerable<Type> types = StreamValueBinder.GetSupportedTypes(FileAccess.Read)
-                .Union(new Type[] { typeof(FileStream), typeof(FileSystemEventArgs), typeof(FileInfo) });
+            var types = StreamValueBinder.GetSupportedTypes(FileAccess.Read)
+                .Union([typeof(FileStream), typeof(FileSystemEventArgs), typeof(FileInfo)]);
+
             if (!ValueBinder.MatchParameterType(context.Parameter, types))
             {
                 throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
@@ -57,5 +85,9 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 
             return Task.FromResult<ITriggerBinding>(new SimpleMessageBusFileTriggerBinding(_options, parameter, _logger, _fileProcessorFactory));
         }
+
+        #endregion
+
     }
+
 }

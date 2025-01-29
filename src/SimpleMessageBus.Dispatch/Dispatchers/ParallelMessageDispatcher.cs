@@ -46,7 +46,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
             {
                 Parallel.ForEach(_messageHandlers.Where(c => c.GetHandledMessageTypes().Any(d => d.SimpleAssemblyQualifiedName() == messageEnvelope.MessageType)), handler =>
                 {
-                    handler.OnNextAsync(messageEnvelope);
+                    _ = handler.OnNextAsync(messageEnvelope);
                 });
             }).ConfigureAwait(false);
         }

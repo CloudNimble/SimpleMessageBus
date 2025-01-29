@@ -41,11 +41,7 @@ namespace CloudNimble.SimpleMessageBus.Publish.IndexedDb
         /// <returns>A <see cref="Task"/> reference for the asynchronous function.</returns>
         public async Task PublishAsync(IMessage message, bool isSystemGenerated = false)
         {
-            var envelope = new MessageEnvelope
-            {
-                Id = Guid.NewGuid(),
-                DatePublished = DateTime.UtcNow,
-            };
+            var envelope = new MessageEnvelope(message);
             await _database.Queue.AddAsync(envelope);
         }
 

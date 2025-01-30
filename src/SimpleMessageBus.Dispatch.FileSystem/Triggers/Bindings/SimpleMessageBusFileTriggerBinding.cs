@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using CloudNimble.SimpleMessageBus.Core;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Azure.WebJobs.Host.Listeners;
 using Microsoft.Azure.WebJobs.Host.Protocols;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 {
+
     internal class SimpleMessageBusFileTriggerBinding : ITriggerBinding
     {
         private readonly ParameterInfo _parameter;
@@ -25,34 +27,27 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         private readonly BindingDataProvider _bindingDataProvider;
         private readonly ISimpleMessageBusFileProcessorFactory _fileProcessorFactory;
         private readonly ILogger _logger;
+        private readonly INameResolver _nameResolver;
 
-        public SimpleMessageBusFileTriggerBinding(IOptions<FileSystemOptions> options, ParameterInfo parameter, ILogger logger, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
+        public SimpleMessageBusFileTriggerBinding(IOptions<FileSystemOptions> options, ParameterInfo parameter, ILogger logger, ISimpleMessageBusFileProcessorFactory fileProcessorFactory, INameResolver nameResolver)
         {
             _options = options;
             _parameter = parameter;
             _logger = logger;
             _fileProcessorFactory = fileProcessorFactory;
+            _nameResolver = nameResolver;
             _attribute = parameter.GetCustomAttribute<SimpleMessageBusFileTriggerAttribute>(inherit: false);
             _bindingDataProvider = BindingDataProvider.FromTemplate(_attribute.Path);
             _bindingContract = CreateBindingContract();
         }
 
-        public IReadOnlyDictionary<string, Type> BindingDataContract
-        {
-            get
-            {
-                return _bindingContract;
-            }
-        }
+        public IReadOnlyDictionary<string, Type> BindingDataContract => _bindingContract;
 
-        public Type TriggerValueType
-        {
-            get { return typeof(FileSystemEventArgs); }
-        }
+        public Type TriggerValueType => typeof(FileSystemEventArgs);
 
         public Task<ITriggerData> BindAsync(object value, ValueBindingContext context)
         {
-            if (!(value is FileSystemEventArgs fileEvent))
+            if (value is not FileSystemEventArgs fileEvent)
             {
                 string filePath = value as string;
                 fileEvent = GetFileArgsFromString(filePath);
@@ -64,7 +59,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         }
 
         internal static FileSystemEventArgs GetFileArgsFromString(string filePath)
-        {            
+        {
             if (!string.IsNullOrEmpty(filePath))
             {
                 // TODO: This only supports Created events. For Dashboard invocation, how can we
@@ -84,13 +79,13 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
             {
                 throw new ArgumentNullException(nameof(context));
             }
-            return Task.FromResult<IListener>(new SimpleMessageBusFileListener(_options, _attribute, context.Executor, _logger, _fileProcessorFactory));
+            return Task.FromResult<IListener>(new SimpleMessageBusFileListener(_options, _attribute, context.Executor, _logger, _fileProcessorFactory, _nameResolver));
         }
 
         public ParameterDescriptor ToParameterDescriptor()
         {
             // These path values are validated later during startup.
-            string triggerPath = Path.Combine(_options.Value.RootFolder ?? string.Empty, _attribute.Path ?? string.Empty);
+            string triggerPath = Path.Combine(_options.Value.RootFolder ?? string.Empty, _nameResolver.Resolve(_attribute.Path) ?? string.Empty);
 
             return new SimpleMessageBusFileTriggerParameterDescriptor
             {
@@ -98,7 +93,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
                 DisplayHints = new ParameterDisplayHints
                 {
                     Prompt = "Enter a file path",
-                    Description = string.Format("File event occurred on path '{0}'", _attribute.GetRootPath()),
+                    Description = string.Format("File event occurred on path '{0}'", _attribute.RootPath),
                     DefaultValue = triggerPath
                 }
             };
@@ -107,9 +102,9 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         private IReadOnlyDictionary<string, Type> CreateBindingContract()
         {
             var contract = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase)
-            {
-                { "FileTrigger", typeof(FileSystemEventArgs) }
-            };
+                {
+                    { "FileTrigger", typeof(FileSystemEventArgs) }
+                };
 
             if (_bindingDataProvider.Contract is not null)
             {
@@ -132,11 +127,12 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 
             // built in binding data
             var bindingData = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
-            {
-                { "FileTrigger", value }
-            };
+                {
+                    { "FileTrigger", value }
+                };
 
-            string pathRoot = Path.GetDirectoryName(_attribute.Path);
+            var resolvedPath = _nameResolver.Resolve(_attribute.Path);
+            string pathRoot = Path.GetDirectoryName(resolvedPath);
             int idx = value.FullPath.IndexOf(pathRoot, StringComparison.OrdinalIgnoreCase);
             string pathToMatch = value.FullPath.Substring(idx);
 

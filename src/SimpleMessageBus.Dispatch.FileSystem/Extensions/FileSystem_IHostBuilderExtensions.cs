@@ -4,6 +4,7 @@ using CloudNimble.SimpleMessageBus.Dispatch.Triggers;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Files;
 using Microsoft.Azure.WebJobs.Extensions.Timers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
@@ -15,7 +16,7 @@ namespace Microsoft.Extensions.Hosting
     /// <summary>
     /// A set of <see cref="IHostBuilder"/> extension methods that make it easy to register SimpleMessageBus with a DI container.
     /// </summary>
-    public static class IHostBuilderExtensions
+    public static class FileSystem_IHostBuilderExtensions
     {
 
         #region Public Methods
@@ -35,7 +36,13 @@ namespace Microsoft.Extensions.Hosting
             return builder
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.Configure<FileSystemOptions>(hostContext.Configuration.GetSection(typeof(FileSystemOptions).Name));
+                    var section = hostContext.Configuration.GetSection($"SimpleMessageBus:{typeof(FileSystemOptions).Name}");
+                    // RWM: Backwards Compatibility
+                    if (!section.GetChildren().Any())
+                    {
+                        section = hostContext.Configuration.GetSection(typeof(FileSystemOptions).Name);
+                    }
+                    services.Configure<FileSystemOptions>(section);
                 })
                 .UseFileSystemQueueProcessor(o => { });
         }

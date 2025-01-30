@@ -37,16 +37,23 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         public ILogger Logger { get; private set; }
 
         /// <summary>
+        /// Gets the queue folder.
+        /// </summary>
+        public string QueueFolder { get; private set; }
+
+        /// <summary>
         /// Constructs a new instance
         /// </summary>
         /// <param name="options">The <see cref="FilesOptions"/></param>
         /// <param name="attribute">The <see cref="SimpleMessageBusFileTriggerAttribute"/></param>
+        /// <param name="queueFolder"></param>
         /// <param name="executor">The function executor.</param>
         /// <param name="logger">The <see cref="ILogger"/>.</param>
-        public SimpleMessageBusFileProcessorFactoryContext(FileSystemOptions options, SimpleMessageBusFileTriggerAttribute attribute, ITriggeredFunctionExecutor executor, ILogger logger)
+        public SimpleMessageBusFileProcessorFactoryContext(FileSystemOptions options, SimpleMessageBusFileTriggerAttribute attribute, string queueFolder, ITriggeredFunctionExecutor executor, ILogger logger)
         {
             Options = options ?? throw new ArgumentNullException(nameof(options));
             Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
+            QueueFolder = queueFolder ?? throw new ArgumentNullException(nameof(queueFolder));
             Executor = executor ?? throw new ArgumentNullException(nameof(executor));
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }

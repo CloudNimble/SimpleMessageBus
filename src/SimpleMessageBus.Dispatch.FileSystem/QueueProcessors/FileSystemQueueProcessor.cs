@@ -82,7 +82,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <param name="logger"></param>
         public async Task ProcessQueue(
 #pragma warning disable IDE0060 // Remove unused parameter
-            [SimpleMessageBusFileTrigger(@"queue/{name}", "*.json", WatcherChangeTypes.Created | WatcherChangeTypes.Renamed, true)] string messageEnvelopeJson, FileSystemEventArgs fileTrigger, ILogger logger)
+            [SimpleMessageBusFileTrigger(@"%queue%", "*.json", WatcherChangeTypes.Created | WatcherChangeTypes.Renamed, true)] string messageEnvelopeJson, FileSystemEventArgs fileTrigger, ILogger logger)
 #pragma warning restore IDE0060 // Remove unused parameter
                                //[File(@"%completed%\{name}", FileAccess.Write)] out string converted,
                                //[File(@"%error%\{name}", FileAccess.Write)] out string error)

@@ -83,7 +83,7 @@ namespace SimpleMessageBus.Tests.Dispatch
         [TestMethod]
         public async Task SimulatedNetworkMessagePublisherWorks()
         {
-            var options = TestHost.Services.GetRequiredService<IOptions<FileSystemOptions>>();
+            var options = TestHost.Services.GetRequiredService<IOptions<FileSystemOptions>>().Value;
             var time = DateTime.Now.ToString("HHmmss");
 
             var envelope = new MessageEnvelope(new TestMessage())
@@ -92,9 +92,9 @@ namespace SimpleMessageBus.Tests.Dispatch
                 DatePublished = DateTimeOffset.UtcNow
             };
 
-            File.WriteAllText(Path.Combine(options.Value.QueueFolderPath, $"{time}.tmpmsg"), JsonConvert.SerializeObject(envelope));
+            File.WriteAllText(Path.Combine(options.QueueFolderPath, $"{time}.tmpmsg"), JsonConvert.SerializeObject(envelope));
             Thread.Sleep(200);
-            File.Move(Path.Combine(options.Value.QueueFolderPath, $"{time}.tmpmsg"), Path.Combine(options.Value.QueueFolderPath, $"{time}.json"));
+            File.Move(Path.Combine(options.QueueFolderPath, $"{time}.tmpmsg"), Path.Combine(options.QueueFolderPath, $"{time}.json"));
 
             Thread.Sleep(3000);
             MessageCount.Should().Be(0);

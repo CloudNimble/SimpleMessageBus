@@ -25,9 +25,9 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
     {
         private readonly FileSystemOptions _options;
         private readonly SimpleMessageBusFileTriggerAttribute _attribute;
+        private readonly string _queueFolder;
         private readonly ILogger _logger;
         private readonly ITriggeredFunctionExecutor _executor;
-        private readonly string _filePath;
         private readonly JsonSerializer _serializer;
         private string _instanceId;
 
@@ -44,14 +44,9 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 
             _options = context.Options;
             _attribute = context.Attribute;
+            _queueFolder = context.QueueFolder;
             _executor = context.Executor;
             _logger = context.Logger;
-
-            //RWM: Use reflection because _attribute.GetRootPath() is internal.
-            var dynMethod = _attribute.GetType().GetMethod("GetRootPath", BindingFlags.NonPublic | BindingFlags.Instance);
-            var attributePath = dynMethod.Invoke(_attribute, null);
-
-            _filePath = Path.Combine(_options.RootFolder, attributePath.ToString());
 
             var settings = new JsonSerializerSettings
             {
@@ -267,7 +262,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         public virtual void CleanupProcessedFiles()
         {
             int filesDeleted = 0;
-            string[] statusFiles = Directory.GetFiles(_filePath, GetStatusFile("*"));
+            string[] statusFiles = Directory.GetFiles(_queueFolder, GetStatusFile("*"));
             foreach (string statusFilePath in statusFiles)
             {
                 try
@@ -285,7 +280,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
                     // status file input.dat.status, this might return input.dat and
                     // input.dat.meta (if the file has other companion files)
                     string targetFileName = Path.GetFileNameWithoutExtension(statusFilePath);
-                    string[] files = Directory.GetFiles(_filePath, targetFileName + "*");
+                    string[] files = Directory.GetFiles(_queueFolder, targetFileName + "*");
 
                     // first delete the non status file(s)
                     foreach (string filePath in files)
@@ -315,7 +310,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 
             if (filesDeleted > 0)
             {
-                _logger.LogDebug($"File Cleanup ({_filePath}): {filesDeleted} files deleted");
+                _logger.LogDebug($"File Cleanup ({_queueFolder}): {filesDeleted} files deleted");
             }
         }
 

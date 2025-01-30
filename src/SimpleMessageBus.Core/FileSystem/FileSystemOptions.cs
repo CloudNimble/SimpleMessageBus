@@ -35,6 +35,7 @@ namespace CloudNimble.SimpleMessageBus.Core
             get
             {
                 if (_isNetworkPath is not null) return _isNetworkPath.Value;
+                if (string.IsNullOrWhiteSpace(RootFolder)) return default;
 
                 string root = Path.GetPathRoot(RootFolder);
 
@@ -58,7 +59,7 @@ namespace CloudNimble.SimpleMessageBus.Core
         /// <summary>
         /// A string representing the folder that will hold the three required queue folders.
         /// </summary>
-        public string RootFolder { get; set; }
+        public string RootFolder { get; set; } = "";
 
         /// <summary>
         /// An integer representing the number of seconds to wait before firing FileSystemWatcher events to process the Queue.

@@ -20,6 +20,7 @@
 
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)simplemessagebus.snk</AssemblyOriginatorKeyFile>
+		<StrongNamePublicKey>PublicKey=002400000480000094000000060200000024000052534131000400000100010071c394b047545690d9c0af93ed56f6d328d0602e81d49a4790358e47e70a0fb31df75a6f85cfc92d417e417ef1a00f38f10f718ca67302927e9fc4e9df9c86ad18615cf20d2d010b35453f857b58f98fda2b9da9584044e2dfed90d652935420ae221897e0771c6a435f7526f2755bf4e3d20b8bb78ec9f1afefb3402baa30e4</StrongNamePublicKey>
 
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
@@ -104,13 +105,14 @@
 
 	<ItemGroup Condition=" $(IsTestProject) != 'true' and $(IsSampleProject) != 'true' and $(IsTemplateProject) != 'true' ">
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.*" PrivateAssets="All" />
-		<!--<InternalsVisibleTo Include="$(AssemblyName.Replace('CloudNimble.SimpleMessageBus', 'CloudNimble.SimpleMessageBus.Tests')), $(StrongNamePublicKey)" />-->
+		<InternalsVisibleTo Include="$(AssemblyName.Replace('CloudNimble.SimpleMessageBus', 'SimpleMessageBus.Tests')), $(StrongNamePublicKey)" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" $(IsTestProject) == 'true' and $(IsSampleProject) != 'true' ">
 		<PackageReference Include="FluentAssertions" Version="6.*" PrivateAssets="All" />
 		<PackageReference Include="FluentAssertions.Analyzers" Version="0.*" PrivateAssets="All" />
 		<PackageReference Include="MSTest" Version="3.*" />
+		<PackageReference Include="Breakdance.Extensions.MSTest2" Version="7.*" />
 	</ItemGroup>
 
 	<ItemGroup>

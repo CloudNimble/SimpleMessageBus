@@ -2,8 +2,9 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using System;
-using System.IO;
+using IOPath = System.IO.Path;
 using Microsoft.Azure.WebJobs.Description;
+using System.IO;
 
 namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 {
@@ -29,31 +30,24 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
     [Binding]
     public sealed class SimpleMessageBusFileTriggerAttribute : Attribute
     {
-        /// <summary>
-        /// Constructs a new instance.
-        /// </summary>
-        /// <param name="path">The root path that this trigger is configured to watch for files on.</param>
-        /// <param name="filter">The optional file filter that will be used.</param>
-        /// <param name="changeTypes">The <see cref="WatcherChangeTypes"/> that will be used by the file watcher. The Default is Created.</param>
-        /// <param name="autoDelete">True if processed files should be deleted automatically, false otherwise. The default is False.</param>
-        public SimpleMessageBusFileTriggerAttribute(string path, string filter, WatcherChangeTypes changeTypes = WatcherChangeTypes.Created, bool autoDelete = false)
-        {
-            if (!string.IsNullOrEmpty(path))
-            {
-                // normalize the path (allowing the user to use either
-                // "/" or "\" as a separator)
-                path = path.Replace("/", "\\");
-            }
-            this.Path = path;
-            this.Filter = filter;
-            this.ChangeTypes = changeTypes;
-            this.AutoDelete = autoDelete;
-        }
+
+        #region Fields
+
+        private string _rootPath;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets the root path that this trigger is configured to watch for files on.
         /// </summary>
         public string Path { get; private set; }
+
+        /// <summary>
+        /// Gets the root path that this trigger is configured to watch for files on.
+        /// </summary>
+        public string RootPath => _rootPath;
 
         /// <summary>
         /// Gets the optional file filter that will be used.
@@ -72,20 +66,35 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         /// </summary>
         public bool AutoDelete { get; private set; }
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Returns the trigger path, minus any trailing template pattern for file name
+        /// Constructs a new instance.
         /// </summary>
-        /// <returns></returns>
-        internal string GetRootPath()
+        /// <param name="path">The root path that this trigger is configured to watch for files on.</param>
+        /// <param name="filter">The optional file filter that will be used.</param>
+        /// <param name="changeTypes">The <see cref="WatcherChangeTypes"/> that will be used by the file watcher. The Default is Created.</param>
+        /// <param name="autoDelete">True if processed files should be deleted automatically, false otherwise. The default is False.</param>
+        public SimpleMessageBusFileTriggerAttribute(string path, string filter, WatcherChangeTypes changeTypes = WatcherChangeTypes.Created, bool autoDelete = false)
         {
-            string path = Path.TrimEnd(System.IO.Path.DirectorySeparatorChar);
-            int idx = path.LastIndexOf(System.IO.Path.DirectorySeparatorChar);
-            if (idx > 0 && path.IndexOfAny(['{', '}'], idx) > 0)
+            Path = string.IsNullOrEmpty(path) ? path : path.Replace('/', IOPath.DirectorySeparatorChar);
+            Filter = filter;
+            ChangeTypes = changeTypes;
+            AutoDelete = autoDelete;
+
+            // RWM: Get the root path once instead of recalculating it a bunch of times
+            var trimmedPath = Path.TrimEnd(IOPath.DirectorySeparatorChar);
+            var index = trimmedPath.LastIndexOf(IOPath.DirectorySeparatorChar);
+            if (index > 0 && trimmedPath.IndexOfAny(['{', '}'], index) > 0)
             {
-                return System.IO.Path.GetDirectoryName(path);
+                _rootPath = IOPath.GetDirectoryName(trimmedPath);
             }
-            return Path;
+            _rootPath = Path;
         }
+
+        #endregion
 
     }
 

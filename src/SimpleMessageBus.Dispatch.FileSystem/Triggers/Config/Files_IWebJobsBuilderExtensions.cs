@@ -11,7 +11,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
     /// <summary>
     /// Extension methods for Files integration
     /// </summary>
-    public static class FilesWebJobsBuilderExtensions
+    public static class Files_IWebJobsBuilderExtensions
     {
         /// <summary>
         /// Adds the Files extension to the provided <see cref="IWebJobsBuilder"/>.
@@ -26,6 +26,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 
             builder.AddExtension<SimpleMessageBusFilesExtensionConfigProvider>()
                 .BindOptions<FilesOptions>();
+            builder.Services.AddSingleton<INameResolver, FileSystemNameResolver>();
             builder.Services.AddSingleton<ISimpleMessageBusFileProcessorFactory, SimpleMessageBusFileProcessorFactory>();
 
             return builder;

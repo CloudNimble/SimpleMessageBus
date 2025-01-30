@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using CloudNimble.SimpleMessageBus.Core;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host.Executors;
 using Microsoft.Azure.WebJobs.Host.Listeners;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -21,8 +23,10 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 
     internal sealed class SimpleMessageBusFileListener : IListener
     {
-        private readonly TimeSpan _changeEventDebounceInterval = TimeSpan.FromSeconds(1);
 
+        #region Fields
+
+        private readonly TimeSpan _changeEventDebounceInterval = TimeSpan.FromSeconds(1);
         private readonly SimpleMessageBusFileTriggerAttribute _attribute;
         private readonly ITriggeredFunctionExecutor _triggerExecutor;
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -30,6 +34,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         private readonly string _watchPath;
         private readonly ILogger _logger;
         private readonly ISimpleMessageBusFileProcessorFactory _fileProcessorFactory;
+        private readonly INameResolver _nameResolver;
         private ActionBlock<FileSystemEventArgs> _workQueue;
         private SimpleMessageBusFileProcessor _processor;
         private System.Timers.Timer _cleanupTimer;
@@ -37,14 +42,29 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         private FileSystemWatcher _watcher;
         private bool _disposed;
 
-        public SimpleMessageBusFileListener(IOptions<FileSystemOptions> options, SimpleMessageBusFileTriggerAttribute attribute, ITriggeredFunctionExecutor triggerExecutor, ILogger logger, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
+        #endregion
+
+        #region Properties
+
+                // for testing
+        internal SimpleMessageBusFileProcessor Processor => _processor;
+
+        #endregion
+
+        public SimpleMessageBusFileListener(
+            IOptions<FileSystemOptions> options, 
+            SimpleMessageBusFileTriggerAttribute attribute, 
+            ITriggeredFunctionExecutor triggerExecutor, 
+            ILogger logger, 
+            ISimpleMessageBusFileProcessorFactory fileProcessorFactory, 
+            INameResolver nameResolver)
         {
             _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
             _attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
             _triggerExecutor = triggerExecutor ?? throw new ArgumentNullException(nameof(triggerExecutor));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _fileProcessorFactory = fileProcessorFactory ?? throw new ArgumentNullException(nameof(fileProcessorFactory));
-
+            _nameResolver = nameResolver ?? throw new ArgumentNullException(nameof(nameResolver));
             _cancellationTokenSource = new CancellationTokenSource();
 
             if (string.IsNullOrEmpty(_options.RootFolder) || !Directory.Exists(_options.RootFolder))
@@ -52,21 +72,10 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
                 throw new InvalidOperationException(string.Format("Path '{0}' is invalid. FilesConfiguration.RootPath must be set to a valid directory location.", _options.RootFolder));
             }
 
-            //RWM: Use reflection because _attribute.GetRootPath() is internal.
-            var dynMethod = _attribute.GetType().GetMethod("GetRootPath", BindingFlags.NonPublic | BindingFlags.Instance);
-            var attributePath = dynMethod.Invoke(_attribute, null);
-
-            _watchPath = Path.Combine(_options.RootFolder, attributePath.ToString());
+            var queuePath = _nameResolver.Resolve(_attribute.RootPath);
+            _watchPath = Path.Combine(_options.RootFolder, queuePath);
         }
 
-        // for testing
-        internal SimpleMessageBusFileProcessor Processor
-        {
-            get
-            {
-                return _processor;
-            }
-        }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
@@ -79,7 +88,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
 
             CreateFileWatcher();
 
-            var context = new SimpleMessageBusFileProcessorFactoryContext(_options, _attribute, _triggerExecutor, _logger);
+            var context = new SimpleMessageBusFileProcessorFactoryContext(_options, _attribute, _watchPath, _triggerExecutor, _logger);
             _processor = _fileProcessorFactory.CreateFileProcessor(context);
 
             var options = new ExecutionDataflowBlockOptions

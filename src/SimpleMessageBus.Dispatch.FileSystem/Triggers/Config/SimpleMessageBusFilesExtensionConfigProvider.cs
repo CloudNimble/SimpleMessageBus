@@ -19,12 +19,14 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         private readonly IOptions<FileSystemOptions> _options;
         private readonly ILoggerFactory _loggerFactory;
         private readonly ISimpleMessageBusFileProcessorFactory _fileProcessorFactory;
+        private readonly INameResolver _nameResolver;
 
-        public SimpleMessageBusFilesExtensionConfigProvider(IOptions<FileSystemOptions> options, ILoggerFactory loggerFactory, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
+        public SimpleMessageBusFilesExtensionConfigProvider(IOptions<FileSystemOptions> options, ILoggerFactory loggerFactory, ISimpleMessageBusFileProcessorFactory fileProcessorFactory, INameResolver nameResolver)
         {
             _options = options;
             _loggerFactory = loggerFactory;
             _fileProcessorFactory = fileProcessorFactory;
+            _nameResolver = nameResolver;
         }
 
         private FileInfo GetFileInfo(SimpleMessageBusFileAttribute attribute)
@@ -64,8 +66,10 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
             rule.BindToStream(this, FileAccess.ReadWrite);
 
             // Triggers
+
+
             var rule2 = context.AddBindingRule<SimpleMessageBusFileTriggerAttribute>();
-            rule2.BindToTrigger<FileSystemEventArgs>(new SimpleMessageBusFileTriggerAttributeBindingProvider(_options, _loggerFactory, _fileProcessorFactory));
+            rule2.BindToTrigger<FileSystemEventArgs>(new SimpleMessageBusFileTriggerAttributeBindingProvider(_options, _loggerFactory, _fileProcessorFactory, _nameResolver));
 
             rule2.AddConverter<string, FileSystemEventArgs>(str => SimpleMessageBusFileTriggerBinding.GetFileArgsFromString(str));
             rule2.AddConverter<FileSystemEventArgs, Stream>(args => File.OpenRead(args.FullPath));

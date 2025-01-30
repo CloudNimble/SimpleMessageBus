@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using CloudNimble.SimpleMessageBus.Core;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Bindings;
 using Microsoft.Azure.WebJobs.Host.Triggers;
 using Microsoft.Azure.WebJobs.Logging;
@@ -28,6 +29,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         private readonly IOptions<FileSystemOptions> _options;
         private readonly ILogger _logger;
         private readonly ISimpleMessageBusFileProcessorFactory _fileProcessorFactory;
+        private readonly INameResolver _nameResolver;
 
         #endregion
 
@@ -39,12 +41,14 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
         /// <param name="options">The file system options.</param>
         /// <param name="loggerFactory">The logger factory.</param>
         /// <param name="fileProcessorFactory">The file processor factory.</param>
+        /// <param name="nameResolver"></param>
         /// <exception cref="ArgumentNullException">Thrown when options or fileProcessorFactory is null.</exception>
-        public SimpleMessageBusFileTriggerAttributeBindingProvider(IOptions<FileSystemOptions> options, ILoggerFactory loggerFactory, ISimpleMessageBusFileProcessorFactory fileProcessorFactory)
+        public SimpleMessageBusFileTriggerAttributeBindingProvider(IOptions<FileSystemOptions> options, ILoggerFactory loggerFactory, ISimpleMessageBusFileProcessorFactory fileProcessorFactory, INameResolver nameResolver)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _logger = loggerFactory?.CreateLogger(LogCategories.CreateTriggerCategory("File"));
             _fileProcessorFactory = fileProcessorFactory ?? throw new ArgumentNullException(nameof(fileProcessorFactory));
+            _nameResolver = nameResolver;
         }
 
         #endregion
@@ -83,7 +87,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.Triggers
                     "Can't bind FileTriggerAttribute to type '{0}'.", parameter.ParameterType));
             }
 
-            return Task.FromResult<ITriggerBinding>(new SimpleMessageBusFileTriggerBinding(_options, parameter, _logger, _fileProcessorFactory));
+            return Task.FromResult<ITriggerBinding>(new SimpleMessageBusFileTriggerBinding(_options, parameter, _logger, _fileProcessorFactory, _nameResolver));
         }
 
         #endregion

@@ -86,6 +86,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMessageBus.Samples.Bl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMessageBus.Samples.Blazor.WorkerService", "SimpleMessageBus.Samples.Blazor.WorkerService\SimpleMessageBus.Samples.Blazor.WorkerService.csproj", "{2327568B-1281-4995-BF2F-7DFD30B9D8A5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{78DDA25A-7C38-13C4-DE39-740FEE45D7B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMessageBus.Breakdance", "SimpleMessageBus.Breakdance\SimpleMessageBus.Breakdance.csproj", "{0A55CDD7-DBCD-4BEB-9222-9CC6FF26745E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -208,6 +212,10 @@ Global
 		{2327568B-1281-4995-BF2F-7DFD30B9D8A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2327568B-1281-4995-BF2F-7DFD30B9D8A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2327568B-1281-4995-BF2F-7DFD30B9D8A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A55CDD7-DBCD-4BEB-9222-9CC6FF26745E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A55CDD7-DBCD-4BEB-9222-9CC6FF26745E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A55CDD7-DBCD-4BEB-9222-9CC6FF26745E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A55CDD7-DBCD-4BEB-9222-9CC6FF26745E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -245,6 +253,7 @@ Global
 		{D4D2883C-FC95-4C04-B437-53988BBE76A0} = {47954473-AEE1-475B-BEA8-115A0CB097C8}
 		{5EF7306A-7AD9-4F83-8235-EFB802EF2FA0} = {367A637D-4058-4111-ABA8-31138453FB69}
 		{2327568B-1281-4995-BF2F-7DFD30B9D8A5} = {367A637D-4058-4111-ABA8-31138453FB69}
+		{0A55CDD7-DBCD-4BEB-9222-9CC6FF26745E} = {78DDA25A-7C38-13C4-DE39-740FEE45D7B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA85B2D3-B7E9-4BA9-85DF-04483B569AA8}

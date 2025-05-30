@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>CloudNimble.SimpleMessageBus.Breakdance</RootNamespace>
+		<AssemblyName>CloudNimble.SimpleMessageBus.Breakdance</AssemblyName>
+		<TargetFrameworks>netstandard2.0;net9.0;net8.0;net6.0</TargetFrameworks>
+		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>SimpleMessageBus.Breakdance</PackageId>
+		<Title>SimpleMessageBus Testing via Breakdance</Title>
+		<Summary>
+			Tools for integrating SimpleMesageBus tests in your workflow. Can work standalone or with other 
+			Breakdance packages.
+		</Summary>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\SimpleMessageBus.Publish\SimpleMessageBus.Publish.csproj" />
+	</ItemGroup>
+
+</Project>

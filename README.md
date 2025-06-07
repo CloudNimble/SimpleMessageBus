@@ -26,12 +26,31 @@ your needs do.
 
 ### Ecosystem
 
+#### Core Packages
 | Project | Release | Latest | Description |
 |---------|--------|-------------|-------------|
 | [SimpleMessageBus.Core][smb-core-nuget]    | [![smb-core-rtm][smb-core-rtm-nuget-img]][smb-core-nuget] | [![smb-core-ci][smb-core-ci-nuget-img]][smb-core-nuget] | Core components to provide messaging and file operations capabilities for On-Prem and Cloud environments.
-| [SimpleMessageBus.Dispatch][smb-dispatch-nuget]    | [![smb-dispatch-rtm][smb-dispatch-rtm-nuget-img]][smb-dispatch-nuget] | [![smb-dispatch-ci][smb-dispatch-ci-nuget-img]][smb-dispatch-nuget] | Messaging integration components with Azure WebJobs SDK dependency to accept and direct messages to proper message handler(s).
+| [SimpleMessageBus.Dispatch][smb-dispatch-nuget]    | [![smb-dispatch-rtm][smb-dispatch-rtm-nuget-img]][smb-dispatch-nuget] | [![smb-dispatch-ci][smb-dispatch-ci-nuget-img]][smb-dispatch-nuget] | Base messaging integration components to accept and direct messages to proper message handler(s).
 | [SimpleMessageBus.Hosting][smb-hosting-nuget]    | [![smb-hosting-rtm][smb-hosting-rtm-nuget-img]][smb-hosting-nuget] | [![smb-hosting-ci][smb-hosting-ci-nuget-img]][smb-hosting-nuget] | Configuration components to allow selection of hosting type (i.e: WindowsService vs. Console).
-| [SimpleMessageBus.Publish][smb-publish-nuget]    | [![smb-publish-rtm][smb-publish-rtm-nuget-img]][smb-publish-nuget] | [![smb-publish-ci][smb-publish-ci-nuget-img]][smb-publish-nuget] | Publishing integration component with Azure Queue Storag dependency to allow messages to be "put" on queues
+| [SimpleMessageBus.Publish][smb-publish-nuget]    | [![smb-publish-rtm][smb-publish-rtm-nuget-img]][smb-publish-nuget] | [![smb-publish-ci][smb-publish-ci-nuget-img]][smb-publish-nuget] | Base publishing component with FileSystem support to allow messages to be "put" on queues.
+
+#### Azure Integration
+| Project | Release | Latest | Description |
+|---------|--------|-------------|-------------|
+| [SimpleMessageBus.Dispatch.Azure][smb-dispatch-azure-nuget]    | [![smb-dispatch-azure-rtm][smb-dispatch-azure-rtm-nuget-img]][smb-dispatch-azure-nuget] | [![smb-dispatch-azure-ci][smb-dispatch-azure-ci-nuget-img]][smb-dispatch-azure-nuget] | Azure Storage Queue dispatcher with WebJobs SDK integration for cloud-based message processing.
+| [SimpleMessageBus.Publish.Azure][smb-publish-azure-nuget]    | [![smb-publish-azure-rtm][smb-publish-azure-rtm-nuget-img]][smb-publish-azure-nuget] | [![smb-publish-azure-ci][smb-publish-azure-ci-nuget-img]][smb-publish-azure-nuget] | Azure Storage Queue publisher for cloud-based message queuing.
+
+#### FileSystem Integration
+| Project | Release | Latest | Description |
+|---------|--------|-------------|-------------|
+| [SimpleMessageBus.Dispatch.FileSystem][smb-dispatch-filesystem-nuget]    | [![smb-dispatch-filesystem-rtm][smb-dispatch-filesystem-rtm-nuget-img]][smb-dispatch-filesystem-nuget] | [![smb-dispatch-filesystem-ci][smb-dispatch-filesystem-ci-nuget-img]][smb-dispatch-filesystem-nuget] | Local and network file system dispatcher for on-premise message processing with enhanced Linux support.
+
+#### Blazor WebAssembly Integration
+| Project | Release | Latest | Description |
+|---------|--------|-------------|-------------|
+| [SimpleMessageBus.IndexedDb.Core][smb-indexeddb-core-nuget]    | [![smb-indexeddb-core-rtm][smb-indexeddb-core-rtm-nuget-img]][smb-indexeddb-core-nuget] | [![smb-indexeddb-core-ci][smb-indexeddb-core-ci-nuget-img]][smb-indexeddb-core-nuget] | Core IndexedDb components for browser-based message storage and management.
+| [SimpleMessageBus.Dispatch.IndexedDb][smb-dispatch-indexeddb-nuget]    | [![smb-dispatch-indexeddb-rtm][smb-dispatch-indexeddb-rtm-nuget-img]][smb-dispatch-indexeddb-nuget] | [![smb-dispatch-indexeddb-ci][smb-dispatch-indexeddb-ci-nuget-img]][smb-dispatch-indexeddb-nuget] | IndexedDb dispatcher for browser-based Blazor WebAssembly message processing.
+| [SimpleMessageBus.Publish.IndexedDb][smb-publish-indexeddb-nuget]    | [![smb-publish-indexeddb-rtm][smb-publish-indexeddb-rtm-nuget-img]][smb-publish-indexeddb-nuget] | [![smb-publish-indexeddb-ci][smb-publish-indexeddb-ci-nuget-img]][smb-publish-indexeddb-nuget] | IndexedDb publisher for browser-based message queuing in Blazor WebAssembly applications.
 
 ### Architecture
 
@@ -53,14 +72,21 @@ your needs do.
  - Allows multiple handlers to process the same message.
  - Straightforward configuration with Dependency Injection extensions.
  - Can run in the following environments:
-   - Console app (cross platform)
+   - Console app (cross-platform with enhanced Linux support)
    - Windows Service
    - Azure WebJobs (Azure's web app offering)
-   - Azure Functions (Azure's "serverless" offering)
+   - Azure Functions (Azure's "serverless" offering)  
+   - Blazor WebAssembly (browser-based client-side processing)
 
 ### Queues Supported
-**SimpleMessageBus** currently supports two backing queues: the **local file system**, and **Azure Storage Queues**. This allows the Dispatcher to run entirely 
-on-prem with no Azure dependencies, but still get the same durability and reliability through local poison queues and completed event storage.
+**SimpleMessageBus** supports multiple backing queue implementations to meet diverse deployment needs:
+
+- **Local File System** - Cross-platform file-based queues with enhanced Linux support for on-premise deployments
+- **Azure Storage Queues** - Cloud-based queues with automatic scaling and Azure ecosystem integration  
+- **IndexedDb** - Browser-based queues for Blazor WebAssembly applications, enabling client-side message processing
+- **HTTP** - RESTful message transmission for distributed and microservice architectures
+
+This flexibility allows applications to run entirely on-premise with no cloud dependencies, in the cloud with automatic scaling, or in the browser for rich client-side experiences, while maintaining the same durability and reliability guarantees across all deployment scenarios.
 
 ### Scenarios Supported
 **SimpleMessageBus** was designed to streamline the following scenarios:
@@ -72,15 +98,29 @@ You can read more about these scenarios in our blog post.
 
 ## Getting Started
 The process of getting **SimpleMessageBus** working in your app is as easy as the name suggests.
-  1. Create a new .NET Standard 2.0, .NET 6 or .NET 7 project to that will hold your defined Message types, install the `SimpleMessageBus.Core` NuGet package, and build out 
+  1. Create a new .NET Standard 2.0, .NET 6, .NET 8, or .NET 9 project to that will hold your defined Message types, install the `SimpleMessageBus.Core` NuGet package, and build out 
      your Message types.
-  2. Install the `SimpleMessageBus.Publish` NuGet package into your app, reference the library you created in Step 1, and modify your workflows to publish 
+  2. Install the appropriate `SimpleMessageBus.Publish.*` NuGet package into your app, reference the library you created in Step 1, and modify your workflows to publish 
      Messages in response to events.
-  3. Create a new .NET Standard 2.0, .NET 6 or .NET 7 project that will hold your MessageHandlers, install the `SimpleMessageBus.Core` NuGet package, and build out your 
+  3. Create a new .NET Standard 2.0, .NET 6, .NET 8, or .NET 9 project that will hold your MessageHandlers, install the `SimpleMessageBus.Core` NuGet package, and build out your 
      MessageHandlers.
   4. Create a new Unit Test project, reference the library you created in Step 3, and test your MessageHandler library with a variety of synthetic Messages.
-  5. Create a new Console project, install the `SimpleMessageBus.Dispatch` NuGet package, reference the library you created in Step 3, and inject your 
+  5. Create a new Console project, install the appropriate `SimpleMessageBus.Dispatch.*` NuGet package, reference the library you created in Step 3, and inject your 
      MessageHandlers into the DependencyInjection container.
+
+### Sample Projects
+Check out our sample projects to see **SimpleMessageBus** in action:
+- **[Azure WebJobs Sample](src/SimpleMessageBus.Samples.AzureWebJobs/)** - Demonstrates Azure-based message processing
+- **[Blazor WebAssembly Sample](src/SimpleMessageBus.Samples.Blazor.WebAssembly/)** - Shows browser-based messaging with IndexedDb
+- **[On-Premise Sample](src/SimpleMessageBus.Samples.OnPrem/)** - File system-based message processing
+- **[External Triggers Sample](src/SimpleMessageBus.Samples.ExternalTriggers/)** - Integration with external event sources
+
+## Testing & Quality
+
+**SimpleMessageBus** includes comprehensive testing capabilities:
+- **Breakdance Integration** - Enhanced testing framework for reliable message processing verification
+- **Unit Test Projects** - Extensive test suites for [Core](src/SimpleMessageBus.Tests.Core/), [Dispatch](src/SimpleMessageBus.Tests.Dispatch/), [Azure](src/SimpleMessageBus.Tests.Dispatch.Azure/), [FileSystem](src/SimpleMessageBus.Tests.Dispatch.FileSystem/), and [Publishing](src/SimpleMessageBus.Tests.Publish/) components
+- **Cross-Platform Testing** - Validated on Windows, Linux, and browser environments
 
 ## Feedback
 
@@ -127,6 +167,12 @@ Please visit our [Contribution](./.github/CONTRIBUTING.md) document to start con
 [smb-dispatch-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Dispatch
 [smb-hosting-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Hosting
 [smb-publish-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Publish
+[smb-dispatch-azure-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Dispatch.Azure
+[smb-publish-azure-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Publish.Azure
+[smb-dispatch-filesystem-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Dispatch.FileSystem
+[smb-indexeddb-core-nuget]: https://www.nuget.org/packages/SimpleMessageBus.IndexedDb.Core
+[smb-dispatch-indexeddb-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Dispatch.IndexedDb
+[smb-publish-indexeddb-nuget]: https://www.nuget.org/packages/SimpleMessageBus.Publish.IndexedDb
 
 <!-- Badges -->
 
@@ -134,8 +180,20 @@ Please visit our [Contribution](./.github/CONTRIBUTING.md) document to start con
 [smb-dispatch-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Dispatch?label=&logo=NuGet&style=for-the-badge
 [smb-hosting-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Hosting?label=&logo=NuGet&style=for-the-badge
 [smb-publish-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Publish?label=&logo=NuGet&style=for-the-badge
+[smb-dispatch-azure-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Dispatch.Azure?label=&logo=NuGet&style=for-the-badge
+[smb-publish-azure-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Publish.Azure?label=&logo=NuGet&style=for-the-badge
+[smb-dispatch-filesystem-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Dispatch.FileSystem?label=&logo=NuGet&style=for-the-badge
+[smb-indexeddb-core-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.IndexedDb.Core?label=&logo=NuGet&style=for-the-badge
+[smb-dispatch-indexeddb-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Dispatch.IndexedDb?label=&logo=NuGet&style=for-the-badge
+[smb-publish-indexeddb-rtm-nuget-img]: https://img.shields.io/nuget/v/SimpleMessageBus.Publish.IndexedDb?label=&logo=NuGet&style=for-the-badge
 
 [smb-core-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Core?label=&logo=NuGet&style=for-the-badge
 [smb-dispatch-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Dispatch?label=&logo=NuGet&style=for-the-badge
 [smb-hosting-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Hosting?label=&logo=NuGet&style=for-the-badge
 [smb-publish-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Publish?label=&logo=NuGet&style=for-the-badge
+[smb-dispatch-azure-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Dispatch.Azure?label=&logo=NuGet&style=for-the-badge
+[smb-publish-azure-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Publish.Azure?label=&logo=NuGet&style=for-the-badge
+[smb-dispatch-filesystem-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Dispatch.FileSystem?label=&logo=NuGet&style=for-the-badge
+[smb-indexeddb-core-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.IndexedDb.Core?label=&logo=NuGet&style=for-the-badge
+[smb-dispatch-indexeddb-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Dispatch.IndexedDb?label=&logo=NuGet&style=for-the-badge
+[smb-publish-indexeddb-ci-nuget-img]: https://img.shields.io/nuget/vpre/SimpleMessageBus.Publish.IndexedDb?label=&logo=NuGet&style=for-the-badge

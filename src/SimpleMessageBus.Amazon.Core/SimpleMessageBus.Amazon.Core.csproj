@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<AssemblyName>CloudNimble.SimpleMessageBus.Dispatch.Amazon</AssemblyName>
-		<RootNamespace>CloudNimble.SimpleMessageBus.Dispatch.Amazon</RootNamespace>
+		<AssemblyName>CloudNimble.SimpleMessageBus.Amazon.Core</AssemblyName>
+		<RootNamespace>CloudNimble.SimpleMessageBus.Amazon.Core</RootNamespace>
 		<TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>SimpleMessageBus.Dispatch.Amazon</PackageId>
-		<Title>SimpleMessageBus Dispatcher for Amazon</Title>
+		<PackageId>SimpleMessageBus.Amazon.Core</PackageId>
+		<Title>SimpleMessageBus Core Library for Amazon</Title>
 		<Summary>
 			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
 			the logic necessary to dispatch Domain events stored in Amazon through registered IMessageHandlers.
@@ -23,13 +23,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="CloudNimble.WebJobs.Extensions.Amazon" Version="1.*-*" />
-		<PackageReference Include="Microsoft.Azure.WebJobs" Version="[3.0.*, 3.1.0)" />
-		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="[5.*, 6.0.0)" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\SimpleMessageBus.Amazon.Core\SimpleMessageBus.Amazon.Core.csproj" />
-		<ProjectReference Include="..\SimpleMessageBus.Dispatch\SimpleMessageBus.Dispatch.csproj" />
 	</ItemGroup>
 
 </Project>

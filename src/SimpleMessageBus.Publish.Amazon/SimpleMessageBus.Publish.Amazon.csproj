@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<AssemblyName>CloudNimble.SimpleMessageBus.Publish.Amazon</AssemblyName>
 		<RootNamespace>CloudNimble.SimpleMessageBus.Publish.Amazon</RootNamespace>
-		<TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
 	</PropertyGroup>
 
@@ -26,6 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\SimpleMessageBus.Amazon.Core\SimpleMessageBus.Amazon.Core.csproj" />
 		<ProjectReference Include="..\SimpleMessageBus.Publish\SimpleMessageBus.Publish.csproj" />
 	</ItemGroup>
 

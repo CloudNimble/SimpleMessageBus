@@ -23,9 +23,9 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         #region Constructors
 
         /// <summary>
-        /// The default constructor.
+        /// Initializes a new instance of the <see cref="QueuesOptionsConfiguration"/> class.
         /// </summary>
-        /// <param name="azureStorageQueueOptions"></param>
+        /// <param name="azureStorageQueueOptions">The Azure Storage Queue options to use for configuration.</param>
         public QueuesOptionsConfiguration(IOptions<AzureStorageQueueOptions> azureStorageQueueOptions)
         {
             _azureStorageQueueOptions = azureStorageQueueOptions;
@@ -38,7 +38,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <summary>
         /// Configures a given QueuesOptions object with the passed-in values from <see cref="AzureStorageQueueOptions"/>.
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="options">The QueuesOptions instance to configure.</param>
         public void Configure(QueuesOptions options)
         {
             options.BatchSize = _azureStorageQueueOptions.Value.ConcurrentJobs;

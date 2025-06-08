@@ -7,25 +7,30 @@ namespace SimpleMessageBus.IndexedDb.Core
 {
 
     /// <summary>
-    /// 
+    /// Represents the IndexedDB database structure for SimpleMessageBus in Blazor WebAssembly applications.
     /// </summary>
+    /// <remarks>
+    /// This class defines the IndexedDB schema used for client-side message queuing in Blazor WebAssembly.
+    /// It provides three object stores for managing message lifecycle: Queue (pending), Completed (successful),
+    /// and Failed (error) processing states.
+    /// </remarks>
     public class SimpleMessageBusDb : IndexedDbDatabase
     {
 
         private IndexedDbOptions IndexedDbOptions { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets the object store for successfully processed messages.
         /// </summary>
         public IndexedDbObjectStore Completed { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets the object store for messages that failed processing.
         /// </summary>
         public IndexedDbObjectStore Failed { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets the object store for messages pending processing.
         /// </summary>
         public IndexedDbObjectStore Queue { get; set; }
 

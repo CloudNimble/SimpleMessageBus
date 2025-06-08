@@ -31,10 +31,10 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         }
 
         /// <summary>
-        /// 
+        /// Resolves folder paths for file system operations based on configuration.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">The placeholder name to resolve (queue, completed, or error).</param>
+        /// <returns>The actual folder path from configuration.</returns>
         public string Resolve(string name)
         {
             return name switch

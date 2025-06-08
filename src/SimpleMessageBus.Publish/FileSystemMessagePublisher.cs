@@ -11,6 +11,12 @@ namespace CloudNimble.SimpleMessageBus.Publish
     /// <summary>
     /// Manages the process of publishing MessageBus messages to the local file system.
     /// </summary>
+    /// <remarks>
+    /// This publisher writes messages as JSON files to a configured directory structure.
+    /// It's particularly useful for development, testing, or scenarios where file-based
+    /// messaging is preferred. Messages are serialized and written atomically to ensure
+    /// consistency.
+    /// </remarks>
     public class FileSystemMessagePublisher : IMessagePublisher
     {
 
@@ -25,9 +31,9 @@ namespace CloudNimble.SimpleMessageBus.Publish
         /// <summary>
         /// Creates a new instance of the <see cref="FileSystemMessagePublisher"/>.
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="options">The file system options configuration.</param>
         /// <exception cref="ArgumentNullException"><paramref name="options"/> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentException">The connection string you specified was not found in the ConnectionStrings collection.</exception>
+        /// <exception cref="ArgumentException">The root folder path is not specified in options.</exception>
         public FileSystemMessagePublisher(IOptions<FileSystemOptions> options)
         {
             if (options is null)

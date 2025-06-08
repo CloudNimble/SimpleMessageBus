@@ -14,6 +14,12 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
     /// <summary>
     /// Processes queue items stored in the local file system and dispatches them to all <see cref="IMessageHandler">IMessageHandlers</see> registered with the DI container.
     /// </summary>
+    /// <remarks>
+    /// This processor monitors a configured file system directory for new message files and automatically
+    /// processes them when they appear. It supports three-folder operation: queue (incoming), completed
+    /// (successfully processed), and error (failed processing). The processor integrates with Azure WebJobs
+    /// for file system monitoring and automatic triggering.
+    /// </remarks>
     public class FileSystemQueueProcessor : IQueueProcessor
     {
 
@@ -33,7 +39,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <param name="options">
         /// The injected <see cref="IOptions{FileSystemOptions}"/> specifying the options required to leverage the local file system as the SimpleMessageBus backing queue.
         /// </param>
-        /// <param name="dispatcher"></param>
+        /// <param name="dispatcher">The message dispatcher to route messages to handlers.</param>
         /// <param name="serviceScopeFactory">
         /// The Dependency Injection container's <see cref="IServiceProvider"/> instance, so that a "per-request" scope can be created that gives each <see cref="MessageEnvelope"/>
         /// its own set of isolated dependencies.
@@ -75,11 +81,15 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         #region Public Methods
 
         /// <summary>
-        /// 
+        /// Processes a message file when it appears in the queue directory.
         /// </summary>
-        /// <param name="messageEnvelopeJson"></param>
-        /// <param name="fileTrigger"></param>
-        /// <param name="logger"></param>
+        /// <param name="messageEnvelopeJson">The JSON content of the message envelope file.</param>
+        /// <param name="fileTrigger">The file system event that triggered this processing.</param>
+        /// <param name="logger">The logger instance for this processing operation.</param>
+        /// <remarks>
+        /// This method is triggered automatically by the Azure WebJobs framework when files are created
+        /// or renamed in the queue directory. It deserializes the message and dispatches it to handlers.
+        /// </remarks>
         public async Task ProcessQueue(
 #pragma warning disable IDE0060 // Remove unused parameter
             [SimpleMessageBusFileTrigger(@"%queue%", "*.json", WatcherChangeTypes.Created | WatcherChangeTypes.Renamed, true)] string messageEnvelopeJson, FileSystemEventArgs fileTrigger, ILogger logger)

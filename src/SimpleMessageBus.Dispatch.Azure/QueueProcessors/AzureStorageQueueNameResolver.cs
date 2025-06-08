@@ -34,10 +34,14 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         #region Public Methods
 
         /// <summary>
-        /// 
+        /// Resolves queue names for Azure WebJobs triggers and outputs based on configuration.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">The placeholder name from the WebJobs attribute to resolve.</param>
+        /// <returns>The actual queue name from configuration.</returns>
+        /// <remarks>
+        /// This method maps WebJobs attribute placeholders to actual configured queue names,
+        /// enabling dynamic queue name resolution at runtime.
+        /// </remarks>
         public string Resolve(string name)
         {
             //RWM: This logic will have to be changed if we want to enable the ability to process more than one set of queues.

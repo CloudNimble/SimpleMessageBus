@@ -31,10 +31,10 @@ namespace SimpleMessageBus.Samples.AzureWebJobs
         public Task OnErrorAsync(IMessage message, Exception exception) => throw new NotImplementedException();
 
         /// <summary>
-        /// 
+        /// Processes the message envelope, demonstrating the new idempotency pattern.
         /// </summary>
-        /// <param name="messageEnvelope"></param>
-        /// <returns></returns>
+        /// <param name="messageEnvelope">The message envelope to process.</param>
+        /// <returns>A <see cref="Task"/> reference for the asynchronous function.</returns>
         public async Task OnNextAsync(MessageEnvelope messageEnvelope)
         {
             var result = false;
@@ -43,7 +43,33 @@ namespace SimpleMessageBus.Samples.AzureWebJobs
             switch (messageType)
             {
                 case Type newUserMessage when newUserMessage == typeof(NewUserMessage):
-                    result = await SendNewUserEmailAsync(messageEnvelope.GetMessage<NewUserMessage>());
+                    var message = messageEnvelope.GetMessage<NewUserMessage>();
+                    
+                    // Check if this handler already processed this message successfully
+                    if (message.LastRunSucceeded(GetType().Name))
+                    {
+                        Console.WriteLine($"Message {message.Id} already processed successfully by {GetType().Name}");
+                        return;
+                    }
+                    
+                    try
+                    {
+                        result = await SendNewUserEmailAsync(message);
+                        message.UpdateResult(result, GetType().Name);
+                        
+                        // Add some metadata for demonstration
+                        if (result)
+                        {
+                            message.Metadata["EmailSentAt"] = DateTime.UtcNow;
+                            message.Metadata["ProcessedBy"] = Environment.MachineName;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        message.UpdateResult(false, GetType().Name);
+                        message.Metadata["LastError"] = ex.Message;
+                        throw;
+                    }
                     break;
             }
 

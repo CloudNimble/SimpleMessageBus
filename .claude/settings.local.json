@@ -8,7 +8,9 @@
       "WebFetch(domain:docs.aws.amazon.com)",
       "Bash(rg:*)",
       "Bash(timeout:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(dotnet test:*)",
+      "Bash(dotnet build:*)"
     ],
     "deny": []
   }

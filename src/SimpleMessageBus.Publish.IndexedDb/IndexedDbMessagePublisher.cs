@@ -9,6 +9,11 @@ namespace CloudNimble.SimpleMessageBus.Publish.IndexedDb
     /// <summary>
     /// Manages the process of publishing MessageBus messages to a browser-based IndexedDb database.
     /// </summary>
+    /// <remarks>
+    /// This publisher enables client-side message queuing in Blazor WebAssembly applications
+    /// using the browser's IndexedDB for persistent storage. It provides offline-capable
+    /// messaging and local processing scenarios.
+    /// </remarks>
     public class IndexedDbMessagePublisher : IMessagePublisher
     {
 

@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net9.0;net8.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
@@ -11,6 +11,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\SimpleMessageBus.Core\SimpleMessageBus.Core.csproj" />
+		<ProjectReference Include="..\SimpleMessageBus.Samples.Core\SimpleMessageBus.Samples.Core.csproj" />
 		<ProjectReference Include="..\SimpleMessageBus.Tests.Shared\SimpleMessageBus.Tests.Shared.csproj" />
 	</ItemGroup>
 

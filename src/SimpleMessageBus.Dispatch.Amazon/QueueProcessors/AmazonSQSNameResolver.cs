@@ -1,4 +1,4 @@
-using CloudNimble.SimpleMessageBus.Dispatch.Amazon;
+using CloudNimble.SimpleMessageBus.Amazon.Core;
 using CloudNimble.WebJobs.Extensions.Amazon.SQS;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Options;

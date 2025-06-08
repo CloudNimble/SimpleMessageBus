@@ -1,6 +1,5 @@
 using Amazon.SQS.Model;
 using CloudNimble.SimpleMessageBus.Core;
-using CloudNimble.SimpleMessageBus.Dispatch.Amazon;
 using CloudNimble.WebJobs.Extensions.Amazon.SQS;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -8,7 +7,7 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace CloudNimble.SimpleMessageBus.Dispatch
+namespace CloudNimble.SimpleMessageBus.Dispatch.Amazon
 {
 
     /// <summary>

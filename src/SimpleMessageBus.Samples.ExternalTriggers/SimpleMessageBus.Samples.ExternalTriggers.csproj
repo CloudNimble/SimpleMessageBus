@@ -1,17 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>net10.0;net9.0;net8.0;</TargetFrameworks>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Azure.Identity" Version="1.*" />
 		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="5.*" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.*" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.*" />
 	</ItemGroup>
 
-	<ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)'=='net10.0'">
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.*-*" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.*" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.*" />
+	</ItemGroup>
+	
+		<ItemGroup>
 		<ProjectReference Include="..\SimpleMessageBus.Publish\SimpleMessageBus.Publish.csproj" />
 		<ProjectReference Include="..\SimpleMessageBus.Samples.Core\SimpleMessageBus.Samples.Core.csproj" />
 	</ItemGroup>

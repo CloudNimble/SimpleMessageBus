@@ -1,4 +1,5 @@
-﻿using CloudNimble.SimpleMessageBus.Dispatch;
+﻿using CloudNimble.SimpleMessageBus.Amazon.Core;
+using CloudNimble.SimpleMessageBus.Dispatch;
 using CloudNimble.SimpleMessageBus.Dispatch.Amazon;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.DependencyInjection;

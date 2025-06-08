@@ -10,6 +10,11 @@ namespace CloudNimble.SimpleMessageBus.Publish
     /// <summary>
     /// Manages the process of publishing MessageBus messages to Azure Queue Storage.
     /// </summary>
+    /// <remarks>
+    /// This publisher integrates with Azure Storage Queues to provide reliable message queuing
+    /// in Azure environments. It handles message encoding, serialization, and automatic
+    /// queue client initialization with proper connection string management.
+    /// </remarks>
     public class AzureStorageQueueMessagePublisher : IMessagePublisher
     {
 

@@ -98,6 +98,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMessageBus.Dispatch.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMessageBus.Publish.Amazon", "SimpleMessageBus.Publish.Amazon\SimpleMessageBus.Publish.Amazon.csproj", "{194A3DD5-343C-4A26-A4AF-789B1F1BB295}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMessageBus.Amazon.Core", "SimpleMessageBus.Amazon.Core\SimpleMessageBus.Amazon.Core.csproj", "{058D14B6-8020-4A67-8176-B520ED6319C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -232,6 +234,10 @@ Global
 		{194A3DD5-343C-4A26-A4AF-789B1F1BB295}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{194A3DD5-343C-4A26-A4AF-789B1F1BB295}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{194A3DD5-343C-4A26-A4AF-789B1F1BB295}.Release|Any CPU.Build.0 = Release|Any CPU
+		{058D14B6-8020-4A67-8176-B520ED6319C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{058D14B6-8020-4A67-8176-B520ED6319C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{058D14B6-8020-4A67-8176-B520ED6319C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{058D14B6-8020-4A67-8176-B520ED6319C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -273,6 +279,7 @@ Global
 		{6F8B189F-9430-A877-E19A-FE407FB3F7C1} = {445A670B-D3F8-4618-9331-F2A7AFC445EF}
 		{DE86E8DC-1621-4336-BFE2-BC5A575265B1} = {6F8B189F-9430-A877-E19A-FE407FB3F7C1}
 		{194A3DD5-343C-4A26-A4AF-789B1F1BB295} = {6F8B189F-9430-A877-E19A-FE407FB3F7C1}
+		{058D14B6-8020-4A67-8176-B520ED6319C5} = {6F8B189F-9430-A877-E19A-FE407FB3F7C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA85B2D3-B7E9-4BA9-85DF-04483B569AA8}

@@ -1,6 +1,6 @@
-﻿using CloudNimble.SimpleMessageBus.Publish;
+﻿using CloudNimble.SimpleMessageBus.Amazon.Core;
+using CloudNimble.SimpleMessageBus.Publish;
 using CloudNimble.SimpleMessageBus.Publish.Amazon;
-using CloudNimble.WebJobs.Extensions.Amazon.SQS;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.DependencyInjection;
 using System;

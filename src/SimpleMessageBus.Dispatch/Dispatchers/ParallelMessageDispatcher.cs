@@ -11,6 +11,11 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
     /// An <see cref="IMessageDispatcher"/> implementation that processes the messages in parallel, regardless of the order the <see cref="IMessageHandler">IMessageHandlers</see> 
     /// were registered with the Dependency Injection container.
     /// </summary>
+    /// <remarks>
+    /// This dispatcher invokes all matching message handlers concurrently using parallel execution. This provides
+    /// better performance when handlers are independent and don't rely on execution order. However, it should be
+    /// used carefully when handlers have side effects or shared dependencies that aren't thread-safe.
+    /// </remarks>
     public class ParallelMessageDispatcher : IMessageDispatcher
     {
 
@@ -23,9 +28,9 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         #region Constructors
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="ParallelMessageDispatcher"/> class.
         /// </summary>
-        /// <param name="messageHandlers"></param>
+        /// <param name="messageHandlers">The collection of message handlers to dispatch to.</param>
         public ParallelMessageDispatcher(IEnumerable<IMessageHandler> messageHandlers)
         {
             _messageHandlers = messageHandlers;
@@ -38,8 +43,11 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <summary>
         /// Sends the <see cref="MessageEnvelope"/> to the <see cref="IMessageHandler">MessageHandlers</see> registered to that type, for processing.  
         /// </summary>
-        /// <param name="messageEnvelope"></param>
-        /// <remarks>Messages will br processed in the order the MessageHandlers were registered.</remarks>
+        /// <param name="messageEnvelope">The <see cref="MessageEnvelope"/> instance to be processed.</param>
+        /// <remarks>
+        /// Handlers are invoked concurrently using parallel execution. The method returns when all handlers
+        /// have completed. If any handler throws an exception, other handlers will continue executing.
+        /// </remarks>
         public async Task Dispatch(MessageEnvelope messageEnvelope)
         {
             await Task.Run(() =>

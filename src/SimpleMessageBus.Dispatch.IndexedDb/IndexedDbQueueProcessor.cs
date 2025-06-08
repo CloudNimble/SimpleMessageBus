@@ -13,6 +13,11 @@ namespace CloudNimble.SimpleMessageBus.Dispatch.IndexedDb
     /// <summary>
     /// Processes queue items stored in an IndexedDB database and dispatches them to all <see cref="IMessageHandler">IMessageHandlers</see> registered with the DI container.
     /// </summary>
+    /// <remarks>
+    /// This processor is designed for Blazor WebAssembly applications where IndexedDB provides client-side
+    /// persistent storage for message queuing. It uses a background processing model with a blocking collection
+    /// to handle messages asynchronously while maintaining proper resource disposal.
+    /// </remarks>
     public class IndexedDbQueueProcessor : IQueueProcessor, IDisposable
     {
 

@@ -1,19 +1,24 @@
 using Amazon.SQS;
 using Amazon.SQS.Model;
+using CloudNimble.SimpleMessageBus.Amazon.Core;
 using CloudNimble.SimpleMessageBus.Core;
-using CloudNimble.SimpleMessageBus.Publish.Amazon;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace CloudNimble.SimpleMessageBus.Publish
+namespace CloudNimble.SimpleMessageBus.Publish.Amazon
 {
 
     /// <summary>
     /// Manages the process of publishing MessageBus messages to Amazon SQS.
     /// </summary>
+    /// <remarks>
+    /// This publisher integrates with Amazon SQS to provide reliable, scalable message queuing
+    /// in AWS environments. It handles message serialization, queue URL resolution, and
+    /// supports both standard and FIFO queues depending on configuration.
+    /// </remarks>
     public class AmazonSQSMessagePublisher : IMessagePublisher
     {
 

@@ -99,7 +99,7 @@
 	</ItemGroup>
 
 	<PropertyGroup>
-		<StandardTestTfms>net472;net9.0;net8.0;net6.0;</StandardTestTfms>
+		<StandardTestTfms>net472;net10.0;net9.0;net8.0;</StandardTestTfms>
 	</PropertyGroup>
 
 	<ItemGroup Condition=" $(IsTestProject) != 'true' and $(IsSampleProject) != 'true' and $(IsTemplateProject) != 'true' ">
@@ -115,7 +115,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<!--<None Include="$(MSBuildThisFileDirectory)simplemessagebus-logo.png" Pack="true" PackagePath="\" Condition="'$(IsTestProject)' != 'true'" />-->
+		<None Include="$(MSBuildThisFileDirectory)simplemessagebus.png" Pack="true" PackagePath="\" Condition="'$(IsTestProject)' != 'true'" />
 		<None Include="readme.md" Pack="true" PackagePath="\" Condition="$(IncludeReadmeFile) == 'true'" />
 	</ItemGroup>
 

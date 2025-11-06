@@ -1,0 +1,323 @@
+---
+title: SimpleMessageBusFileProcessor
+description: "Default file processor used by [FileTriggerAttribute](https://learn.microsoft.com/dotnet/api/microsoft.azure.webjobs.filetriggerattribute)."
+icon: file-brackets-curly
+keywords: ['SimpleMessageBusFileProcessor', 'CloudNimble.SimpleMessageBus.Dispatch.Triggers.SimpleMessageBusFileProcessor', 'CloudNimble.SimpleMessageBus.Dispatch.Triggers', 'class', 'System.Object']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Dispatch.FileSystem.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Dispatch.Triggers
+
+**Inheritance:** System.Object
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Dispatch.Triggers.SimpleMessageBusFileProcessor
+```
+
+## Summary
+
+Default file processor used by [FileTriggerAttribute](https://learn.microsoft.com/dotnet/api/microsoft.azure.webjobs.filetriggerattribute).
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+
+Constructs a new instance.
+
+#### Syntax
+
+```csharp
+public SimpleMessageBusFileProcessor(CloudNimble.SimpleMessageBus.Dispatch.Triggers.SimpleMessageBusFileProcessorFactoryContext context)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `context` | `CloudNimble.SimpleMessageBus.Dispatch.Triggers.SimpleMessageBusFileProcessorFactoryContext` | The [SimpleMessageBusFileProcessorFactoryContext](/api-reference/CloudNimble/SimpleMessageBus/Dispatch/Triggers/SimpleMessageBusFileProcessorFactoryContext) to use. |
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public Object()
+```
+
+## Properties
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  InstanceId <DocsBadge text="Virtual" variant="warning" />
+
+Gets the current role instance ID. In Azure WebApps, this will be the
+            WEBSITE_INSTANCE_ID. In non Azure scenarios, this will default to the
+            Process ID.
+
+#### Syntax
+
+```csharp
+public virtual string InstanceId { get; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MaxDegreeOfParallelism <DocsBadge text="Virtual" variant="warning" />
+
+Gets the maximum degree of parallelism that will be used
+            when processing files concurrently.
+
+#### Syntax
+
+```csharp
+public virtual int MaxDegreeOfParallelism { get; }
+```
+
+#### Property Value
+
+Type: `int`
+
+#### Remarks
+
+Files are added to an internal processing queue as file events
+            are detected, and they're processed in parallel based on this setting.
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MaxProcessCount <DocsBadge text="Virtual" variant="warning" />
+
+Gets the maximum number of times file processing will
+            be attempted for a file.
+
+#### Syntax
+
+```csharp
+public virtual int MaxProcessCount { get; }
+```
+
+#### Property Value
+
+Type: `int`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MaxQueueSize <DocsBadge text="Virtual" variant="warning" />
+
+Gets the bounds on the maximum number of files that can be queued
+            up for processing at one time. When set to -1, the work queue is
+            unbounded.
+
+#### Syntax
+
+```csharp
+public virtual int MaxQueueSize { get; }
+```
+
+#### Property Value
+
+Type: `int`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  StatusFileExtension <DocsBadge text="Virtual" variant="warning" />
+
+Gets the file extension that will be used for the status files
+            that are created for processed files.
+
+#### Syntax
+
+```csharp
+public virtual string StatusFileExtension { get; }
+```
+
+#### Property Value
+
+Type: `string`
+
+## Methods
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Cleanup <DocsBadge text="Virtual" variant="warning" />
+
+Perform any required cleanup. This includes deleting processed files
+            (when [AutoDelete](https://learn.microsoft.com/dotnet/api/microsoft.azure.webjobs.filetriggerattribute.autodelete) is True).
+
+#### Syntax
+
+```csharp
+public virtual void Cleanup()
+```
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  CleanupProcessedFiles <DocsBadge text="Virtual" variant="warning" />
+
+Clean up any files that have been fully processed
+
+#### Syntax
+
+```csharp
+public virtual void CleanupProcessedFiles()
+```
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual bool Equals(object obj)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `obj` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool Equals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual int GetHashCode()
+```
+
+#### Returns
+
+Type: `int`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetType <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public System.Type GetType()
+```
+
+#### Returns
+
+Type: `System.Type`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+protected internal object MemberwiseClone()
+```
+
+#### Returns
+
+Type: `object`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ProcessFileAsync <DocsBadge text="Virtual" variant="warning" />
+
+Process the file indicated by the specified [FileSystemEventArgs](https://learn.microsoft.com/dotnet/api/system.io.filesystemeventargs).
+
+#### Syntax
+
+```csharp
+public virtual System.Threading.Tasks.Task<bool> ProcessFileAsync(System.IO.FileSystemEventArgs eventArgs, System.Threading.CancellationToken cancellationToken)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `eventArgs` | `System.IO.FileSystemEventArgs` | The [FileSystemEventArgs](https://learn.microsoft.com/dotnet/api/system.io.filesystemeventargs) indicating the file to process. |
+| `cancellationToken` | `System.Threading.CancellationToken` | The [CancellationToken](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken) to use. |
+
+#### Returns
+
+Type: `System.Threading.Tasks.Task<bool>`
+A [Task](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task) that returns true if the file was processed successfully, false otherwise.
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool ReferenceEquals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ShouldProcessFile <DocsBadge text="Virtual" variant="warning" />
+
+Determines whether the specified file should be processed.
+
+#### Syntax
+
+```csharp
+public virtual bool ShouldProcessFile(string filePath)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `filePath` | `string` | The candidate file for processing. |
+
+#### Returns
+
+Type: `bool`
+True if the file should be processed, false otherwise.
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual string ToString()
+```
+
+#### Returns
+
+Type: `string?`
+

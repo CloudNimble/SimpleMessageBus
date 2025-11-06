@@ -1,0 +1,561 @@
+---
+title: Azure Storage Queue Provider
+description: 'Configure SimpleMessageBus with Azure Storage Queues'
+---
+
+The Azure Storage Queue provider offers a cost-effective, reliable messaging solution for applications using the Azure ecosystem. It's perfect for high-volume scenarios where message ordering is not critical.
+
+## Installation
+
+Install the Azure Storage Queue packages:
+
+```bash
+dotnet add package SimpleMessageBus.Publish.Azure
+dotnet add package SimpleMessageBus.Dispatch.Azure
+```
+
+## Basic Configuration
+
+### Publishing Configuration
+
+Configure the publisher in your startup:
+
+```csharp
+using SimpleMessageBus.Publish.Azure.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+    options.DefaultQueueName = "messages";
+});
+
+var app = builder.Build();
+```
+
+### Dispatching Configuration
+
+Configure the message dispatcher:
+
+```csharp
+using SimpleMessageBus.Dispatch.Azure.Extensions;
+
+builder.Services.AddSimpleMessageBusAzureStorageDispatcher(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+    options.DefaultQueueName = "messages";
+    options.PollingInterval = TimeSpan.FromSeconds(5);
+    options.MaxConcurrentMessages = 32;
+});
+```
+
+## Configuration Options
+
+### AzureStorageQueueOptions
+
+<AccordionGroup>
+  <Accordion title="Connection Settings">
+    ```csharp
+    public class AzureStorageQueueOptions
+    {
+        // Connection string to Azure Storage account
+        public string ConnectionString { get; set; }
+        
+        // Alternative: Use individual components
+        public string AccountName { get; set; }
+        public string AccountKey { get; set; }
+        public string SasToken { get; set; }
+        
+        // Default queue name if not specified per message
+        public string DefaultQueueName { get; set; } = "messages";
+        
+        // Whether to create queues automatically
+        public bool CreateQueuesAutomatically { get; set; } = true;
+    }
+    ```
+  </Accordion>
+  
+  <Accordion title="Message Processing">
+    ```csharp
+    public class AzureStorageQueueDispatcherOptions : AzureStorageQueueOptions
+    {
+        // How often to poll for new messages
+        public TimeSpan PollingInterval { get; set; } = TimeSpan.FromSeconds(5);
+        
+        // Maximum messages to retrieve per poll
+        public int BatchSize { get; set; } = 32;
+        
+        // Maximum concurrent message processing
+        public int MaxConcurrentMessages { get; set; } = 32;
+        
+        // Message visibility timeout
+        public TimeSpan VisibilityTimeout { get; set; } = TimeSpan.FromMinutes(5);
+        
+        // Maximum retry attempts for failed messages
+        public int MaxRetryAttempts { get; set; } = 3;
+        
+        // Delay between retry attempts
+        public TimeSpan RetryDelay { get; set; } = TimeSpan.FromSeconds(30);
+    }
+    ```
+  </Accordion>
+  
+  <Accordion title="Advanced Settings">
+    ```csharp
+    public class AzureStorageQueueAdvancedOptions
+    {
+        // Custom queue name resolver
+        public IQueueNameResolver QueueNameResolver { get; set; }
+        
+        // Message serialization options
+        public JsonSerializerOptions SerializerOptions { get; set; }
+        
+        // Enable poison message handling
+        public bool EnablePoisonMessageHandling { get; set; } = true;
+        
+        // Poison message queue suffix
+        public string PoisonQueueSuffix { get; set; } = "-poison";
+        
+        // Message time-to-live
+        public TimeSpan? MessageTimeToLive { get; set; }
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Connection String Formats
+
+Azure Storage supports multiple connection string formats:
+
+### Standard Connection String
+
+```json
+{
+  "ConnectionStrings": {
+    "AzureStorage": "DefaultEndpointsProtocol=https;AccountName=myaccount;AccountKey=mykey;EndpointSuffix=core.windows.net"
+  }
+}
+```
+
+### Managed Identity (Recommended for Production)
+
+```json
+{
+  "ConnectionStrings": {
+    "AzureStorage": "DefaultEndpointsProtocol=https;AccountName=myaccount;EndpointSuffix=core.windows.net"
+  }
+}
+```
+
+Configure managed identity in your application:
+
+```csharp
+builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+    // Managed identity will be used automatically
+});
+```
+
+### Development Storage Emulator
+
+For local development with Azurite:
+
+```json
+{
+  "ConnectionStrings": {
+    "AzureStorage": "UseDevelopmentStorage=true"
+  }
+}
+```
+
+## Queue Naming Strategies
+
+### Default Queue Names
+
+Use a default queue for all messages:
+
+```csharp
+options.DefaultQueueName = "simplemessagebus-messages";
+```
+
+### Custom Queue Name Resolver
+
+Implement custom queue naming logic:
+
+```csharp
+public class CustomQueueNameResolver : IQueueNameResolver
+{
+    public string ResolveQueueName<T>(T message) where T : IMessage
+    {
+        // Route by message type
+        return typeof(T).Name.ToLowerInvariant() + "-queue";
+    }
+    
+    public string ResolveQueueName(Type messageType)
+    {
+        return messageType.Name.ToLowerInvariant() + "-queue";
+    }
+}
+
+// Register the resolver
+builder.Services.AddSingleton<IQueueNameResolver, CustomQueueNameResolver>();
+```
+
+### Environment-Based Naming
+
+Include environment in queue names:
+
+```csharp
+var environment = builder.Environment.EnvironmentName.ToLowerInvariant();
+options.DefaultQueueName = $"messages-{environment}";
+```
+
+## Message Handling Patterns
+
+### Simple Handler
+
+```csharp
+public class OrderProcessedHandler : IMessageHandler<OrderProcessedMessage>
+{
+    private readonly ILogger<OrderProcessedHandler> _logger;
+
+    public OrderProcessedHandler(ILogger<OrderProcessedHandler> logger)
+    {
+        _logger = logger;
+    }
+
+    public async Task HandleAsync(OrderProcessedMessage message)
+    {
+        _logger.LogInformation("Processing order {OrderId}", message.OrderId);
+        
+        // Your processing logic here
+        await ProcessOrder(message);
+    }
+}
+```
+
+### Error Handling
+
+```csharp
+public class RobustOrderHandler : IMessageHandler<OrderMessage>
+{
+    public async Task HandleAsync(OrderMessage message)
+    {
+        try
+        {
+            await ProcessOrder(message);
+        }
+        catch (ValidationException ex)
+        {
+            // Don't retry validation errors
+            _logger.LogWarning(ex, "Validation failed for order {OrderId}", message.OrderId);
+            return; // Message will be marked as processed
+        }
+        catch (HttpRequestException ex)
+        {
+            // Retry transient HTTP errors
+            _logger.LogError(ex, "HTTP error processing order {OrderId}", message.OrderId);
+            throw; // Message will be retried
+        }
+    }
+}
+```
+
+## Azure Functions Integration
+
+### Queue Trigger Function
+
+Use Azure Functions with Storage Queue triggers:
+
+```csharp
+public class QueueFunctions
+{
+    private readonly IMessageDispatcher _dispatcher;
+
+    public QueueFunctions(IMessageDispatcher dispatcher)
+    {
+        _dispatcher = dispatcher;
+    }
+
+    [FunctionName("ProcessMessage")]
+    public async Task ProcessMessage(
+        [QueueTrigger("messages")] CloudQueueMessage queueMessage,
+        ILogger log)
+    {
+        try
+        {
+            var envelope = JsonSerializer.Deserialize<MessageEnvelope>(queueMessage.AsString);
+            await _dispatcher.DispatchAsync(envelope);
+        }
+        catch (Exception ex)
+        {
+            log.LogError(ex, "Failed to process message {MessageId}", queueMessage.Id);
+            throw;
+        }
+    }
+}
+```
+
+### Function Startup Configuration
+
+```csharp
+[assembly: FunctionsStartup(typeof(Startup))]
+
+public class Startup : FunctionsStartup
+{
+    public override void Configure(IFunctionsHostBuilder builder)
+    {
+        builder.Services.AddSimpleMessageBusAzureStorageDispatcher(options =>
+        {
+            options.ConnectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
+        });
+        
+        // Register message handlers
+        builder.Services.AddScoped<IMessageHandler<OrderMessage>, OrderHandler>();
+    }
+}
+```
+
+## Monitoring and Observability
+
+### Built-in Logging
+
+SimpleMessageBus logs important events:
+
+```csharp
+builder.Services.AddLogging(logging =>
+{
+    logging.AddConsole();
+    logging.AddApplicationInsights();
+});
+```
+
+### Custom Metrics
+
+Track custom metrics:
+
+```csharp
+public class MetricsOrderHandler : IMessageHandler<OrderMessage>
+{
+    private readonly IMetrics _metrics;
+
+    public async Task HandleAsync(OrderMessage message)
+    {
+        using var activity = _metrics.StartActivity("ProcessOrder");
+        activity?.SetTag("order.id", message.OrderId);
+        
+        var stopwatch = Stopwatch.StartNew();
+        
+        try
+        {
+            await ProcessOrder(message);
+            _metrics.Counter("orders.processed").Add(1);
+        }
+        catch (Exception)
+        {
+            _metrics.Counter("orders.failed").Add(1);
+            throw;
+        }
+        finally
+        {
+            _metrics.Histogram("orders.duration").Record(stopwatch.ElapsedMilliseconds);
+        }
+    }
+}
+```
+
+## Performance Optimization
+
+### Batch Processing
+
+Process multiple messages efficiently:
+
+```csharp
+builder.Services.AddSimpleMessageBusAzureStorageDispatcher(options =>
+{
+    options.BatchSize = 32; // Retrieve up to 32 messages per poll
+    options.MaxConcurrentMessages = 64; // Process up to 64 messages concurrently
+    options.PollingInterval = TimeSpan.FromSeconds(1); // Poll more frequently
+});
+```
+
+### Connection Pooling
+
+Azure Storage client automatically pools connections, but you can optimize:
+
+```csharp
+builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
+{
+    options.ConnectionString = connectionString;
+    // The client will automatically use connection pooling
+});
+```
+
+## Security Best Practices
+
+### Managed Identity (Recommended)
+
+Use Azure Managed Identity instead of connection strings:
+
+```csharp
+// In Azure, configure managed identity
+builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
+{
+    options.AccountName = "mystorageaccount";
+    // No connection string needed - managed identity used automatically
+});
+```
+
+### Least Privilege Access
+
+Configure minimal required permissions:
+
+- **Publisher**: `Storage Queue Data Message Sender`
+- **Dispatcher**: `Storage Queue Data Message Processor`
+
+### Network Security
+
+Use private endpoints and VNets:
+
+```csharp
+options.ConnectionString = "DefaultEndpointsProtocol=https;AccountName=myaccount;QueueEndpoint=https://myaccount.privatelink.queue.core.windows.net/;SharedAccessSignature=...";
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Connection Issues">
+    **Symptoms**: `StorageException` with authentication errors
+    
+    **Solutions**:
+    - Verify connection string format
+    - Check account name and key
+    - Ensure storage account exists
+    - Verify network connectivity
+    
+    ```csharp
+    // Test connection
+    var client = new QueueServiceClient(connectionString);
+    var queues = await client.GetQueuesAsync().ToListAsync();
+    ```
+  </Accordion>
+  
+  <Accordion title="Performance Issues">
+    **Symptoms**: Slow message processing, high latency
+    
+    **Solutions**:
+    - Increase `MaxConcurrentMessages`
+    - Reduce `PollingInterval`
+    - Increase `BatchSize`
+    - Use multiple queue processors
+    
+    ```csharp
+    options.MaxConcurrentMessages = Environment.ProcessorCount * 4;
+    options.BatchSize = 32;
+    options.PollingInterval = TimeSpan.FromSeconds(1);
+    ```
+  </Accordion>
+  
+  <Accordion title="Message Size Limits">
+    **Symptoms**: `RequestEntityTooLarge` exceptions
+    
+    **Solutions**:
+    - Azure Storage Queue limit: 64 KB
+    - Store large payloads in Blob Storage
+    - Reference blobs in messages
+    
+    ```csharp
+    public class LargeMessage : IMessage
+    {
+        public string BlobUrl { get; set; } // Reference to blob
+        public string MessageId { get; set; }
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Complete Example
+
+Here's a complete working example:
+
+```csharp
+// Program.cs
+using SimpleMessageBus.Publish.Azure.Extensions;
+using SimpleMessageBus.Dispatch.Azure.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configure Azure Storage Queue
+builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+    options.DefaultQueueName = "orders";
+});
+
+builder.Services.AddSimpleMessageBusAzureStorageDispatcher(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+    options.DefaultQueueName = "orders";
+    options.MaxConcurrentMessages = 16;
+    options.PollingInterval = TimeSpan.FromSeconds(2);
+});
+
+// Register handlers
+builder.Services.AddScoped<IMessageHandler<OrderCreatedMessage>, OrderCreatedHandler>();
+
+var app = builder.Build();
+
+// API endpoint
+app.MapPost("/orders", async (CreateOrderRequest request, IMessagePublisher publisher) =>
+{
+    var orderId = Guid.NewGuid().ToString();
+    
+    // Publish message
+    await publisher.PublishAsync(new OrderCreatedMessage
+    {
+        OrderId = orderId,
+        CustomerId = request.CustomerId,
+        TotalAmount = request.TotalAmount,
+        CreatedAt = DateTime.UtcNow
+    });
+    
+    return Results.Ok(new { OrderId = orderId });
+});
+
+app.Run();
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Message Design"
+    icon="envelope"
+    href="/concepts/messages"
+  >
+    Learn message design best practices
+  </Card>
+  <Card
+    title="Error Handling"
+    icon="shield-exclamation"
+    href="/guides/error-handling"
+  >
+    Implement robust error handling
+  </Card>
+  <Card
+    title="Testing"
+    icon="flask"
+    href="/guides/testing"
+  >
+    Test your Azure Storage Queue integration
+  </Card>
+  <Card
+    title="Performance"
+    icon="gauge-high"
+    href="/guides/performance"
+  >
+    Optimize for high throughput
+  </Card>
+</CardGroup>

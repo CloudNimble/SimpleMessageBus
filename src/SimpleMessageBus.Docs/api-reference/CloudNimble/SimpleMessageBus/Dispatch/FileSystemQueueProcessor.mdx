@@ -1,0 +1,216 @@
+---
+title: FileSystemQueueProcessor
+description: "Processes queue items stored in the local file system and dispatches them to all [IMessageHandler](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessageH..."
+icon: file-brackets-curly
+keywords: ['FileSystemQueueProcessor', 'CloudNimble.SimpleMessageBus.Dispatch.FileSystemQueueProcessor', 'CloudNimble.SimpleMessageBus.Dispatch', 'class', 'System.Object', 'CloudNimble.SimpleMessageBus.Dispatch.IQueueProcessor']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Dispatch.FileSystem.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Dispatch
+
+**Inheritance:** System.Object
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Dispatch.FileSystemQueueProcessor
+```
+
+## Summary
+
+Processes queue items stored in the local file system and dispatches them to all [IMessageHandler](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler)IMessageHandlers&lt;/see&gt; registered with the DI container.
+
+## Remarks
+
+This processor monitors a configured file system directory for new message files and automatically
+            processes them when they appear. It supports three-folder operation: queue (incoming), completed
+            (successfully processed), and error (failed processing). The processor integrates with Azure WebJobs
+            for file system monitoring and automatic triggering.
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+
+The default constructor called by the Dependency Injection container.
+
+#### Syntax
+
+```csharp
+public FileSystemQueueProcessor(Microsoft.Extensions.Options.IOptions<CloudNimble.SimpleMessageBus.Core.FileSystemOptions> options, CloudNimble.SimpleMessageBus.Dispatch.IMessageDispatcher dispatcher, Microsoft.Extensions.DependencyInjection.IServiceScopeFactory serviceScopeFactory)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `options` | `Microsoft.Extensions.Options.IOptions<CloudNimble.SimpleMessageBus.Core.FileSystemOptions>` | The injected [IOptions`1](https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1) specifying the options required to leverage the local file system as the SimpleMessageBus backing queue. |
+| `dispatcher` | `CloudNimble.SimpleMessageBus.Dispatch.IMessageDispatcher` | The message dispatcher to route messages to handlers. |
+| `serviceScopeFactory` | `Microsoft.Extensions.DependencyInjection.IServiceScopeFactory` | The Dependency Injection container's [IServiceProvider](https://learn.microsoft.com/dotnet/api/system.iserviceprovider) instance, so that a "per-request" scope can be created that gives each [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope)
+            its own set of isolated dependencies. |
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public Object()
+```
+
+## Methods
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual bool Equals(object obj)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `obj` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool Equals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual int GetHashCode()
+```
+
+#### Returns
+
+Type: `int`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetType <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public System.Type GetType()
+```
+
+#### Returns
+
+Type: `System.Type`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+protected internal object MemberwiseClone()
+```
+
+#### Returns
+
+Type: `object`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ProcessQueue
+
+Processes a message file when it appears in the queue directory.
+
+#### Syntax
+
+```csharp
+public System.Threading.Tasks.Task ProcessQueue(string messageEnvelopeJson, System.IO.FileSystemEventArgs fileTrigger, Microsoft.Extensions.Logging.ILogger logger)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `messageEnvelopeJson` | `string` | The JSON content of the message envelope file. |
+| `fileTrigger` | `System.IO.FileSystemEventArgs` | The file system event that triggered this processing. |
+| `logger` | `Microsoft.Extensions.Logging.ILogger` | The logger instance for this processing operation. |
+
+#### Returns
+
+Type: `System.Threading.Tasks.Task`
+
+#### Remarks
+
+This method is triggered automatically by the Azure WebJobs framework when files are created
+            or renamed in the queue directory. It deserializes the message and dispatches it to handlers.
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool ReferenceEquals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual string ToString()
+```
+
+#### Returns
+
+Type: `string?`
+
+## Related APIs
+
+- CloudNimble.SimpleMessageBus.Dispatch.IQueueProcessor
+

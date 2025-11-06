@@ -1,0 +1,35 @@
+---
+title: AzureStorageQueueEncoding
+description: "Determines how QueueMessage.Body is represented in HTTP requests and responses."
+icon: list-ol
+tag: "ENUM"
+keywords: ['AzureStorageQueueEncoding', 'CloudNimble.SimpleMessageBus.Core.AzureStorageQueueEncoding', 'CloudNimble.SimpleMessageBus.Core', 'class', 'System.Enum']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Core.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Core
+
+**Inheritance:** System.Enum
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Core.AzureStorageQueueEncoding
+```
+
+## Summary
+
+Determines how QueueMessage.Body is represented in HTTP requests and responses.
+
+## Values
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `None` | 0 | The QueueMessage.Body is represented verbatim in HTTP requests and responses. I.e. message is not transformed. |
+| `Base64` | 1 | The QueueMessage.Body is represented as Base64 encoded string in HTTP requests and responses. |
+

@@ -1,0 +1,72 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Core/">
+    <Project Path="SimpleMessageBus.Core/SimpleMessageBus.Core.csproj" />
+    <Project Path="SimpleMessageBus.Dispatch/SimpleMessageBus.Dispatch.csproj" />
+    <Project Path="SimpleMessageBus.Hosting/SimpleMessageBus.Hosting.csproj" />
+    <Project Path="SimpleMessageBus.Publish/SimpleMessageBus.Publish.csproj" />
+  </Folder>
+  <Folder Name="/Core/Amazon/">
+    <Project Path="SimpleMessageBus.Amazon.Core/SimpleMessageBus.Amazon.Core.csproj" />
+    <Project Path="SimpleMessageBus.Dispatch.Amazon/SimpleMessageBus.Dispatch.Amazon.csproj" />
+    <Project Path="SimpleMessageBus.Publish.Amazon/SimpleMessageBus.Publish.Amazon.csproj" />
+  </Folder>
+  <Folder Name="/Core/Azure/">
+    <Project Path="SimpleMessageBus.Dispatch.Azure/SimpleMessageBus.Dispatch.Azure.csproj" />
+    <Project Path="SimpleMessageBus.Publish.Azure/SimpleMessageBus.Publish.Azure.csproj" />
+  </Folder>
+  <Folder Name="/Core/FileSystem/">
+    <Project Path="SimpleMessageBus.Dispatch.FileSystem/SimpleMessageBus.Dispatch.FileSystem.csproj" />
+  </Folder>
+  <Folder Name="/Core/IndexedDb/">
+    <Project Path="SimpleMessageBus.Dispatch.IndexedDb/SimpleMessageBus.Dispatch.IndexedDb.csproj" />
+    <Project Path="SimpleMessageBus.IndexedDb.Core/SimpleMessageBus.IndexedDb.Core.csproj" />
+    <Project Path="SimpleMessageBus.Publish.IndexedDb/SimpleMessageBus.Publish.IndexedDb.csproj" />
+  </Folder>
+  <Folder Name="/Docs/">
+    <Project Path="SimpleMessageBus.Docs/SimpleMessageBus.Docs.docsproj" Type="C#" />
+  </Folder>
+  <Folder Name="/Samples/">
+    <Project Path="SimpleMessageBus.Samples.AzureWebJobs/SimpleMessageBus.Samples.AzureWebJobs.csproj" />
+    <Project Path="SimpleMessageBus.Samples.Blazor.WebAssembly/SimpleMessageBus.Samples.Blazor.WebAssembly.csproj" />
+    <Project Path="SimpleMessageBus.Samples.Blazor.WorkerService/SimpleMessageBus.Samples.Blazor.WorkerService.csproj" />
+    <Project Path="SimpleMessageBus.Samples.Core/SimpleMessageBus.Samples.Core.csproj" />
+    <Project Path="SimpleMessageBus.Samples.ExternalTriggers/SimpleMessageBus.Samples.ExternalTriggers.csproj" />
+    <Project Path="SimpleMessageBus.Samples.OnPrem/SimpleMessageBus.Samples.OnPrem.csproj" />
+    <Project Path="SimpleMessageBus.Samples.SimpleClientApp/SimpleMessageBus.Samples.SimpleClientApp.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="../.claude/settings.local.json" />
+    <File Path="../CLAUDE.md" />
+    <File Path="../README.md" />
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="global.json" />
+    <File Path="simplemessagebus.snk" />
+  </Folder>
+  <Folder Name="/Templates/">
+    <Project Path="SimpleMessageBus.Templates.AzureWebJob/SimpleMessageBus.Templates.AzureWebJob.csproj" />
+    <Project Path="SimpleMessageBus.Templates.Core/SimpleMessageBus.Templates.Core.csproj" />
+    <Project Path="SimpleMessageBus.Templates.Dispatch/SimpleMessageBus.Templates.Dispatch.csproj" />
+    <Project Path="SimpleMessageBus.Templates.Package/SimpleMessageBus.Templates.Projects.csproj" />
+    <Project Path="SimpleMessageBus.Templates.WindowsService/SimpleMessageBus.Templates.WindowsService.csproj" />
+  </Folder>
+  <Folder Name="/Testing/">
+    <Project Path="SimpleMessageBus.Breakdance/SimpleMessageBus.Breakdance.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="SimpleMessageBus.Tests.Core/SimpleMessageBus.Tests.Core.csproj" />
+    <Project Path="SimpleMessageBus.Tests.Dispatch.Azure/SimpleMessageBus.Tests.Dispatch.Azure.csproj" />
+    <Project Path="SimpleMessageBus.Tests.Dispatch.FileSystem/SimpleMessageBus.Tests.Dispatch.FileSystem.csproj" />
+    <Project Path="SimpleMessageBus.Tests.Dispatch/SimpleMessageBus.Tests.Dispatch.csproj" />
+    <Project Path="SimpleMessageBus.Tests.Publish/SimpleMessageBus.Tests.Publish.csproj" />
+    <Project Path="SimpleMessageBus.Tests.Shared/SimpleMessageBus.Tests.Shared.csproj" />
+  </Folder>
+  <Folder Name="/Tools/">
+    <Project Path="SimpleMessageBus.Tools/SimpleMessageBus.Tools.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,211 @@
+---
+title: ParallelMessageDispatcher
+description: "An [IMessageDispatcher](/api-reference/CloudNimble/SimpleMessageBus/Dispatch/IMessageDispatcher) implementation that processes the messages in parallel, rega..."
+icon: file-brackets-curly
+keywords: ['ParallelMessageDispatcher', 'CloudNimble.SimpleMessageBus.Dispatch.ParallelMessageDispatcher', 'CloudNimble.SimpleMessageBus.Dispatch', 'class', 'System.Object', 'CloudNimble.SimpleMessageBus.Dispatch.IMessageDispatcher']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Dispatch.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Dispatch
+
+**Inheritance:** System.Object
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Dispatch.ParallelMessageDispatcher
+```
+
+## Summary
+
+An [IMessageDispatcher](/api-reference/CloudNimble/SimpleMessageBus/Dispatch/IMessageDispatcher) implementation that processes the messages in parallel, regardless of the order the [IMessageHandler](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler)IMessageHandlers&lt;/see&gt; 
+            were registered with the Dependency Injection container.
+
+## Remarks
+
+This dispatcher invokes all matching message handlers concurrently using parallel execution. This provides
+            better performance when handlers are independent and don't rely on execution order. However, it should be
+            used carefully when handlers have side effects or shared dependencies that aren't thread-safe.
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+
+Initializes a new instance of the [ParallelMessageDispatcher](/api-reference/CloudNimble/SimpleMessageBus/Dispatch/ParallelMessageDispatcher) class.
+
+#### Syntax
+
+```csharp
+public ParallelMessageDispatcher(System.Collections.Generic.IEnumerable<CloudNimble.SimpleMessageBus.Core.IMessageHandler> messageHandlers)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `messageHandlers` | `System.Collections.Generic.IEnumerable<CloudNimble.SimpleMessageBus.Core.IMessageHandler>` | The collection of message handlers to dispatch to. |
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public Object()
+```
+
+## Methods
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Dispatch
+
+Sends the [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) to the [IMessageHandler](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler)MessageHandlers&lt;/see&gt; registered to that type, for processing.
+
+#### Syntax
+
+```csharp
+public System.Threading.Tasks.Task Dispatch(CloudNimble.SimpleMessageBus.Core.MessageEnvelope messageEnvelope)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `messageEnvelope` | `CloudNimble.SimpleMessageBus.Core.MessageEnvelope` | The [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) instance to be processed. |
+
+#### Returns
+
+Type: `System.Threading.Tasks.Task`
+
+#### Remarks
+
+Handlers are invoked concurrently using parallel execution. The method returns when all handlers
+            have completed. If any handler throws an exception, other handlers will continue executing.
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual bool Equals(object obj)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `obj` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool Equals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual int GetHashCode()
+```
+
+#### Returns
+
+Type: `int`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetType <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public System.Type GetType()
+```
+
+#### Returns
+
+Type: `System.Type`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+protected internal object MemberwiseClone()
+```
+
+#### Returns
+
+Type: `object`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool ReferenceEquals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual string ToString()
+```
+
+#### Returns
+
+Type: `string?`
+
+## Related APIs
+
+- CloudNimble.SimpleMessageBus.Dispatch.IMessageDispatcher
+

@@ -1,0 +1,718 @@
+---
+title: Configuration Guide
+description: 'Complete guide to configuring SimpleMessageBus in your application'
+---
+
+This guide covers all aspects of configuring SimpleMessageBus in your .NET applications, from basic setup to advanced scenarios.
+
+## Basic Configuration
+
+### ASP.NET Core Application
+
+Configure SimpleMessageBus in your `Program.cs` file:
+
+```csharp
+using SimpleMessageBus.Publish.Azure.Extensions;
+using SimpleMessageBus.Dispatch.Azure.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configure publisher
+builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+    options.DefaultQueueName = "messages";
+});
+
+// Configure dispatcher
+builder.Services.AddSimpleMessageBusAzureStorageDispatcher(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+    options.MaxConcurrentMessages = 32;
+    options.PollingInterval = TimeSpan.FromSeconds(5);
+});
+
+// Register message handlers
+builder.Services.AddScoped<IMessageHandler, OrderCreatedHandler>();
+
+var app = builder.Build();
+app.Run();
+```
+
+### Console Application
+
+For console applications, use the generic host:
+
+```csharp
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+
+var builder = Host.CreateApplicationBuilder(args);
+
+// Configure SimpleMessageBus
+builder.Services.AddSimpleMessageBusFileSystemPublisher(options =>
+{
+    options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "messages");
+});
+
+builder.Services.AddSimpleMessageBusFileSystemDispatcher(options =>
+{
+    options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "messages");
+});
+
+// Register handlers
+builder.Services.AddScoped<IMessageHandler, OrderHandler>();
+
+var host = builder.Build();
+await host.RunAsync();
+```
+
+## Provider-Specific Configuration
+
+### Azure Storage Queue
+
+<AccordionGroup>
+  <Accordion title="Basic Configuration">
+    ```csharp
+    services.AddSimpleMessageBusAzureStoragePublisher(options =>
+    {
+        options.ConnectionString = "DefaultEndpointsProtocol=https;AccountName=...";
+        options.DefaultQueueName = "messages";
+        options.CreateQueuesAutomatically = true;
+    });
+    
+    services.AddSimpleMessageBusAzureStorageDispatcher(options =>
+    {
+        options.ConnectionString = "DefaultEndpointsProtocol=https;AccountName=...";
+        options.DefaultQueueName = "messages";
+        options.PollingInterval = TimeSpan.FromSeconds(5);
+        options.MaxConcurrentMessages = 32;
+        options.VisibilityTimeout = TimeSpan.FromMinutes(5);
+    });
+    ```
+  </Accordion>
+  
+  <Accordion title="Managed Identity">
+    ```csharp
+    services.AddSimpleMessageBusAzureStoragePublisher(options =>
+    {
+        options.AccountName = "mystorageaccount";
+        // No connection string - uses managed identity
+        options.DefaultQueueName = "messages";
+    });
+    ```
+  </Accordion>
+  
+  <Accordion title="Custom Queue Naming">
+    ```csharp
+    services.AddSingleton<IQueueNameResolver, CustomQueueNameResolver>();
+    
+    public class CustomQueueNameResolver : IQueueNameResolver
+    {
+        public string ResolveQueueName<T>(T message) where T : IMessage
+        {
+            return $"{typeof(T).Name.ToLowerInvariant()}-queue";
+        }
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Amazon SQS
+
+<AccordionGroup>
+  <Accordion title="Access Key Configuration">
+    ```csharp
+    services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+    {
+        options.Region = "us-east-1";
+        options.AccessKey = "AKIAIOSFODNN7EXAMPLE";
+        options.SecretKey = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY";
+        options.DefaultQueueName = "messages";
+    });
+    ```
+  </Accordion>
+  
+  <Accordion title="IAM Role Configuration">
+    ```csharp
+    services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+    {
+        options.Region = "us-east-1";
+        options.UseInstanceProfile = true; // Use attached IAM role
+        options.DefaultQueueName = "messages";
+    });
+    ```
+  </Accordion>
+  
+  <Accordion title="FIFO Queue Configuration">
+    ```csharp
+    services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+    {
+        options.DefaultQueueName = "messages.fifo";
+        options.UseFifoQueues = true;
+        options.MessageGroupId = "default";
+        options.ContentBasedDeduplication = true;
+    });
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### File System
+
+<AccordionGroup>
+  <Accordion title="Basic Configuration">
+    ```csharp
+    services.AddSimpleMessageBusFileSystemPublisher(options =>
+    {
+        options.RootPath = @"C:\MessageQueue";
+        options.CreateDirectoriesAutomatically = true;
+    });
+    
+    services.AddSimpleMessageBusFileSystemDispatcher(options =>
+    {
+        options.RootPath = @"C:\MessageQueue";
+        options.PollingInterval = TimeSpan.FromSeconds(1);
+        options.ProcessedDirectory = "processed";
+        options.ErrorDirectory = "errors";
+    });
+    ```
+  </Accordion>
+  
+  <Accordion title="Azure Functions Integration">
+    ```csharp
+    [FunctionName("ProcessMessage")]
+    public async Task ProcessFileMessage(
+        [SimpleMessageBusFileTrigger("messages")] MessageEnvelope envelope,
+        ILogger log)
+    {
+        await _dispatcher.Dispatch(envelope);
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### IndexedDB (Blazor WebAssembly)
+
+```csharp
+// Program.cs in Blazor WebAssembly
+builder.Services.AddSimpleMessageBusIndexedDbPublisher(options =>
+{
+    options.DatabaseName = "MessageBusDB";
+    options.DatabaseVersion = 1;
+});
+
+builder.Services.AddSimpleMessageBusIndexedDbDispatcher(options =>
+{
+    options.DatabaseName = "MessageBusDB";
+    options.PollingInterval = TimeSpan.FromSeconds(2);
+});
+```
+
+## Environment-Based Configuration
+
+### Configuration by Environment
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+if (builder.Environment.IsDevelopment())
+{
+    // Use file system in development
+    builder.Services.AddSimpleMessageBusFileSystemPublisher(options =>
+    {
+        options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "dev-messages");
+    });
+    
+    builder.Services.AddSimpleMessageBusFileSystemDispatcher(options =>
+    {
+        options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "dev-messages");
+        options.PollingInterval = TimeSpan.FromSeconds(1);
+    });
+}
+else if (builder.Environment.IsStaging())
+{
+    // Use Azure Storage in staging
+    builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
+    {
+        options.ConnectionString = builder.Configuration.GetConnectionString("StagingStorage");
+        options.DefaultQueueName = "staging-messages";
+    });
+    
+    builder.Services.AddSimpleMessageBusAzureStorageDispatcher(options =>
+    {
+        options.ConnectionString = builder.Configuration.GetConnectionString("StagingStorage");
+        options.DefaultQueueName = "staging-messages";
+    });
+}
+else // Production
+{
+    // Use Amazon SQS in production
+    builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+    {
+        options.Region = builder.Configuration["AWS:Region"];
+        options.UseInstanceProfile = true;
+        options.DefaultQueueName = "production-messages";
+    });
+    
+    builder.Services.AddSimpleMessageBusAmazonSQSDispatcher(options =>
+    {
+        options.Region = builder.Configuration["AWS:Region"];
+        options.UseInstanceProfile = true;
+        options.DefaultQueueName = "production-messages";
+    });
+}
+```
+
+### Configuration with Feature Flags
+
+```csharp
+var useAmazonSQS = builder.Configuration.GetValue<bool>("Features:UseAmazonSQS");
+var useHighThroughput = builder.Configuration.GetValue<bool>("Features:HighThroughput");
+
+if (useAmazonSQS)
+{
+    builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+    {
+        builder.Configuration.GetSection("AmazonSQS").Bind(options);
+    });
+}
+else
+{
+    builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
+    {
+        builder.Configuration.GetSection("AzureStorage").Bind(options);
+    });
+}
+
+// Adjust concurrency based on feature flag
+builder.Services.Configure<DispatcherOptions>(options =>
+{
+    options.MaxConcurrentMessages = useHighThroughput ? 64 : 16;
+});
+```
+
+## Message Handler Registration
+
+### Manual Registration
+
+```csharp
+// Register individual handlers
+services.AddScoped<IMessageHandler, OrderCreatedHandler>();
+services.AddScoped<IMessageHandler, PaymentProcessedHandler>();
+services.AddScoped<IMessageHandler, InventoryReservedHandler>();
+```
+
+### Assembly Scanning
+
+```csharp
+// Register all handlers from current assembly
+services.Scan(scan => scan
+    .FromAssemblyOf<OrderCreatedHandler>()
+    .AddClasses(classes => classes.AssignableTo<IMessageHandler>())
+    .As<IMessageHandler>()
+    .WithScopedLifetime());
+
+// Register handlers from multiple assemblies
+services.Scan(scan => scan
+    .FromAssemblies(
+        Assembly.GetExecutingAssembly(),
+        Assembly.GetAssembly(typeof(ExternalHandler)))
+    .AddClasses(classes => classes.AssignableTo<IMessageHandler>())
+    .As<IMessageHandler>()
+    .WithScopedLifetime());
+```
+
+### Conditional Registration
+
+```csharp
+// Register handlers based on configuration
+if (builder.Configuration.GetValue<bool>("Features:OrderProcessing"))
+{
+    services.AddScoped<IMessageHandler, OrderCreatedHandler>();
+    services.AddScoped<IMessageHandler, OrderCancelledHandler>();
+}
+
+if (builder.Configuration.GetValue<bool>("Features:PaymentProcessing"))
+{
+    services.AddScoped<IMessageHandler, PaymentProcessedHandler>();
+    services.AddScoped<IMessageHandler, PaymentFailedHandler>();
+}
+```
+
+## Advanced Configuration
+
+### Multiple Providers
+
+Use different providers for different message types:
+
+```csharp
+// Configure multiple publishers with names
+services.AddSimpleMessageBusAzureStoragePublisher("orders", options =>
+{
+    options.ConnectionString = azureConnectionString;
+    options.DefaultQueueName = "orders";
+});
+
+services.AddSimpleMessageBusAmazonSQSPublisher("payments", options =>
+{
+    options.Region = "us-east-1";
+    options.UseInstanceProfile = true;
+    options.DefaultQueueName = "payments";
+});
+
+// Use named publishers
+public class OrderService
+{
+    private readonly IMessagePublisher _orderPublisher;
+    private readonly IMessagePublisher _paymentPublisher;
+
+    public OrderService(
+        [FromKeyedServices("orders")] IMessagePublisher orderPublisher,
+        [FromKeyedServices("payments")] IMessagePublisher paymentPublisher)
+    {
+        _orderPublisher = orderPublisher;
+        _paymentPublisher = paymentPublisher;
+    }
+
+    public async Task ProcessOrderAsync(Order order)
+    {
+        await _orderPublisher.PublishAsync(new OrderCreatedMessage { ... });
+        await _paymentPublisher.PublishAsync(new ProcessPaymentMessage { ... });
+    }
+}
+```
+
+### Custom Dispatcher Configuration
+
+Configure message dispatching behavior:
+
+```csharp
+// Parallel dispatcher (default)
+services.AddSimpleMessageBusParallelDispatcher(options =>
+{
+    options.MaxConcurrency = Environment.ProcessorCount * 2;
+    options.BatchSize = 10;
+});
+
+// Ordered dispatcher
+services.AddSimpleMessageBusOrderedDispatcher();
+
+// Custom dispatcher
+services.AddScoped<IMessageDispatcher, CustomMessageDispatcher>();
+```
+
+### Serialization Configuration
+
+Customize JSON serialization:
+
+```csharp
+services.Configure<JsonSerializerOptions>(options =>
+{
+    options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    options.WriteIndented = true;
+    options.Converters.Add(new JsonStringEnumConverter());
+});
+
+// Or configure per provider
+services.AddSimpleMessageBusAzureStoragePublisher(options =>
+{
+    options.SerializerOptions = new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+});
+```
+
+## Configuration Best Practices
+
+### 1. Use Configuration Sections
+
+Organize configuration in `appsettings.json`:
+
+```json
+{
+  "SimpleMessageBus": {
+    "Azure": {
+      "ConnectionString": "DefaultEndpointsProtocol=https;...",
+      "DefaultQueueName": "messages",
+      "MaxConcurrentMessages": 32,
+      "PollingInterval": "00:00:05"
+    },
+    "Amazon": {
+      "Region": "us-east-1",
+      "DefaultQueueName": "messages",
+      "UseFifoQueues": false,
+      "WaitTimeSeconds": 20
+    }
+  }
+}
+```
+
+```csharp
+services.AddSimpleMessageBusAzureStoragePublisher(options =>
+{
+    builder.Configuration.GetSection("SimpleMessageBus:Azure").Bind(options);
+});
+```
+
+### 2. Environment-Specific Settings
+
+Use different configuration files per environment:
+
+```json
+// appsettings.Development.json
+{
+  "SimpleMessageBus": {
+    "Provider": "FileSystem",
+    "FileSystem": {
+      "RootPath": "./dev-messages",
+      "PollingInterval": "00:00:01"
+    }
+  }
+}
+
+// appsettings.Production.json
+{
+  "SimpleMessageBus": {
+    "Provider": "AmazonSQS",
+    "Amazon": {
+      "Region": "us-east-1",
+      "UseInstanceProfile": true,
+      "WaitTimeSeconds": 20
+    }
+  }
+}
+```
+
+### 3. Secure Configuration
+
+Store sensitive values in Azure Key Vault or AWS Secrets Manager:
+
+```csharp
+// Azure Key Vault
+builder.Configuration.AddAzureKeyVault(
+    vaultUri: "https://myvault.vault.azure.net/",
+    credential: new DefaultAzureCredential());
+
+// AWS Secrets Manager
+builder.Configuration.AddSecretsManager(region: RegionEndpoint.USEast1);
+
+// Use in configuration
+services.AddSimpleMessageBusAzureStoragePublisher(options =>
+{
+    options.ConnectionString = builder.Configuration["SimpleMessageBus:ConnectionString"];
+});
+```
+
+### 4. Configuration Validation
+
+Validate configuration at startup:
+
+```csharp
+services.Configure<AzureStorageOptions>(
+    builder.Configuration.GetSection("SimpleMessageBus:Azure"));
+
+services.AddOptions<AzureStorageOptions>()
+    .Configure(builder.Configuration.GetSection("SimpleMessageBus:Azure"))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+public class AzureStorageOptions
+{
+    [Required]
+    public string ConnectionString { get; set; }
+    
+    [Required]
+    [RegularExpression(@"^[a-z0-9-]+$")]
+    public string DefaultQueueName { get; set; }
+    
+    [Range(1, 32)]
+    public int MaxConcurrentMessages { get; set; } = 16;
+}
+```
+
+## Monitoring and Observability Configuration
+
+### Logging
+
+Configure structured logging:
+
+```csharp
+builder.Services.AddLogging(logging =>
+{
+    logging.ClearProviders();
+    logging.AddConsole();
+    logging.AddApplicationInsights();
+    
+    // Filter SimpleMessageBus logs
+    logging.AddFilter("SimpleMessageBus", LogLevel.Information);
+});
+```
+
+### Metrics
+
+Configure metrics collection:
+
+```csharp
+builder.Services.AddMetrics();
+
+// Custom metrics
+services.AddSingleton<IMetrics>(provider =>
+{
+    var factory = provider.GetRequiredService<IMeterFactory>();
+    return factory.Create("SimpleMessageBus.Application");
+});
+```
+
+### Health Checks
+
+Add health checks for message bus components:
+
+```csharp
+services.AddHealthChecks()
+    .AddCheck<MessageBusHealthCheck>("messagebus")
+    .AddAzureQueueStorage(connectionString, "messages")
+    .AddSqs(options => { ... });
+```
+
+## Testing Configuration
+
+### Integration Tests
+
+Configure for integration testing:
+
+```csharp
+public class TestStartup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        // Use in-memory provider for tests
+        services.AddSimpleMessageBusInMemoryProvider();
+        
+        // Or use test containers
+        services.AddSimpleMessageBusAzureStoragePublisher(options =>
+        {
+            options.ConnectionString = "UseDevelopmentStorage=true";
+        });
+    }
+}
+```
+
+### Unit Tests
+
+Mock configuration for unit tests:
+
+```csharp
+[Test]
+public void Configure_WithValidOptions_RegistersServices()
+{
+    var services = new ServiceCollection();
+    var configuration = new ConfigurationBuilder()
+        .AddInMemoryCollection(new Dictionary<string, string>
+        {
+            ["ConnectionString"] = "UseDevelopmentStorage=true",
+            ["DefaultQueueName"] = "test-queue"
+        })
+        .Build();
+
+    services.AddSimpleMessageBusAzureStoragePublisher(options =>
+    {
+        configuration.Bind(options);
+    });
+
+    var provider = services.BuildServiceProvider();
+    var publisher = provider.GetService<IMessagePublisher>();
+    
+    Assert.That(publisher, Is.Not.Null);
+}
+```
+
+## Troubleshooting Configuration Issues
+
+<AccordionGroup>
+  <Accordion title="Connection String Issues">
+    **Problem**: Authentication failures or connection errors
+    
+    **Solutions**:
+    - Verify connection string format
+    - Check account credentials
+    - Ensure network connectivity
+    - Validate queue/storage account exists
+    
+    ```csharp
+    // Test connection at startup
+    services.AddHealthChecks()
+        .AddAzureQueueStorage(connectionString);
+    ```
+  </Accordion>
+  
+  <Accordion title="Handler Registration Problems">
+    **Problem**: Handlers not receiving messages
+    
+    **Solutions**:
+    - Verify handler implements `IMessageHandler`
+    - Check `GetHandledMessageTypes()` returns correct types
+    - Ensure handler is registered in DI container
+    - Verify message type matches exactly
+    
+    ```csharp
+    // Debug handler registration
+    var handlers = serviceProvider.GetServices<IMessageHandler>();
+    foreach (var handler in handlers)
+    {
+        var types = handler.GetHandledMessageTypes();
+        Console.WriteLine($"Handler {handler.GetType().Name} handles: {string.Join(", ", types.Select(t => t.Name))}");
+    }
+    ```
+  </Accordion>
+  
+  <Accordion title="Performance Issues">
+    **Problem**: Slow message processing
+    
+    **Solutions**:
+    - Increase `MaxConcurrentMessages`
+    - Reduce `PollingInterval`
+    - Optimize handler performance
+    - Consider batch processing
+    
+    ```csharp
+    // Performance-optimized configuration
+    options.MaxConcurrentMessages = Environment.ProcessorCount * 4;
+    options.PollingInterval = TimeSpan.FromSeconds(1);
+    options.BatchSize = 32;
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Testing Guide"
+    icon="flask"
+    href="/guides/testing"
+  >
+    Learn how to test your configuration
+  </Card>
+  <Card
+    title="Error Handling"
+    icon="shield-exclamation"
+    href="/guides/error-handling"
+  >
+    Implement robust error handling
+  </Card>
+  <Card
+    title="Performance Guide"
+    icon="gauge-high"
+    href="/guides/performance"
+  >
+    Optimize for production workloads
+  </Card>
+  <Card
+    title="Provider Guides"
+    icon="cloud"
+    href="/providers/overview"
+  >
+    Deep dive into specific providers
+  </Card>
+</CardGroup>

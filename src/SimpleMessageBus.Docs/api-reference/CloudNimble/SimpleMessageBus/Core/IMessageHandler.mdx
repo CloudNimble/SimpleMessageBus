@@ -1,0 +1,198 @@
+---
+title: IMessageHandler
+description: "Defines the functionality required for all [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) processing handlers."
+icon: plug
+keywords: ['IMessageHandler', 'CloudNimble.SimpleMessageBus.Core.IMessageHandler', 'CloudNimble.SimpleMessageBus.Core', 'interface']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Core.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Core
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Core.IMessageHandler
+```
+
+## Summary
+
+Defines the functionality required for all [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) processing handlers.
+
+## Remarks
+
+Message handlers are the core processing units in SimpleMessageBus. They receive messages from queues,
+            process them according to business logic, and handle any errors that occur during processing.
+            Handlers can process multiple message types and are responsible for declaring which types they support.
+
+## Examples
+
+```csharp
+public class OrderMessageHandler : IMessageHandler
+{
+    private readonly IOrderService _orderService;
+
+    public OrderMessageHandler(IOrderService orderService)
+    {
+        _orderService = orderService;
+    }
+
+    public IEnumerable&lt;Type&gt; GetHandledMessageTypes()
+    {
+        yield return typeof(OrderCreatedMessage);
+        yield return typeof(OrderUpdatedMessage);
+    }
+
+    public async Task OnNextAsync(MessageEnvelope messageEnvelope)
+    {
+        switch (messageEnvelope.Message)
+        {
+            case OrderCreatedMessage created:
+                await _orderService.ProcessNewOrderAsync(created);
+                break;
+            case OrderUpdatedMessage updated:
+                await _orderService.UpdateOrderAsync(updated);
+                break;
+        }
+    }
+
+    public async Task OnErrorAsync(IMessage message, Exception exception)
+    {
+        // Log the error and potentially send notifications
+        await _orderService.HandleProcessingErrorAsync(message, exception);
+    }
+}
+```
+
+## Methods
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetHandledMessageTypes <DocsBadge text="Abstract" variant="warning" />
+
+Specifies which [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) types are handled by this [IMessageHandler](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler).
+
+#### Syntax
+
+```csharp
+System.Collections.Generic.IEnumerable<System.Type> GetHandledMessageTypes()
+```
+
+#### Returns
+
+Type: `System.Collections.Generic.IEnumerable<System.Type>`
+An [IEnumerable`1](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1) containing all of the [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) types this 
+            [IMessageHandler](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler) supports. The types must implement [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage).
+
+#### Examples
+
+```csharp
+public IEnumerable&lt;Type&gt; GetHandledMessageTypes()
+{
+    yield return typeof(OrderCreatedMessage);
+    yield return typeof(OrderCancelledMessage);
+    yield return typeof(OrderShippedMessage);
+}
+```
+
+#### Remarks
+
+This method is called during handler registration to determine message routing. Return all message
+            types that this handler can process. The framework will ensure that only messages of these types
+            are delivered to this handler's `MessageEnvelope)` method.
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  OnErrorAsync <DocsBadge text="Abstract" variant="warning" />
+
+Specifies what this handler should do when an error occurs during processing.
+
+#### Syntax
+
+```csharp
+System.Threading.Tasks.Task OnErrorAsync(CloudNimble.SimpleMessageBus.Core.IMessage message, System.Exception exception)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `message` | `CloudNimble.SimpleMessageBus.Core.IMessage` | The deserialized [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) instance that failed. |
+| `exception` | `System.Exception` | The [Exception](https://learn.microsoft.com/dotnet/api/system.exception) that occurred during processing. |
+
+#### Returns
+
+Type: `System.Threading.Tasks.Task`
+A [Task](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task) reference for the asynchronous function.
+
+#### Examples
+
+```csharp
+public async Task OnErrorAsync(IMessage message, Exception exception)
+{
+    _logger.LogError(exception, "Failed to process {MessageType} with ID {MessageId}",
+        message.GetType().Name, message.Id);
+
+    // Send alert for critical messages
+    if (message is CriticalBusinessMessage)
+    {
+        await _alertService.SendFailureAlertAsync(message, exception);
+    }
+}
+```
+
+#### Remarks
+
+This method is called when an exception is thrown during message processing. Use this method to
+            implement custom error handling logic such as logging, alerting, or compensating transactions.
+            Note that after this method completes, the message will typically be moved to a poison queue
+            unless retry policies dictate otherwise.
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  OnNextAsync <DocsBadge text="Abstract" variant="warning" />
+
+Specifies what this handler should do when it is time to process the [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope).
+
+#### Syntax
+
+```csharp
+System.Threading.Tasks.Task OnNextAsync(CloudNimble.SimpleMessageBus.Core.MessageEnvelope messageEnvelope)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `messageEnvelope` | `CloudNimble.SimpleMessageBus.Core.MessageEnvelope` | The [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) to process. |
+
+#### Returns
+
+Type: `System.Threading.Tasks.Task`
+A [Task](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task) reference for the asynchronous function.
+
+#### Examples
+
+```csharp
+public async Task OnNextAsync(MessageEnvelope messageEnvelope)
+{
+    // Extract metadata if available
+    var userId = messageEnvelope.Metadata?.GetValueOrDefault("UserId");
+
+    // Process based on message type
+    switch (messageEnvelope.Message)
+    {
+        case OrderCreatedMessage order:
+            await ProcessOrderAsync(order, userId?.ToString());
+            break;
+        default:
+            throw new NotSupportedException($"Message type {messageEnvelope.Message.GetType()} not supported");
+    }
+}
+```
+
+#### Remarks
+
+This is the main processing method for messages. The framework calls this method when a message
+            of a supported type (as declared by [IMessageHandler.GetHandledMessageTypes](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler#gethandledmessagetypes)) is received from the queue.
+            The message is pre-deserialized and available in the [MessageEnvelope.Message](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#message) property.
+            Any unhandled exceptions thrown from this method will trigger a call to `Exception)`.
+

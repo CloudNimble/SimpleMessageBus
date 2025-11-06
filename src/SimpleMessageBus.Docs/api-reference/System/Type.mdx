@@ -1,0 +1,55 @@
+---
+title: Type
+description: "Extension methods for Type from System.Runtime"
+icon: file-brackets-curly
+keywords: ['Type', 'System.Type', 'System', 'error']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** System.Runtime.dll
+
+**Namespace:** System
+
+## Syntax
+
+```csharp
+System.Type
+```
+
+## Summary
+
+This type is defined in System.Runtime.
+
+## Remarks
+
+See [Microsoft documentation](https://learn.microsoft.com/dotnet/api/system.type) for more information about the rest of the API.
+
+## Methods
+
+### <Icon icon="puzzle-piece" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  SimpleAssemblyQualifiedName <DocsBadge text="Extension" variant="success" />
+
+<Note>Extension method from `System.TypeExtensions`</Note>
+
+Guarantees the creation of an AssemblyQualifiedName that does not contain version or key details. That way when AssemblyVersions are incremented,
+            the system will still attempt to process the [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage).
+
+#### Syntax
+
+```csharp
+public static string SimpleAssemblyQualifiedName(System.Type type)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `type` | `System.Type` | - |
+
+#### Returns
+
+Type: `string`
+A string containing the *type* name in the format "FullTypeName, SimpleAssemblyName".
+

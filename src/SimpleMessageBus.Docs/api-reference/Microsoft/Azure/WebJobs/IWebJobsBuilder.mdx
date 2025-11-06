@@ -1,0 +1,76 @@
+---
+title: IWebJobsBuilder
+description: "Extension methods for IWebJobsBuilder from Microsoft.Azure.WebJobs.Host"
+icon: file-brackets-curly
+keywords: ['IWebJobsBuilder', 'Microsoft.Azure.WebJobs.IWebJobsBuilder', 'Microsoft.Azure.WebJobs', 'error']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** Microsoft.Azure.WebJobs.Host.dll
+
+**Namespace:** Microsoft.Azure.WebJobs
+
+## Syntax
+
+```csharp
+Microsoft.Azure.WebJobs.IWebJobsBuilder
+```
+
+## Summary
+
+This type is defined in Microsoft.Azure.WebJobs.Host.
+
+## Remarks
+
+See [Microsoft documentation](https://learn.microsoft.com/dotnet/api/microsoft.azure.webjobs.iwebjobsbuilder) for more information about the rest of the API.
+
+## Methods
+
+### <Icon icon="puzzle-piece" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  AddSimpleMessageBusFiles <DocsBadge text="Extension" variant="success" />
+
+<Note>Extension method from `CloudNimble.SimpleMessageBus.Dispatch.Triggers.Files_IWebJobsBuilderExtensions`</Note>
+
+Adds the Files extension to the provided [IWebJobsBuilder](/api-reference/Microsoft/Azure/WebJobs/IWebJobsBuilder).
+
+#### Syntax
+
+```csharp
+public static Microsoft.Azure.WebJobs.IWebJobsBuilder AddSimpleMessageBusFiles(Microsoft.Azure.WebJobs.IWebJobsBuilder builder)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `builder` | `Microsoft.Azure.WebJobs.IWebJobsBuilder` | The [IWebJobsBuilder](/api-reference/Microsoft/Azure/WebJobs/IWebJobsBuilder) to configure. |
+
+#### Returns
+
+Type: `Microsoft.Azure.WebJobs.IWebJobsBuilder`
+
+### <Icon icon="puzzle-piece" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  AddSimpleMessageBusFiles <DocsBadge text="Extension" variant="success" />
+
+<Note>Extension method from `CloudNimble.SimpleMessageBus.Dispatch.Triggers.Files_IWebJobsBuilderExtensions`</Note>
+
+Adds the Files extension to the provided [IWebJobsBuilder](/api-reference/Microsoft/Azure/WebJobs/IWebJobsBuilder).
+
+#### Syntax
+
+```csharp
+public static Microsoft.Azure.WebJobs.IWebJobsBuilder AddSimpleMessageBusFiles(Microsoft.Azure.WebJobs.IWebJobsBuilder builder, System.Action<Microsoft.Azure.WebJobs.Extensions.Files.FilesOptions> configure)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `builder` | `Microsoft.Azure.WebJobs.IWebJobsBuilder` | The [IWebJobsBuilder](/api-reference/Microsoft/Azure/WebJobs/IWebJobsBuilder) to configure. |
+| `configure` | `System.Action<Microsoft.Azure.WebJobs.Extensions.Files.FilesOptions>` | An [Action`1](https://learn.microsoft.com/dotnet/api/system.action-1) to configure the provided [FilesOptions](https://learn.microsoft.com/dotnet/api/microsoft.azure.webjobs.extensions.files.filesoptions). |
+
+#### Returns
+
+Type: `Microsoft.Azure.WebJobs.IWebJobsBuilder`
+

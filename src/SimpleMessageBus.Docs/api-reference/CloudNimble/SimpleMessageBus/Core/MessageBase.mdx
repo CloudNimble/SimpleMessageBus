@@ -1,0 +1,266 @@
+---
+title: MessageBase
+description: "Base class providing a complete implementation of common message functionality."
+icon: shapes
+tag: "ABSTRACT"
+keywords: ['MessageBase', 'CloudNimble.SimpleMessageBus.Core.MessageBase', 'CloudNimble.SimpleMessageBus.Core', 'class', 'System.Object', 'CloudNimble.SimpleMessageBus.Core.IMessage', 'CloudNimble.SimpleMessageBus.Core.IMetadataAware', 'CloudNimble.SimpleMessageBus.Core.ITrackable']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Core.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Core
+
+**Inheritance:** System.Object
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Core.MessageBase
+```
+
+## Summary
+
+Base class providing a complete implementation of common message functionality.
+
+## Remarks
+
+MessageBase provides a convenient base class that implements all core message interfaces, making it easy
+            to create new message types without having to implement the common functionality manually. It automatically
+            handles ID generation, metadata initialization, tracking properties, and provides constructors for creating
+            child messages with proper lineage tracking.
+            
+            This class is abstract and must be inherited to create concrete message types. It's recommended to use this
+            base class for most message implementations unless you have specific requirements that prevent inheritance.
+
+## Examples
+
+```csharp
+// Simple message inheriting from MessageBase
+public class OrderCreatedMessage : MessageBase
+{
+    public string OrderNumber { get; set; }
+    public decimal TotalAmount { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+// Creating a root message
+var orderMessage = new OrderCreatedMessage
+{
+    OrderNumber = "ORD-001",
+    TotalAmount = 99.99m,
+    CreatedAt = DateTime.UtcNow
+};
+
+// Creating a child message with proper lineage
+public class PaymentProcessedMessage : MessageBase
+{
+    public decimal Amount { get; set; }
+    public string PaymentMethod { get; set; }
+
+    public PaymentProcessedMessage(IMessage parent) : base(parent)
+    {
+        // Child-specific initialization
+    }
+}
+
+var paymentMessage = new PaymentProcessedMessage(orderMessage)
+{
+    Amount = 99.99m,
+    PaymentMethod = "CreditCard"
+};
+// paymentMessage.ParentId == orderMessage.Id
+// paymentMessage.CorrelationId == orderMessage.CorrelationId
+```
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public Object()
+```
+
+## Properties
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  CorrelationId
+
+#### Syntax
+
+```csharp
+public System.Guid CorrelationId { get; set; }
+```
+
+#### Property Value
+
+Type: `System.Guid`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Id
+
+#### Syntax
+
+```csharp
+public System.Guid Id { get; set; }
+```
+
+#### Property Value
+
+Type: `System.Guid`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Metadata
+
+#### Syntax
+
+```csharp
+public System.Collections.Concurrent.ConcurrentDictionary<string, object> Metadata { get; set; }
+```
+
+#### Property Value
+
+Type: `System.Collections.Concurrent.ConcurrentDictionary<string, object>`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ParentId
+
+#### Syntax
+
+```csharp
+public System.Nullable<System.Guid> ParentId { get; set; }
+```
+
+#### Property Value
+
+Type: `System.Nullable<System.Guid>`
+
+## Methods
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual bool Equals(object obj)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `obj` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool Equals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual int GetHashCode()
+```
+
+#### Returns
+
+Type: `int`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetType <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public System.Type GetType()
+```
+
+#### Returns
+
+Type: `System.Type`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+protected internal object MemberwiseClone()
+```
+
+#### Returns
+
+Type: `object`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool ReferenceEquals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual string ToString()
+```
+
+#### Returns
+
+Type: `string?`
+
+## Related APIs
+
+- CloudNimble.SimpleMessageBus.Core.IMessage
+- CloudNimble.SimpleMessageBus.Core.IMetadataAware
+- CloudNimble.SimpleMessageBus.Core.ITrackable
+

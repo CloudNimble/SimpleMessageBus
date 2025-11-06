@@ -1,0 +1,261 @@
+---
+title: Quick Start
+description: 'Get SimpleMessageBus up and running in 5 minutes'
+---
+
+Get SimpleMessageBus working in your application with just a few simple steps.
+
+## Step 1: Install the Package
+
+Choose the provider that matches your infrastructure:
+
+<CodeGroup>
+
+```bash Azure Storage Queue
+dotnet add package SimpleMessageBus.Publish.Azure
+dotnet add package SimpleMessageBus.Dispatch.Azure
+```
+
+```bash Amazon SQS
+dotnet add package SimpleMessageBus.Publish.Amazon
+dotnet add package SimpleMessageBus.Dispatch.Amazon
+```
+
+```bash File System
+dotnet add package SimpleMessageBus.Publish
+dotnet add package SimpleMessageBus.Dispatch.FileSystem
+```
+
+```bash Blazor WebAssembly
+dotnet add package SimpleMessageBus.Publish.IndexedDb
+dotnet add package SimpleMessageBus.Dispatch.IndexedDb
+```
+
+</CodeGroup>
+
+## Step 2: Define Your Message
+
+Create a message class that implements `IMessage`:
+
+```csharp
+using SimpleMessageBus.Core;
+
+public class UserCreatedMessage : IMessage
+{
+    public string UserId { get; set; }
+    public string Email { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+```
+
+## Step 3: Create a Message Handler
+
+Implement `IMessageHandler<T>` to process your messages:
+
+```csharp
+using SimpleMessageBus.Core;
+
+public class UserCreatedHandler : IMessageHandler<UserCreatedMessage>
+{
+    private readonly ILogger<UserCreatedHandler> _logger;
+
+    public UserCreatedHandler(ILogger<UserCreatedHandler> logger)
+    {
+        _logger = logger;
+    }
+
+    public async Task HandleAsync(UserCreatedMessage message)
+    {
+        _logger.LogInformation("User created: {UserId} - {Email}", 
+            message.UserId, message.Email);
+        
+        // Process the message (send welcome email, update database, etc.)
+        await ProcessUserCreation(message);
+    }
+
+    private async Task ProcessUserCreation(UserCreatedMessage message)
+    {
+        // Your business logic here
+        await Task.Delay(100); // Simulate processing
+    }
+}
+```
+
+## Step 4: Configure Services
+
+Add SimpleMessageBus to your dependency injection container:
+
+<CodeGroup>
+
+```csharp Azure Storage Queue
+using SimpleMessageBus.Publish.Azure.Extensions;
+using SimpleMessageBus.Dispatch.Azure.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configure Azure Storage Queue
+builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+});
+
+builder.Services.AddSimpleMessageBusAzureStorageDispatcher(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+});
+
+// Register your message handler
+builder.Services.AddScoped<IMessageHandler<UserCreatedMessage>, UserCreatedHandler>();
+
+var app = builder.Build();
+```
+
+```csharp Amazon SQS
+using SimpleMessageBus.Publish.Amazon.Extensions;
+using SimpleMessageBus.Dispatch.Amazon.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configure Amazon SQS
+builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+{
+    options.AccessKey = builder.Configuration["AWS:AccessKey"];
+    options.SecretKey = builder.Configuration["AWS:SecretKey"];
+    options.Region = "us-east-1";
+});
+
+builder.Services.AddSimpleMessageBusAmazonSQSDispatcher(options =>
+{
+    options.AccessKey = builder.Configuration["AWS:AccessKey"];
+    options.SecretKey = builder.Configuration["AWS:SecretKey"];
+    options.Region = "us-east-1";
+});
+
+// Register your message handler
+builder.Services.AddScoped<IMessageHandler<UserCreatedMessage>, UserCreatedHandler>();
+
+var app = builder.Build();
+```
+
+```csharp File System
+using SimpleMessageBus.Publish.Extensions;
+using SimpleMessageBus.Dispatch.FileSystem.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configure File System
+builder.Services.AddSimpleMessageBusFileSystemPublisher(options =>
+{
+    options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "messages");
+});
+
+builder.Services.AddSimpleMessageBusFileSystemDispatcher(options =>
+{
+    options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "messages");
+});
+
+// Register your message handler
+builder.Services.AddScoped<IMessageHandler<UserCreatedMessage>, UserCreatedHandler>();
+
+var app = builder.Build();
+```
+
+```csharp Blazor WebAssembly
+using SimpleMessageBus.Publish.IndexedDb.Extensions;
+using SimpleMessageBus.Dispatch.IndexedDb.Extensions;
+
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+// Configure IndexedDB
+builder.Services.AddSimpleMessageBusIndexedDbPublisher();
+builder.Services.AddSimpleMessageBusIndexedDbDispatcher();
+
+// Register your message handler
+builder.Services.AddScoped<IMessageHandler<UserCreatedMessage>, UserCreatedHandler>();
+
+await builder.Build().RunAsync();
+```
+
+</CodeGroup>
+
+## Step 5: Publish Messages
+
+Inject `IMessagePublisher` and publish messages:
+
+```csharp
+public class UserController : ControllerBase
+{
+    private readonly IMessagePublisher _messagePublisher;
+
+    public UserController(IMessagePublisher messagePublisher)
+    {
+        _messagePublisher = messagePublisher;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
+    {
+        // Create the user (your business logic)
+        var userId = await CreateUserInDatabase(request);
+
+        // Publish the message
+        var message = new UserCreatedMessage
+        {
+            UserId = userId,
+            Email = request.Email,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        await _messagePublisher.PublishAsync(message);
+
+        return Ok(new { UserId = userId });
+    }
+}
+```
+
+## Step 6: Start Processing
+
+The message dispatcher will automatically start processing messages when your application starts. For Azure Functions or console applications, you might need additional configuration.
+
+<Note>
+For Azure Functions, see the [Azure Functions guide](/guides/azure-functions) for trigger-based message processing.
+</Note>
+
+## Next Steps
+
+Congratulations! You now have SimpleMessageBus running in your application. Here are some next steps:
+
+<CardGroup cols={2}>
+  <Card
+    title="Learn Core Concepts"
+    icon="book"
+    href="/concepts/overview"
+  >
+    Understand messages, publishers, and handlers
+  </Card>
+  <Card
+    title="Provider Configuration"
+    icon="gear"
+    href="/providers/overview"
+  >
+    Deep dive into provider-specific configuration
+  </Card>
+  <Card
+    title="Testing Guide"
+    icon="flask"
+    href="/guides/testing"
+  >
+    Learn how to test your message handlers
+  </Card>
+  <Card
+    title="API Reference"
+    icon="code"
+    href="/api-reference/overview"
+  >
+    Explore the complete API documentation
+  </Card>
+</CardGroup>
+
+## Example Application
+
+For a complete working example, check out our [sample applications](https://github.com/CloudNimble/SimpleMessageBus/tree/main/src/SimpleMessageBus.Samples) on GitHub.

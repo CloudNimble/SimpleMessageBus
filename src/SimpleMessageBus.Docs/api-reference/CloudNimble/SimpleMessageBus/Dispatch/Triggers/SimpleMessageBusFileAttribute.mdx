@@ -1,0 +1,115 @@
+---
+title: SimpleMessageBusFileAttribute
+description: "Attribute used to bind a parameter to a file."
+icon: lock
+tag: "SEALED"
+keywords: ['SimpleMessageBusFileAttribute', 'CloudNimble.SimpleMessageBus.Dispatch.Triggers.SimpleMessageBusFileAttribute', 'CloudNimble.SimpleMessageBus.Dispatch.Triggers', 'class', 'System.Attribute']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Dispatch.FileSystem.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Dispatch.Triggers
+
+**Inheritance:** System.Attribute
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Dispatch.Triggers.SimpleMessageBusFileAttribute
+```
+
+## Summary
+
+Attribute used to bind a parameter to a file.
+
+## Remarks
+
+The method parameter type can be one of the following:
+            
+
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+
+Constructs a new instance.
+
+#### Syntax
+
+```csharp
+public SimpleMessageBusFileAttribute(string path, System.IO.FileAccess access = 1)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `path` | `string` | The file path to bind to. |
+| `access` | `System.IO.FileAccess` | The [FileAccess](https://learn.microsoft.com/dotnet/api/system.io.fileaccess) to use. |
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+
+Constructs a new instance.
+
+#### Syntax
+
+```csharp
+public SimpleMessageBusFileAttribute(string path, System.IO.FileAccess access, System.IO.FileMode mode)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `path` | `string` | The file path to bind to. |
+| `access` | `System.IO.FileAccess` | The [FileAccess](https://learn.microsoft.com/dotnet/api/system.io.fileaccess) to use. |
+| `mode` | `System.IO.FileMode` | The [FileMode](https://learn.microsoft.com/dotnet/api/system.io.filemode) to use. |
+
+## Properties
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Access
+
+Gets he [FileAccess](https://learn.microsoft.com/dotnet/api/system.io.fileaccess) to use.
+
+#### Syntax
+
+```csharp
+public System.IO.FileAccess Access { get; private set; }
+```
+
+#### Property Value
+
+Type: `System.IO.FileAccess`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Mode
+
+Gets the [FileMode](https://learn.microsoft.com/dotnet/api/system.io.filemode) to use.
+
+#### Syntax
+
+```csharp
+public System.IO.FileMode Mode { get; private set; }
+```
+
+#### Property Value
+
+Type: `System.IO.FileMode`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Path
+
+Gets the file path.
+
+#### Syntax
+
+```csharp
+public string Path { get; private set; }
+```
+
+#### Property Value
+
+Type: `string`
+

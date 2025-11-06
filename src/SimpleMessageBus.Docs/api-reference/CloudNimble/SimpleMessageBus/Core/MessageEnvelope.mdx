@@ -1,0 +1,479 @@
+---
+title: MessageEnvelope
+description: "Represents a wrapper for an [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) that will be published to the SimpleMessageBus Queue."
+icon: file-brackets-curly
+keywords: ['MessageEnvelope', 'CloudNimble.SimpleMessageBus.Core.MessageEnvelope', 'CloudNimble.SimpleMessageBus.Core', 'class', 'System.Object']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Core.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Core
+
+**Inheritance:** System.Object
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Core.MessageEnvelope
+```
+
+## Summary
+
+Represents a wrapper for an [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) that will be published to the SimpleMessageBus Queue.
+
+## Remarks
+
+The MessageEnvelope provides the transport container for messages within the SimpleMessageBus system.
+            It wraps the actual message with metadata needed for processing, error handling, and tracking. The envelope
+            handles message serialization/deserialization and provides processing context for handlers.
+            
+            Key responsibilities include:
+            - Serializing messages for storage in queues
+            - Tracking processing attempts and timestamps
+            - Providing handler context through service scope and logging
+            - Managing message state during processing pipeline
+            - Facilitating message deserialization for handlers
+
+## Examples
+
+```csharp
+// Creating an envelope (typically done automatically by publishers)
+var message = new OrderCreatedMessage { OrderNumber = "ORD-001" };
+var envelope = new MessageEnvelope(message);
+
+// Processing an envelope in a handler
+public async Task OnNextAsync(MessageEnvelope envelope)
+{
+    // Access metadata
+    var attempts = envelope.AttemptsCount;
+    var published = envelope.DatePublished;
+
+    // Extract the message
+    var orderMessage = envelope.GetMessage&lt;OrderCreatedMessage&gt;();
+
+    // Use the logger for this specific message
+    envelope.ProcessLog?.LogInformation("Processing order {OrderNumber}", orderMessage.OrderNumber);
+
+    // Process the message...
+}
+```
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+
+Initializes a new instance of the [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) class.
+
+#### Syntax
+
+```csharp
+public MessageEnvelope()
+```
+
+#### Remarks
+
+This parameterless constructor should only be used for deserializing the MessageEnvelope from storage.
+            For creating new envelopes to wrap messages, use the `IMessage)` constructor instead.
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+
+Initializes a new instance of the [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) class for a given [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage).
+
+#### Syntax
+
+```csharp
+public MessageEnvelope(CloudNimble.SimpleMessageBus.Core.IMessage message)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `message` | `CloudNimble.SimpleMessageBus.Core.IMessage` | The [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) instance that will be wrapped in a [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) to be posted to the SimpleMessageBus. |
+
+#### Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+| `ArgumentNullException` | Thrown when *message* is null. |
+
+#### Examples
+
+```csharp
+var message = new OrderCreatedMessage
+{
+    OrderNumber = "ORD-001",
+    CustomerId = customerId,
+    TotalAmount = 99.99m
+};
+
+var envelope = new MessageEnvelope(message);
+// envelope.Id is automatically generated
+// envelope.DatePublished is set to now
+// envelope.MessageType contains the full type name
+// envelope.MessageContent contains the JSON serialized message
+```
+
+#### Remarks
+
+This constructor automatically serializes the message to JSON, generates a unique envelope ID,
+            sets the publish timestamp to the current UTC time, and extracts the message type information
+            for later deserialization. The resulting envelope is ready to be published to any queue provider.
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public Object()
+```
+
+## Properties
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  AttemptsCount
+
+The number of times the system has previously attempted to process this message.
+
+#### Syntax
+
+```csharp
+public long AttemptsCount { get; set; }
+```
+
+#### Property Value
+
+Type: `long`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  DatePublished
+
+The UTC date and time that this nessage was published to the queue.
+
+#### Syntax
+
+```csharp
+public System.DateTimeOffset DatePublished { get; set; }
+```
+
+#### Property Value
+
+Type: `System.DateTimeOffset`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Id
+
+A [Guid](https://learn.microsoft.com/dotnet/api/system.guid) uniquely identifying this message on the queue. Helps when looking at logs or correlating from telemetry.
+
+#### Syntax
+
+```csharp
+public System.Guid Id { get; set; }
+```
+
+#### Property Value
+
+Type: `System.Guid`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Message
+
+Gets the deserialized message instance.
+
+#### Syntax
+
+```csharp
+public CloudNimble.SimpleMessageBus.Core.IMessage Message { get; }
+```
+
+#### Property Value
+
+Type: `CloudNimble.SimpleMessageBus.Core.IMessage`
+The [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) instance deserialized from [MessageEnvelope.MessageContent](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagecontent) using the type specified
+            in [MessageEnvelope.MessageType](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagetype). This property provides convenient access to the message without requiring
+            explicit type specification in handlers.
+
+#### Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+| `InvalidOperationException` | Thrown when the message type cannot be resolved or deserialization fails. |
+
+#### Examples
+
+```csharp
+public async Task OnNextAsync(MessageEnvelope envelope)
+{
+    // Type-safe access without specifying the type
+    switch (envelope.Message)
+    {
+        case OrderCreatedMessage order:
+            await ProcessOrderAsync(order);
+            break;
+        case PaymentProcessedMessage payment:
+            await ProcessPaymentAsync(payment);
+            break;
+        default:
+            throw new NotSupportedException($"Unknown message type: {envelope.MessageType}");
+    }
+}
+```
+
+#### Remarks
+
+This property deserializes the message on each access. For performance-critical scenarios where the message
+            is accessed multiple times, consider caching the result or using the typed `GetMessage``1` method.
+            
+            The deserialization uses the [MessageEnvelope.MessageType](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagetype) to determine the target type and deserializes
+            the [MessageEnvelope.MessageContent](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagecontent) JSON string into the appropriate message instance.
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MessageContent
+
+The serialized content of the [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage).
+
+#### Syntax
+
+```csharp
+public string MessageContent { get; set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MessageState
+
+A container to help track the state of a message as it flows between [IMessageHandler](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler)IMessageHandlers&lt;/see&gt;. This value is ignored by the 
+            serializer and will not be persisted between failed message runs.
+
+#### Syntax
+
+```csharp
+public dynamic MessageState { get; private set; }
+```
+
+#### Property Value
+
+Type: `dynamic`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MessageType
+
+A string representing the type name of the message. Defaults to IMessage.GetType().AssemblyQualifiedName".
+
+#### Syntax
+
+```csharp
+public string MessageType { get; set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ProcessLog
+
+The processing log for this particular message across all MessageHandlers.
+
+#### Syntax
+
+```csharp
+public Microsoft.Extensions.Logging.ILogger ProcessLog { get; set; }
+```
+
+#### Property Value
+
+Type: `Microsoft.Extensions.Logging.ILogger`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ServiceScope
+
+The processing log for this particular message across all MessageHandlers.
+
+#### Syntax
+
+```csharp
+public Microsoft.Extensions.DependencyInjection.IServiceScope ServiceScope { get; set; }
+```
+
+#### Property Value
+
+Type: `Microsoft.Extensions.DependencyInjection.IServiceScope`
+
+## Methods
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual bool Equals(object obj)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `obj` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool Equals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual int GetHashCode()
+```
+
+#### Returns
+
+Type: `int`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetMessage
+
+Retrieves the [MessageEnvelope.MessageContent](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagecontent) deserialized into an [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) of the specified type.
+
+#### Syntax
+
+```csharp
+public T GetMessage<T>() where T : CloudNimble.SimpleMessageBus.Core.IMessage
+```
+
+#### Returns
+
+Type: `T`
+A concrete *T* instance populated with the data from the [MessageEnvelope.MessageContent](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagecontent).
+
+#### Type Parameters
+
+- `T` - The [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) type represented by the [MessageEnvelope.MessageContent](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagecontent).
+
+#### Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+| `JsonException` | Thrown when the [MessageEnvelope.MessageContent](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagecontent) cannot be deserialized to type *T*. |
+| `ArgumentNullException` | Thrown when [MessageEnvelope.MessageContent](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagecontent) is null. |
+
+#### Examples
+
+```csharp
+public async Task OnNextAsync(MessageEnvelope envelope)
+{
+    // Type-safe deserialization when you know the expected type
+    var orderMessage = envelope.GetMessage&lt;OrderCreatedMessage&gt;();
+
+    // Process the strongly-typed message
+    await ProcessOrderAsync(orderMessage.OrderNumber, orderMessage.TotalAmount);
+}
+```
+
+#### Remarks
+
+This method provides type-safe deserialization when you know the exact message type at compile time.
+            It directly deserializes the JSON content without using the [MessageEnvelope.MessageType](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagetype) property for type resolution.
+            This can be more performant than the [MessageEnvelope.Message](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#message) property for known types, but requires explicit type specification.
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetType <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public System.Type GetType()
+```
+
+#### Returns
+
+Type: `System.Type`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+protected internal object MemberwiseClone()
+```
+
+#### Returns
+
+Type: `object`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool ReferenceEquals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-merge" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ToString <DocsBadge text="Override" variant="info" />
+
+#### Syntax
+
+```csharp
+public override string ToString()
+```
+
+#### Returns
+
+Type: `string`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual string ToString()
+```
+
+#### Returns
+
+Type: `string?`
+

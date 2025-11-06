@@ -97,20 +97,9 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
                                //[File(@"%completed%\{name}", FileAccess.Write)] out string converted,
                                //[File(@"%error%\{name}", FileAccess.Write)] out string error)
         {
-            if (string.IsNullOrEmpty(messageEnvelopeJson))
-            {
-                throw new ArgumentException("message", nameof(messageEnvelopeJson));
-            }
-
-            if (fileTrigger is null)
-            {
-                throw new ArgumentNullException(nameof(fileTrigger));
-            }
-
-            if (logger is null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
+            ArgumentException.ThrowIfNullOrWhiteSpace(messageEnvelopeJson, nameof(messageEnvelopeJson));
+            ArgumentNullException.ThrowIfNull(fileTrigger, nameof(fileTrigger));
+            ArgumentNullException.ThrowIfNull(logger, nameof(logger));
 
             MessageEnvelope messageEnvelope = null;
             try

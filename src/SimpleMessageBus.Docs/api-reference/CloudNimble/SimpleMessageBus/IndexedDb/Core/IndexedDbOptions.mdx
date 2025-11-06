@@ -1,0 +1,233 @@
+---
+title: IndexedDbOptions
+description: "Specifies the options required to leverage a browser's IndexedDB instance as the SimpleMessageBus backing queue."
+icon: file-brackets-curly
+keywords: ['IndexedDbOptions', 'CloudNimble.SimpleMessageBus.IndexedDb.Core.IndexedDbOptions', 'CloudNimble.SimpleMessageBus.IndexedDb.Core', 'class', 'System.Object']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.IndexedDb.Core.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.IndexedDb.Core
+
+**Inheritance:** System.Object
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.IndexedDb.Core.IndexedDbOptions
+```
+
+## Summary
+
+Specifies the options required to leverage a browser's IndexedDB instance as the SimpleMessageBus backing queue.
+
+## Remarks
+
+These options configure the IndexedDB database and object store names used for message queuing
+            in Blazor WebAssembly applications. The default values follow SimpleMessageBus conventions
+            and can be customized for specific application requirements.
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+
+The default constructor, which sets the default values equal to the values specified in [IndexedDbConstants](/api-reference/CloudNimble/SimpleMessageBus/IndexedDb/Core/IndexedDbConstants).
+
+#### Syntax
+
+```csharp
+public IndexedDbOptions()
+```
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public Object()
+```
+
+## Properties
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  CompletedQueueName
+
+The IndexedDb table where successfully-processed queue items will be moved to upon completion. Defaults to [IndexedDbConstants.Completed](/api-reference/CloudNimble/SimpleMessageBus/IndexedDb/Core/IndexedDbConstants#completed).
+
+#### Syntax
+
+```csharp
+public string CompletedQueueName { get; set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  DatabaseName
+
+The name of the Database inside IndexedDb where the queue tables will be stored. Defaults to 'SimpleMessageBus'.
+
+#### Syntax
+
+```csharp
+public string DatabaseName { get; set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ErrorQueueName
+
+The IndexedDb table where failed items will be stored while they are waiting to be analyzed and reprocessed. Defaults to [IndexedDbConstants.Error](/api-reference/CloudNimble/SimpleMessageBus/IndexedDb/Core/IndexedDbConstants#error).
+
+#### Syntax
+
+```csharp
+public string ErrorQueueName { get; set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  QueueName
+
+The IndexedDb table where items will be stored while they are waiting to be processed. Defaults to [IndexedDbConstants.Queue](/api-reference/CloudNimble/SimpleMessageBus/IndexedDb/Core/IndexedDbConstants#queue).
+
+#### Syntax
+
+```csharp
+public string QueueName { get; set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+## Methods
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual bool Equals(object obj)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `obj` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool Equals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual int GetHashCode()
+```
+
+#### Returns
+
+Type: `int`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetType <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public System.Type GetType()
+```
+
+#### Returns
+
+Type: `System.Type`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+protected internal object MemberwiseClone()
+```
+
+#### Returns
+
+Type: `object`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool ReferenceEquals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual string ToString()
+```
+
+#### Returns
+
+Type: `string?`
+

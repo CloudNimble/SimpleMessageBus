@@ -1,0 +1,986 @@
+---
+title: Testing Guide
+description: 'Complete guide to testing SimpleMessageBus applications'
+---
+
+This guide covers all aspects of testing applications that use SimpleMessageBus, from unit testing message handlers to integration testing with real queue providers.
+
+## Overview
+
+Testing messaging applications requires different strategies than traditional request-response applications. This guide covers:
+
+- **Unit Testing**: Testing message handlers in isolation
+- **Integration Testing**: Testing with real queue providers
+- **End-to-End Testing**: Testing complete message flows
+- **Test Utilities**: Using SimpleMessageBus.Breakdance for testing
+
+## Unit Testing Message Handlers
+
+### Basic Handler Testing
+
+Test message handlers using mocks and dependency injection:
+
+```csharp
+[TestFixture]
+public class OrderCreatedHandlerTests
+{
+    private Mock<IOrderService> _mockOrderService;
+    private Mock<ILogger<OrderCreatedHandler>> _mockLogger;
+    private OrderCreatedHandler _handler;
+
+    [SetUp]
+    public void SetUp()
+    {
+        _mockOrderService = new Mock<IOrderService>();
+        _mockLogger = new Mock<ILogger<OrderCreatedHandler>>();
+        _handler = new OrderCreatedHandler(_mockOrderService.Object, _mockLogger.Object);
+    }
+
+    [Test]
+    public async Task OnNextAsync_ValidOrder_ProcessesSuccessfully()
+    {
+        // Arrange
+        var message = new OrderCreatedMessage
+        {
+            Id = Guid.NewGuid(),
+            OrderNumber = "ORD-001",
+            TotalAmount = 99.99m,
+            CustomerId = "CUST-123"
+        };
+        var envelope = new MessageEnvelope(message);
+
+        // Act
+        await _handler.OnNextAsync(envelope);
+
+        // Assert
+        _mockOrderService.Verify(x => x.ProcessNewOrderAsync(
+            It.Is<OrderCreatedMessage>(m => 
+                m.OrderNumber == "ORD-001" && 
+                m.TotalAmount == 99.99m)), 
+            Times.Once);
+    }
+
+    [Test]
+    public async Task OnNextAsync_ServiceThrowsException_PropagatesException()
+    {
+        // Arrange
+        var message = new OrderCreatedMessage { OrderNumber = "ORD-001" };
+        var envelope = new MessageEnvelope(message);
+        
+        _mockOrderService
+            .Setup(x => x.ProcessNewOrderAsync(It.IsAny<OrderCreatedMessage>()))
+            .ThrowsAsync(new InvalidOperationException("Service error"));
+
+        // Act & Assert
+        var ex = await Assert.ThrowsAsync<InvalidOperationException>(
+            () => _handler.OnNextAsync(envelope));
+        
+        Assert.That(ex.Message, Is.EqualTo("Service error"));
+    }
+
+    [Test]
+    public async Task OnErrorAsync_HandlesErrorGracefully()
+    {
+        // Arrange
+        var message = new OrderCreatedMessage { OrderNumber = "ORD-001" };
+        var exception = new InvalidOperationException("Test error");
+
+        // Act
+        await _handler.OnErrorAsync(message, exception);
+
+        // Assert
+        _mockOrderService.Verify(x => x.HandleOrderProcessingErrorAsync(
+            message, exception), Times.Once);
+    }
+
+    [Test]
+    public void GetHandledMessageTypes_ReturnsCorrectTypes()
+    {
+        // Act
+        var types = _handler.GetHandledMessageTypes().ToList();
+
+        // Assert
+        Assert.That(types, Has.Count.EqualTo(1));
+        Assert.That(types[0], Is.EqualTo(typeof(OrderCreatedMessage)));
+    }
+}
+```
+
+### Testing Multi-Message Handlers
+
+Test handlers that process multiple message types:
+
+```csharp
+[TestFixture]
+public class OrderEventHandlerTests
+{
+    private Mock<IOrderService> _mockOrderService;
+    private OrderEventHandler _handler;
+
+    [SetUp]
+    public void SetUp()
+    {
+        _mockOrderService = new Mock<IOrderService>();
+        _handler = new OrderEventHandler(_mockOrderService.Object);
+    }
+
+    [Test]
+    public async Task OnNextAsync_OrderCreatedMessage_CallsCreateOrder()
+    {
+        // Arrange
+        var message = new OrderCreatedMessage { OrderNumber = "ORD-001" };
+        var envelope = new MessageEnvelope(message);
+
+        // Act
+        await _handler.OnNextAsync(envelope);
+
+        // Assert
+        _mockOrderService.Verify(x => x.CreateOrderAsync(message), Times.Once);
+        _mockOrderService.Verify(x => x.CancelOrderAsync(It.IsAny<OrderCancelledMessage>()), Times.Never);
+    }
+
+    [Test]
+    public async Task OnNextAsync_OrderCancelledMessage_CallsCancelOrder()
+    {
+        // Arrange
+        var message = new OrderCancelledMessage { OrderNumber = "ORD-001" };
+        var envelope = new MessageEnvelope(message);
+
+        // Act
+        await _handler.OnNextAsync(envelope);
+
+        // Assert
+        _mockOrderService.Verify(x => x.CancelOrderAsync(message), Times.Once);
+        _mockOrderService.Verify(x => x.CreateOrderAsync(It.IsAny<OrderCreatedMessage>()), Times.Never);
+    }
+
+    [Test]
+    public async Task OnNextAsync_UnsupportedMessage_ThrowsNotSupportedException()
+    {
+        // Arrange
+        var message = new UnsupportedMessage();
+        var envelope = new MessageEnvelope(message);
+
+        // Act & Assert
+        var ex = await Assert.ThrowsAsync<NotSupportedException>(
+            () => _handler.OnNextAsync(envelope));
+        
+        Assert.That(ex.Message, Does.Contain("not supported"));
+    }
+
+    [Test]
+    public void GetHandledMessageTypes_ReturnsAllSupportedTypes()
+    {
+        // Act
+        var types = _handler.GetHandledMessageTypes().ToList();
+
+        // Assert
+        Assert.That(types, Has.Count.EqualTo(3));
+        Assert.That(types, Does.Contain(typeof(OrderCreatedMessage)));
+        Assert.That(types, Does.Contain(typeof(OrderCancelledMessage)));
+        Assert.That(types, Does.Contain(typeof(OrderShippedMessage)));
+    }
+}
+```
+
+### Testing Message Publishing
+
+Test services that publish messages:
+
+```csharp
+[TestFixture]
+public class OrderServiceTests
+{
+    private Mock<IMessagePublisher> _mockPublisher;
+    private Mock<IOrderRepository> _mockRepository;
+    private OrderService _service;
+
+    [SetUp]
+    public void SetUp()
+    {
+        _mockPublisher = new Mock<IMessagePublisher>();
+        _mockRepository = new Mock<IOrderRepository>();
+        _service = new OrderService(_mockPublisher.Object, _mockRepository.Object);
+    }
+
+    [Test]
+    public async Task CreateOrderAsync_ValidOrder_PublishesMessage()
+    {
+        // Arrange
+        var request = new CreateOrderRequest
+        {
+            CustomerI1d = "CUST-123",
+            Items = new[] { new OrderItem { ProductId = "PROD-1", Quantity = 2 } }
+        };
+
+        var savedOrder = new Order
+        {
+            Id = Guid.NewGuid(),
+            OrderNumber = "ORD-001",
+            CustomerId = request.CustomerId
+        };
+
+        _mockRepository
+            .Setup(x => x.SaveOrderAsync(It.IsAny<Order>()))
+            .ReturnsAsync(savedOrder);
+
+        // Act
+        var result = await _service.CreateOrderAsync(request);
+
+        // Assert
+        Assert.That(result.OrderNumber, Is.EqualTo("ORD-001"));
+
+        _mockPublisher.Verify(x => x.PublishAsync(
+            It.Is<OrderCreatedMessage>(m => 
+                m.OrderNumber == "ORD-001" && 
+                m.CustomerId == "CUST-123")), 
+            Times.Once);
+    }
+
+    [Test]
+    public async Task CreateOrderAsync_RepositoryFails_DoesNotPublishMessage()
+    {
+        // Arrange
+        var request = new CreateOrderRequest { CustomerId = "CUST-123" };
+        
+        _mockRepository
+            .Setup(x => x.SaveOrderAsync(It.IsAny<Order>()))
+            .ThrowsAsync(new InvalidOperationException("Database error"));
+
+        // Act & Assert
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => _service.CreateOrderAsync(request));
+
+        _mockPublisher.Verify(x => x.PublishAsync(It.IsAny<IMessage>()), Times.Never);
+    }
+}
+```
+
+## Integration Testing
+
+### Testing with Test Containers
+
+Use test containers for integration testing with real infrastructure:
+
+```csharp
+[TestFixture]
+public class OrderProcessingIntegrationTests
+{
+    private AzuriteContainer _azuriteContainer;
+    private IServiceProvider _serviceProvider;
+
+    [OneTimeSetUp]
+    public async Task OneTimeSetUp()
+    {
+        // Start Azurite container for Azure Storage emulation
+        _azuriteContainer = new AzuriteBuilder()
+            .WithImage("mcr.microsoft.com/azure-storage/azurite:latest")
+            .Build();
+        
+        await _azuriteContainer.StartAsync();
+    }
+
+    [SetUp]
+    public void SetUp()
+    {
+        var services = new ServiceCollection();
+        
+        // Configure SimpleMessageBus with test container
+        services.AddSimpleMessageBusAzureStoragePublisher(options =>
+        {
+            options.ConnectionString = _azuriteContainer.GetConnectionString();
+            options.DefaultQueueName = "test-orders";
+        });
+        
+        services.AddSimpleMessageBusAzureStorageDispatcher(options =>
+        {
+            options.ConnectionString = _azuriteContainer.GetConnectionString();
+            options.DefaultQueueName = "test-orders";
+            options.PollingInterval = TimeSpan.FromMilliseconds(100);
+        });
+
+        // Register test services
+        services.AddScoped<IMessageHandler, OrderCreatedHandler>();
+        services.AddSingleton<TestOrderService>();
+        services.AddLogging();
+
+        _serviceProvider = services.BuildServiceProvider();
+    }
+
+    [Test]
+    public async Task PublishAndProcess_OrderCreatedMessage_ProcessedSuccessfully()
+    {
+        // Arrange
+        var publisher = _serviceProvider.GetRequiredService<IMessagePublisher>();
+        var orderService = _serviceProvider.GetRequiredService<TestOrderService>();
+        
+        var message = new OrderCreatedMessage
+        {
+            OrderNumber = "ORD-001",
+            CustomerId = "CUST-123",
+            TotalAmount = 99.99m
+        };
+
+        // Act
+        await publisher.PublishAsync(message);
+
+        // Wait for message processing
+        await WaitForMessageProcessingAsync(orderService, message.Id, TimeSpan.FromSeconds(5));
+
+        // Assert
+        Assert.That(orderService.ProcessedOrders, Has.Count.EqualTo(1));
+        var processedOrder = orderService.ProcessedOrders.First();
+        Assert.That(processedOrder.OrderNumber, Is.EqualTo("ORD-001"));
+    }
+
+    private async Task WaitForMessageProcessingAsync(TestOrderService service, Guid messageId, TimeSpan timeout)
+    {
+        var deadline = DateTime.UtcNow.Add(timeout);
+        
+        while (DateTime.UtcNow < deadline)
+        {
+            if (service.ProcessedOrders.Any(o => o.Id == messageId))
+                return;
+                
+            await Task.Delay(100);
+        }
+        
+        Assert.Fail($"Message {messageId} was not processed within {timeout}");
+    }
+
+    [OneTimeTearDown]
+    public async Task OneTimeTearDown()
+    {
+        await _azuriteContainer.DisposeAsync();
+    }
+}
+
+public class TestOrderService
+{
+    public List<OrderCreatedMessage> ProcessedOrders { get; } = new();
+    
+    public Task ProcessOrderAsync(OrderCreatedMessage message)
+    {
+        ProcessedOrders.Add(message);
+        return Task.CompletedTask;
+    }
+}
+```
+
+### In-Memory Testing
+
+For faster tests, use in-memory implementations:
+
+```csharp
+[TestFixture]
+public class InMemoryMessageBusTests
+{
+    private IServiceProvider _serviceProvider;
+    private TestMessageBus _messageBus;
+
+    [SetUp]
+    public void SetUp()
+    {
+        _messageBus = new TestMessageBus();
+        
+        var services = new ServiceCollection();
+        services.AddSingleton<IMessagePublisher>(_messageBus);
+        services.AddSingleton<IMessageDispatcher>(_messageBus);
+        services.AddScoped<IMessageHandler, OrderCreatedHandler>();
+        services.AddLogging();
+
+        _serviceProvider = services.BuildServiceProvider();
+    }
+
+    [Test]
+    public async Task PublishAndDispatch_OrderMessage_ProcessedByHandler()
+    {
+        // Arrange
+        var publisher = _servicePrvidero.GetRequiredService<IMessagePublisher>();
+        var handlers = _serviceProvider.GetServices<IMessageHandler>();
+        
+        var message = new OrderCreatedMessage
+        {
+            OrderNumber = "ORD-001",
+            CustomerId = "CUST-123"
+        };
+
+        // Act
+        await publisher.PublishAsync(message);
+        
+        // Process messages
+        await _messageBus.ProcessAllMessagesAsync(handlers);
+
+        // Assert
+        Assert.That(_messageBus.ProcessedMessages, Has.Count.EqualTo(1));
+        var processedMessage = _messageBus.ProcessedMessages.First();
+        Assert.That(processedMessage.GetType(), Is.EqualTo(typeof(OrderCreatedMessage)));
+    }
+}
+
+public class TestMessageBus : IMessagePublisher, IMessageDispatcher
+{
+    private readonly Queue<MessageEnvelope> _messages = new();
+    public List<IMessage> ProcessedMessages { get; } = new();
+
+    public Task PublishAsync(IMessage message, bool isSystemGenerated = false)
+    {
+        var envelope = new MessageEnvelope(message);
+        _messages.Enqueue(envelope);
+        return Task.CompletedTask;
+    }
+
+    public async Task Dispatch(MessageEnvelope messageEnvelope)
+    {
+        ProcessedMessages.Add(messageEnvelope.Message);
+        
+        // Simulate processing by handlers
+        await Task.Delay(10);
+    }
+
+    public async Task ProcessAllMessagesAsync(IEnumerable<IMessageHandler> handlers)
+    {
+        while (_messages.Count > 0)
+        {
+            var envelope = _messages.Dequeue();
+            
+            foreach (var handler in handlers)
+            {
+                var handledTypes = handler.GetHandledMessageTypes();
+                if (handledTypes.Contains(envelope.Message.GetType()))
+                {
+                    await handler.OnNextAsync(envelope);
+                }
+            }
+            
+            await Dispatch(envelope);
+        }
+    }
+}
+```
+
+## Using SimpleMessageBus.Breakdance
+
+SimpleMessageBus.Breakdance provides testing utilities for easier testing:
+
+### Installation
+
+```bash
+dotnet add package SimpleMessageBus.Breakdance --version 1.0.0-preview
+```
+
+### TestableMessagePublisher
+
+Use the testable publisher for unit testing:
+
+```csharp
+[TestFixture]
+public class OrderServiceBreakdanceTests
+{
+    private TestableMessagePublisher _testPublisher;
+    private OrderService _orderService;
+
+    [SetUp]
+    public void SetUp()
+    {
+        _testPublisher = new TestableMessagePublisher();
+        _orderService = new OrderService(_testPublisher);
+    }
+
+    [Test]
+    public async Task CreateOrder_PublishesCorrectMessage()
+    {
+        // Arrange
+        var request = new CreateOrderRequest
+        {
+            CustomerId = "CUST-123",
+            Items = new[] { new OrderItem { ProductId = "PROD-1", Quantity = 2 } }
+        };
+
+        // Act
+        await _orderService.CreateOrderAsync(request);
+
+        // Assert
+        _testPublisher.ShouldHavePublished<OrderCreatedMessage>(message =>
+            message.CustomerId == "CUST-123" &&
+            message.Items.Length == 1);
+    }
+
+    [Test]
+    public async Task CreateMultipleOrders_PublishesMultipleMessages()
+    {
+        // Arrange & Act
+        await _orderService.CreateOrderAsync(new CreateOrderRequest { CustomerId = "CUST-1" });
+        await _orderService.CreateOrderAsync(new CreateOrderRequest { CustomerId = "CUST-2" });
+
+        // Assert
+        _testPublisher.ShouldHavePublished<OrderCreatedMessage>(2);
+        _testPublisher.ShouldHavePublished<OrderCreatedMessage>(m => m.CustomerId == "CUST-1");
+        _testPublisher.ShouldHavePublished<OrderCreatedMessage>(m => m.CustomerId == "CUST-2");
+    }
+
+    [Test]
+    public void NoOrdersCreated_NoMessagesPublished()
+    {
+        // Assert
+        _testPublisher.ShouldNotHavePublished<OrderCreatedMessage>();
+        _testPublisher.ShouldNotHavePublishedAnyMessages();
+    }
+}
+```
+
+### TestableMessagePublisher API
+
+The TestableMessagePublisher provides various assertion methods:
+
+```csharp
+// Verify specific message was published
+_testPublisher.ShouldHavePublished<OrderCreatedMessage>();
+
+// Verify message with condition
+_testPublisher.ShouldHavePublished<OrderCreatedMessage>(m => m.OrderNumber == "ORD-001");
+
+// Verify number of messages
+_testPublisher.ShouldHavePublished<OrderCreatedMessage>(3);
+
+// Verify no messages published
+_testPublisher.ShouldNotHavePublished<OrderCreatedMessage>();
+_testPublisher.ShouldNotHavePublishedAnyMessages();
+
+// Get published messages for custom assertions
+var messages = _testPublisher.GetPublishedMessages<OrderCreatedMessage>();
+Assert.That(messages, Has.Count.EqualTo(2));
+
+// Clear published messages
+_testPublisher.Clear();
+```
+
+## End-to-End Testing
+
+### Complete Workflow Testing
+
+Test entire message workflows from start to finish:
+
+```csharp
+[TestFixture]
+public class OrderWorkflowE2ETests
+{
+    private WebApplicationFactory<Program> _factory;
+    private IServiceScope _scope;
+
+    [SetUp]
+    public void SetUp()
+    {
+        _factory = new WebApplicationFactory<Program>()
+            .WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
+                {
+                    // Use in-memory database
+                    services.AddDbContext<OrderContext>(options =>
+                        options.UseInMemoryDatabase("test-db"));
+                    
+                    // Use test message bus
+                    services.AddSingleton<TestMessageBus>();
+                    services.AddSingleton<IMessagePublisher>(p => p.GetService<TestMessageBus>());
+                    services.AddSingleton<IMessageDispatcher>(p => p.GetService<TestMessageBus>());
+                });
+            });
+
+        _scope = _factory.Services.CreateScope();
+    }
+
+    [Test]
+    public async Task CompleteOrderWorkflow_ProcessesAllSteps()
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+        var messageBus = _scope.ServiceProvider.GetRequiredService<TestMessageBus>();
+        var handlers = _scope.ServiceProvider.GetServices<IMessageHandler>();
+
+        var createRequest = new
+        {
+            CustomerId = "CUST-123",
+            Items = new[] { new { ProductId = "PROD-1", Quantity = 2, Price = 49.99 } }
+        };
+
+        // Act - Create Order
+        var response = await client.PostAsJsonAsync("/api/orders", createRequest);
+        response.EnsureSuccessStatusCode();
+        
+        var order = await response.Content.ReadFromJsonAsync<OrderResponse>();
+
+        // Process messages
+        await messageBus.ProcessAllMessagesAsync(handlers);
+
+        // Assert - Verify complete workflow
+        var publishedMessages = messageBus.GetAllPublishedMessages();
+        
+        // Should have published OrderCreated, InventoryReserved, PaymentProcessed, OrderShipped
+        Assert.That(publishedMessages.OfType<OrderCreatedMessage>(), Has.Count.EqualTo(1));
+        Assert.That(publishedMessages.OfType<InventoryReservedMessage>(), Has.Count.EqualTo(1));
+        Assert.That(publishedMessages.OfType<PaymentProcessedMessage>(), Has.Count.EqualTo(1));
+        Assert.That(publishedMessages.OfType<OrderShippedMessage>(), Has.Count.EqualTo(1));
+
+        // Verify final order state
+        var finalOrderResponse = await client.GetAsync($"/api/orders/{order.Id}");
+        var finalOrder = await finalOrderResponse.Content.ReadFromJsonAsync<OrderResponse>();
+        
+        Assert.That(finalOrder.Status, Is.EqualTo("Shipped"));
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        _scope?.Dispose();
+        _factory?.Dispose();
+    }
+}
+```
+
+### Performance Testing
+
+Test message processing under load:
+
+```csharp
+[TestFixture]
+public class MessageProcessingPerformanceTests
+{
+    [Test]
+    public async Task ProcessLargeNumberOfMessages_CompletesWithinTimeout()
+    {
+        // Arrange
+        const int messageCount = 1000;
+        var publisher = new TestableMessagePublisher();
+        var handler = new OrderCreatedHandler(Mock.Of<IOrderService>(), Mock.Of<ILogger<OrderCreatedHandler>>());
+
+        var messages = Enumerable.Range(1, messageCount)
+            .Select(i => new OrderCreatedMessage
+            {
+                OrderNumber = $"ORD-{i:D4}",
+                CustomerId = $"CUST-{i % 100}",
+                TotalAmount = i * 10m
+            })
+            .ToList();
+
+        // Act
+        var stopwatch = Stopwatch.StartNew();
+        
+        var publishTasks = messages.Select(m => publisher.PublishAsync(m));
+        await Task.WhenAll(publishTasks);
+        
+        var processTasks = messages.Select(async m =>
+        {
+            var envelope = new MessageEnvelope(m);
+            await handler.OnNextAsync(envelope);
+        });
+        await Task.WhenAll(processTasks);
+        
+        stopwatch.Stop();
+
+        // Assert
+        Assert.That(stopwatch.ElapsedMilliseconds, Is.LessThan(5000), 
+            $"Processing {messageCount} messages took {stopwatch.ElapsedMilliseconds}ms");
+        
+        Assert.That(publisher.GetPublishedMessages<OrderCreatedMessage>(), 
+            Has.Count.EqualTo(messageCount));
+    }
+}
+```
+
+## Test Utilities and Helpers
+
+### Custom Test Builders
+
+Create builders for complex test data:
+
+```csharp
+public class OrderMessageBuilder
+{
+    private readonly OrderCreatedMessage _message;
+
+    public OrderMessageBuilder()
+    {
+        _message = new OrderCreatedMessage
+        {
+            Id = Guid.NewGuid(),
+            OrderNumber = "ORD-001",
+            CustomerId = "CUST-123",
+            TotalAmount = 99.99m,
+            CreatedAt = DateTime.UtcNow
+        };
+    }
+
+    public OrderMessageBuilder WithOrderNumber(string orderNumber)
+    {
+        _message.OrderNumber = orderNumber;
+        return this;
+    }
+
+    public OrderMessageBuilder WithCustomer(string customerId)
+    {
+        _message.CustomerId = customerId;
+        return this;
+    }
+
+    public OrderMessageBuilder WithAmount(decimal amount)
+    {
+        _message.TotalAmount = amount;
+        return this;
+    }
+
+    public OrderMessageBuilder WithMetadata(string key, object value)
+    {
+        if (_message is IMetadataAware metadataMessage)
+        {
+            metadataMessage.Metadata[key] = value;
+        }
+        return this;
+    }
+
+    public OrderCreatedMessage Build() => _message;
+
+    public static implicit operator OrderCreatedMessage(OrderMessageBuilder builder) => builder.Build();
+}
+
+// Usage in tests
+[Test]
+public async Task ProcessOrder_WithHighValue_SendsAlert()
+{
+    // Arrange
+    OrderCreatedMessage message = new OrderMessageBuilder()
+        .WithOrderNumber("ORD-999")
+        .WithAmount(10000m)
+        .WithMetadata("Priority", "High");
+
+    // Act & Assert
+    await _handler.OnNextAsync(new MessageEnvelope(message));
+    
+    _mockAlertService.Verify(x => x.SendHighValueOrderAlertAsync(
+        It.Is<OrderCreatedMessage>(m => m.TotalAmount == 10000m)), 
+        Times.Once);
+}
+```
+
+### Test Fixtures
+
+Create reusable test fixtures:
+
+```csharp
+public class MessageHandlerTestFixture
+{
+    public IServiceProvider ServiceProvider { get; private set; }
+    public TestableMessagePublisher TestPublisher { get; private set; }
+
+    [OneTimeSetUp]
+    public void OneTimeSetUp()
+    {
+        var services = new ServiceCollection();
+        
+        TestPublisher = new TestableMessagePublisher();
+        services.AddSingleton<IMessagePublisher>(TestPublisher);
+        
+        // Add common test services
+        services.AddLogging();
+        services.AddSingleton(Mock.Of<IOrderService>());
+        services.AddSingleton(Mock.Of<IPaymentService>());
+        services.AddSingleton(Mock.Of<IInventoryService>());
+        
+        ServiceProvider = services.BuildServiceProvider();
+    }
+
+    [SetUp]
+    public void SetUp()
+    {
+        TestPublisher.Clear();
+    }
+
+    [OneTimeTearDown]
+    public void OneTimeTearDown()
+    {
+        ServiceProvider?.Dispose();
+    }
+}
+
+[TestFixture]
+public class OrderHandlerTests : MessageHandlerTestFixture
+{
+    private OrderCreatedHandler _handler;
+
+    [SetUp]
+    public void SetUp()
+    {
+        base.SetUp();
+        _handler = new OrderCreatedHandler(
+            ServiceProvider.GetRequiredService<IOrderService>(),
+            ServiceProvider.GetRequiredService<ILogger<OrderCreatedHandler>>());
+    }
+
+    [Test]
+    public async Task ProcessOrder_CallsOrderService()
+    {
+        // Test implementation using inherited fixtures
+        var message = new OrderCreatedMessage { OrderNumber = "ORD-001" };
+        await _handler.OnNextAsync(new MessageEnvelope(message));
+        
+        // Assertions...
+    }
+}
+```
+
+## Best Practices
+
+### 1. Test Isolation
+
+Ensure tests don't interfere with each other:
+
+```csharp
+[Test]
+public async Task Test1_DoesNotAffectTest2()
+{
+    // Use fresh instances for each test
+    var publisher = new TestableMessagePublisher();
+    var handler = CreateHandler();
+    
+    // Test logic...
+    
+    // Verify state is isolated
+    publisher.ShouldNotHavePublishedAnyMessages();
+}
+```
+
+### 2. Deterministic Testing
+
+Make tests deterministic by controlling time and random values:
+
+```csharp
+public class TimeControlledOrderHandler : IMessageHandler
+{
+    private readonly IDateTimeProvider _dateTimeProvider;
+
+    public TimeControlledOrderHandler(IDateTimeProvider dateTimeProvider)
+    {
+        _dateTimeProvider = dateTimeProvider;
+    }
+
+    public async Task OnNextAsync(MessageEnvelope envelope)
+    {
+        var message = envelope.GetMessage<OrderCreatedMessage>();
+        message.ProcessedAt = _dateTimeProvider.UtcNow;
+        // Process message...
+    }
+}
+
+[Test]
+public async Task ProcessOrder_SetsCorrectProcessedTime()
+{
+    // Arrange
+    var fixedTime = new DateTime(2024, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+    var mockDateTimeProvider = new Mock<IDateTimeProvider>();
+    mockDateTimeProvider.Setup(x => x.UtcNow).Returns(fixedTime);
+    
+    var handler = new TimeControlledOrderHandler(mockDateTimeProvider.Object);
+    var message = new OrderCreatedMessage { OrderNumber = "ORD-001" };
+
+    // Act
+    await handler.OnNextAsync(new MessageEnvelope(message));
+
+    // Assert
+    Assert.That(message.ProcessedAt, Is.EqualTo(fixedTime));
+}
+```
+
+### 3. Test Error Scenarios
+
+Always test error conditions:
+
+```csharp
+[Test]
+public async Task OnNextAsync_DatabaseUnavailable_HandlesGracefully()
+{
+    // Arrange
+    var mockOrderService = new Mock<IOrderService>();
+    mockOrderService
+        .Setup(x => x.ProcessNewOrderAsync(It.IsAny<OrderCreatedMessage>()))
+        .ThrowsAsync(new SqlException("Database connection failed"));
+    
+    var handler = new OrderCreatedHandler(mockOrderService.Object, Mock.Of<ILogger<OrderCreatedHandler>>());
+    var message = new OrderCreatedMessage { OrderNumber = "ORD-001" };
+
+    // Act & Assert
+    var ex = await Assert.ThrowsAsync<SqlException>(
+        () => handler.OnNextAsync(new MessageEnvelope(message)));
+    
+    Assert.That(ex.Message, Does.Contain("Database connection failed"));
+}
+```
+
+### 4. Verify Side Effects
+
+Test all side effects of message processing:
+
+```csharp
+[Test]
+public async Task ProcessOrder_SendsNotificationAndLogsEvent()
+{
+    // Arrange
+    var mockNotificationService = new Mock<INotificationService>();
+    var mockLogger = new Mock<ILogger<OrderCreatedHandler>>();
+    var handler = new OrderCreatedHandler(mockNotificationService.Object, mockLogger.Object);
+    
+    var message = new OrderCreatedMessage 
+    { 
+        OrderNumber = "ORD-001",
+        CustomerId = "CUST-123"
+    };
+
+    // Act
+    await handler.OnNextAsync(new MessageEnvelope(message));
+
+    // Assert - Verify all side effects
+    mockNotificationService.Verify(x => x.SendOrderConfirmationAsync(
+        "CUST-123", "ORD-001"), Times.Once);
+    
+    mockLogger.Verify(
+        x => x.Log(
+            LogLevel.Information,
+            It.IsAny<EventId>(),
+            It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("ORD-001")),
+            It.IsAny<Exception>(),
+            It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+        Times.AtLeastOnce);
+}
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Error Handling"
+    icon="shield-exclamation"
+    href="/guides/error-handling"
+  >
+    Learn how to handle and test error scenarios
+  </Card>
+  <Card
+    title="Performance Guide"
+    icon="gauge-high"
+    href="/guides/performance"
+  >
+    Test and optimize performance
+  </Card>
+  <Card
+    title="Configuration"
+    icon="gear"
+    href="/guides/configuration"
+  >
+    Test different configurations
+  </Card>
+  <Card
+    title="API Reference"
+    icon="code"
+    href="/api-reference/overview"
+  >
+    Explore the complete API
+  </Card>
+</CardGroup>

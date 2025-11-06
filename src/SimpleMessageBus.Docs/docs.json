@@ -1,0 +1,332 @@
+{
+  "colors": {
+    "dark": "#3CD0E2",
+    "light": "#419AC5",
+    "primary": "#419AC5"
+  },
+  "name": "SimpleMessageBus",
+  "navigation": {
+    "pages": [
+      "index",
+      {
+        "group": "Getting Started",
+        "pages": [
+          "index",
+          "installation",
+          "quickstart"
+        ]
+      },
+      {
+        "group": "Guides",
+        "pages": [
+          "guides/configuration",
+          "guides/overview",
+          "guides/testing"
+        ]
+      },
+      {
+        "group": "Providers",
+        "pages": [
+          "providers/amazon-sqs",
+          "providers/azure-storage-queue",
+          "providers/overview"
+        ]
+      },
+      {
+        "group": "API Reference",
+        "icon": "code",
+        "pages": [
+          {
+            "group": "CloudNimble",
+            "icon": "folder-tree",
+            "pages": [
+              {
+                "group": "SimpleMessageBus",
+                "icon": "folder-tree",
+                "pages": [
+                  {
+                    "group": "Amazon",
+                    "icon": "folder-tree",
+                    "pages": [
+                      {
+                        "group": "Core",
+                        "icon": "folder-tree",
+                        "pages": [
+                          "api-reference/CloudNimble/SimpleMessageBus/Amazon/Core/index",
+                          "api-reference/CloudNimble/SimpleMessageBus/Amazon/Core/AmazonSQSOptions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Breakdance",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/CloudNimble/SimpleMessageBus/Breakdance/index",
+                      "api-reference/CloudNimble/SimpleMessageBus/Breakdance/TestableMessagePublisher"
+                    ]
+                  },
+                  {
+                    "group": "Core",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/index",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/AzureStorageQueueConstants",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/AzureStorageQueueEncoding",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/AzureStorageQueueOptions",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/FileSystemConstants",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/FileSystemOptions",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/IMessage",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/IMetadataAware",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/ITrackable",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/MessageBase",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope"
+                    ]
+                  },
+                  {
+                    "group": "Dispatch",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/CloudNimble/SimpleMessageBus/Dispatch/index",
+                      "api-reference/CloudNimble/SimpleMessageBus/Dispatch/AmazonSQSNameResolver",
+                      "api-reference/CloudNimble/SimpleMessageBus/Dispatch/AzureStorageQueueProcessor",
+                      "api-reference/CloudNimble/SimpleMessageBus/Dispatch/FileSystemQueueProcessor",
+                      "api-reference/CloudNimble/SimpleMessageBus/Dispatch/IMessageDispatcher",
+                      "api-reference/CloudNimble/SimpleMessageBus/Dispatch/IQueueProcessor",
+                      "api-reference/CloudNimble/SimpleMessageBus/Dispatch/OrderedMessageDispatcher",
+                      "api-reference/CloudNimble/SimpleMessageBus/Dispatch/ParallelMessageDispatcher",
+                      {
+                        "group": "Amazon",
+                        "icon": "folder-tree",
+                        "pages": [
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/Amazon/index",
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/Amazon/AmazonSQSConstants",
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/Amazon/AmazonSQSProcessor"
+                        ]
+                      },
+                      {
+                        "group": "IndexedDb",
+                        "icon": "folder-tree",
+                        "pages": [
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/IndexedDb/index",
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/IndexedDb/IndexedDbQueueProcessor"
+                        ]
+                      },
+                      {
+                        "group": "Triggers",
+                        "icon": "folder-tree",
+                        "pages": [
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/Triggers/index",
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/Triggers/ISimpleMessageBusFileProcessorFactory",
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/Triggers/SimpleMessageBusFileAttribute",
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/Triggers/SimpleMessageBusFileProcessor",
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/Triggers/SimpleMessageBusFileProcessorFactoryContext",
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/Triggers/SimpleMessageBusFileTriggerAttribute"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "IndexedDb",
+                    "icon": "folder-tree",
+                    "pages": [
+                      {
+                        "group": "Core",
+                        "icon": "folder-tree",
+                        "pages": [
+                          "api-reference/CloudNimble/SimpleMessageBus/IndexedDb/Core/index",
+                          "api-reference/CloudNimble/SimpleMessageBus/IndexedDb/Core/IndexedDbConstants",
+                          "api-reference/CloudNimble/SimpleMessageBus/IndexedDb/Core/IndexedDbOptions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Publish",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/CloudNimble/SimpleMessageBus/Publish/index",
+                      "api-reference/CloudNimble/SimpleMessageBus/Publish/AzureStorageQueueMessagePublisher",
+                      "api-reference/CloudNimble/SimpleMessageBus/Publish/FileSystemMessagePublisher",
+                      "api-reference/CloudNimble/SimpleMessageBus/Publish/IMessagePublisher",
+                      {
+                        "group": "Amazon",
+                        "icon": "folder-tree",
+                        "pages": [
+                          "api-reference/CloudNimble/SimpleMessageBus/Publish/Amazon/index",
+                          "api-reference/CloudNimble/SimpleMessageBus/Publish/Amazon/AmazonSQSConstants",
+                          "api-reference/CloudNimble/SimpleMessageBus/Publish/Amazon/AmazonSQSMessagePublisher"
+                        ]
+                      },
+                      {
+                        "group": "IndexedDb",
+                        "icon": "folder-tree",
+                        "pages": [
+                          "api-reference/CloudNimble/SimpleMessageBus/Publish/IndexedDb/index",
+                          "api-reference/CloudNimble/SimpleMessageBus/Publish/IndexedDb/IndexedDbMessagePublisher"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Microsoft",
+            "icon": "folder-tree",
+            "pages": [
+              {
+                "group": "AspNetCore",
+                "icon": "folder-tree",
+                "pages": [
+                  {
+                    "group": "Components",
+                    "icon": "folder-tree",
+                    "pages": [
+                      {
+                        "group": "WebAssembly",
+                        "icon": "folder-tree",
+                        "pages": [
+                          {
+                            "group": "Hosting",
+                            "icon": "folder-tree",
+                            "pages": [
+                              "api-reference/Microsoft/AspNetCore/Components/WebAssembly/Hosting/index",
+                              "api-reference/Microsoft/AspNetCore/Components/WebAssembly/Hosting/WebAssemblyHostBuilder"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Azure",
+                "icon": "folder-tree",
+                "pages": [
+                  {
+                    "group": "WebJobs",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/Microsoft/Azure/WebJobs/index",
+                      "api-reference/Microsoft/Azure/WebJobs/IWebJobsBuilder"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Extensions",
+                "icon": "folder-tree",
+                "pages": [
+                  {
+                    "group": "DependencyInjection",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/Microsoft/Extensions/DependencyInjection/index",
+                      "api-reference/Microsoft/Extensions/DependencyInjection/IServiceCollection"
+                    ]
+                  },
+                  {
+                    "group": "Hosting",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/Microsoft/Extensions/Hosting/index",
+                      "api-reference/Microsoft/Extensions/Hosting/IHostBuilder"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "group": "SimpleMessageBus",
+            "icon": "folder-tree",
+            "pages": [
+              {
+                "group": "IndexedDb",
+                "icon": "folder-tree",
+                "pages": [
+                  {
+                    "group": "Core",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/SimpleMessageBus/IndexedDb/Core/index",
+                      "api-reference/SimpleMessageBus/IndexedDb/Core/SimpleMessageBusDb"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Samples",
+                "icon": "folder-tree",
+                "pages": [
+                  {
+                    "group": "AzureWebJobs",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/SimpleMessageBus/Samples/AzureWebJobs/index",
+                      "api-reference/SimpleMessageBus/Samples/AzureWebJobs/EmailMessageHandler"
+                    ]
+                  },
+                  {
+                    "group": "Core",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/SimpleMessageBus/Samples/Core/index",
+                      "api-reference/SimpleMessageBus/Samples/Core/NewUserMessage"
+                    ]
+                  },
+                  {
+                    "group": "ExternalTriggers",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/SimpleMessageBus/Samples/ExternalTriggers/index",
+                      "api-reference/SimpleMessageBus/Samples/ExternalTriggers/SampleTimers"
+                    ]
+                  },
+                  {
+                    "group": "OnPrem",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/SimpleMessageBus/Samples/OnPrem/index",
+                      "api-reference/SimpleMessageBus/Samples/OnPrem/EmailMessageHandler",
+                      "api-reference/SimpleMessageBus/Samples/OnPrem/Functions",
+                      "api-reference/SimpleMessageBus/Samples/OnPrem/Program"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "group": "System",
+            "icon": "folder-tree",
+            "pages": [
+              "api-reference/System/index",
+              "api-reference/System/Type",
+              {
+                "group": "Collections",
+                "icon": "folder-tree",
+                "pages": [
+                  {
+                    "group": "Concurrent",
+                    "icon": "folder-tree",
+                    "pages": [
+                      "api-reference/System/Collections/Concurrent/index",
+                      "api-reference/System/Collections/Concurrent/ConcurrentDictionary"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple"
+}

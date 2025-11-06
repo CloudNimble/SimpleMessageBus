@@ -1,0 +1,403 @@
+---
+title: TestableMessagePublisher
+description: "A test double for IMessagePublisher that captures published messages for assertions.             Used in testing scenarios to verify that expected messages w..."
+icon: file-brackets-curly
+keywords: ['TestableMessagePublisher', 'CloudNimble.SimpleMessageBus.Breakdance.TestableMessagePublisher', 'CloudNimble.SimpleMessageBus.Breakdance', 'class', 'System.Object', 'CloudNimble.SimpleMessageBus.Publish.IMessagePublisher']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Breakdance.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Breakdance
+
+**Inheritance:** System.Object
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Breakdance.TestableMessagePublisher
+```
+
+## Summary
+
+A test double for IMessagePublisher that captures published messages for assertions.
+            Used in testing scenarios to verify that expected messages were published correctly.
+
+## Remarks
+
+The TestableMessagePublisher is designed for unit and integration testing of message publishing scenarios.
+            It implements the IMessagePublisher interface but instead of sending messages to actual queues, it captures
+            them in memory for verification. This enables testing of message publishing behavior without requiring
+            real message queue infrastructure.
+            
+            Key testing features:
+            - Captures all published messages for assertion
+            - Supports configurable actions to simulate publish behavior
+            - Provides methods to reset state between tests
+            - Maintains message order for sequence verification
+            
+            This class is part of the "Breakdance" testing utilities, named after the dance style that emphasizes
+            breaking conventional patterns - just like how test doubles break the normal execution flow for testing.
+
+## Examples
+
+```csharp
+// Basic usage in a unit test
+var publisher = new TestableMessagePublisher();
+var messageHandler = new OrderHandler(publisher);
+
+// Execute the code under test
+await messageHandler.ProcessOrder(orderId);
+
+// Verify the expected messages were published
+Assert.AreEqual(2, publisher.PublishedMessages.Count);
+Assert.IsInstanceOfType(publisher.PublishedMessages[0], typeof(InventoryReservedMessage));
+Assert.IsInstanceOfType(publisher.PublishedMessages[1], typeof(PaymentProcessedMessage));
+
+// Advanced scenario with custom action
+var publisher = new TestableMessagePublisher();
+publisher.SetAction((message, isSystem) =&gt;
+{
+    // Simulate behavior like throwing exceptions for certain message types
+    if (message is ProblemMessage)
+        throw new InvalidOperationException("Simulated failure");
+});
+
+// Test exception handling in your code
+await Assert.ThrowsExceptionAsync&lt;InvalidOperationException&gt;(() =&gt;
+    messageHandler.ProcessProblemScenario());
+```
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+
+Initializes a new instance of the [TestableMessagePublisher](/api-reference/CloudNimble/SimpleMessageBus/Breakdance/TestableMessagePublisher) class.
+            Creates an empty publisher with no published messages or configured actions.
+
+#### Syntax
+
+```csharp
+public TestableMessagePublisher()
+```
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public Object()
+```
+
+## Properties
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  PublishedMessages
+
+Gets a read-only list of all messages that have been published via this publisher.
+            This collection can be used in test assertions to verify published message content.
+
+#### Syntax
+
+```csharp
+public System.Collections.Generic.IReadOnlyList<CloudNimble.SimpleMessageBus.Core.IMessage> PublishedMessages { get; }
+```
+
+#### Property Value
+
+Type: `System.Collections.Generic.IReadOnlyList<CloudNimble.SimpleMessageBus.Core.IMessage>`
+A read-only list containing all messages published through this publisher in the order they were published.
+            The collection is empty when the publisher is first created or after [TestableMessagePublisher.ClearMessages](/api-reference/CloudNimble/SimpleMessageBus/Breakdance/TestableMessagePublisher#clearmessages) is called.
+
+#### Examples
+
+```csharp
+// Verify message count and types
+Assert.AreEqual(3, publisher.PublishedMessages.Count);
+Assert.IsTrue(publisher.PublishedMessages.Any(m =&gt; m is OrderCreatedMessage));
+
+// Verify specific message content
+var orderMessage = publisher.PublishedMessages.OfType&lt;OrderCreatedMessage&gt;().First();
+Assert.AreEqual("ORD-001", orderMessage.OrderNumber);
+
+// Verify message sequence
+Assert.IsInstanceOfType(publisher.PublishedMessages[0], typeof(OrderCreatedMessage));
+Assert.IsInstanceOfType(publisher.PublishedMessages[1], typeof(InventoryReservedMessage));
+Assert.IsInstanceOfType(publisher.PublishedMessages[2], typeof(PaymentProcessedMessage));
+```
+
+#### Remarks
+
+This property provides access to all messages captured during testing. Messages are stored in publication
+            order, allowing verification of both message content and sequence. The returned collection is read-only
+            to prevent external modification of the test state.
+            
+            Use this property in test assertions to verify:
+            - The correct number of messages were published
+            - The right message types were published
+            - Messages contain expected data
+            - Messages were published in the correct order
+
+## Methods
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ClearMessages
+
+Clears all published messages from the internal collection.
+            Use this method to reset the state between tests.
+
+#### Syntax
+
+```csharp
+public void ClearMessages()
+```
+
+#### Examples
+
+```csharp
+[Test]
+public async Task Should_Publish_Order_Message()
+{
+    // Arrange
+    publisher.ClearMessages(); // Ensure clean state
+    var order = new CreateOrderCommand { ProductId = "PROD-001" };
+
+    // Act
+    await orderService.CreateOrderAsync(order);
+
+    // Assert
+    Assert.AreEqual(1, publisher.PublishedMessages.Count);
+    Assert.IsInstanceOfType(publisher.PublishedMessages[0], typeof(OrderCreatedMessage));
+}
+```
+
+#### Remarks
+
+This method is typically called in test setup or teardown to ensure each test starts with a clean state.
+            After calling this method, the [TestableMessagePublisher.PublishedMessages](/api-reference/CloudNimble/SimpleMessageBus/Breakdance/TestableMessagePublisher#publishedmessages) collection will be empty until new messages
+            are published. This prevents test interference where one test's published messages affect another test's assertions.
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual bool Equals(object obj)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `obj` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool Equals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual int GetHashCode()
+```
+
+#### Returns
+
+Type: `int`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetType <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public System.Type GetType()
+```
+
+#### Returns
+
+Type: `System.Type`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+protected internal object MemberwiseClone()
+```
+
+#### Returns
+
+Type: `object`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  PublishAsync
+
+Implements the IMessagePublisher interface method by capturing the published message
+            for later assertion and optionally invoking a configured action.
+
+#### Syntax
+
+```csharp
+public System.Threading.Tasks.Task PublishAsync(CloudNimble.SimpleMessageBus.Core.IMessage message, bool isSystemGenerated = false)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `message` | `CloudNimble.SimpleMessageBus.Core.IMessage` | The message to publish. |
+| `isSystemGenerated` | `bool` | Indicates whether the message is system-generated. |
+
+#### Returns
+
+Type: `System.Threading.Tasks.Task`
+A completed task.
+
+#### Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+| `Exception` | May throw exceptions if a custom action configured via `Boolean})` throws. |
+
+#### Examples
+
+```csharp
+// Direct usage (though typically called by code under test)
+var message = new OrderCreatedMessage { OrderNumber = "ORD-001" };
+await publisher.PublishAsync(message, isSystemGenerated: false);
+
+// Verify it was captured
+Assert.AreEqual(1, publisher.PublishedMessages.Count);
+Assert.AreSame(message, publisher.PublishedMessages[0]);
+```
+
+#### Remarks
+
+This method implements the core functionality of the test double by:
+            1. Adding the message to the internal collection for later verification
+            2. Invoking any configured action (if set via `Boolean})`)
+            3. Returning a completed task to satisfy the async interface
+            
+            Unlike real message publishers, this method does not actually send messages to any queue.
+            It completes synchronously and never throws exceptions unless a custom action is configured to do so.
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool ReferenceEquals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  SetAction
+
+Sets an action to be executed when a message is published.
+
+#### Syntax
+
+```csharp
+public void SetAction(System.Action<CloudNimble.SimpleMessageBus.Core.IMessage, bool> onPublish)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `onPublish` | `System.Action<CloudNimble.SimpleMessageBus.Core.IMessage, bool>` | The action to execute when PublishAsync is called. 
+            The action receives the published message and the isSystemGenerated flag. |
+
+#### Examples
+
+```csharp
+// Simulate publishing failures for certain message types
+publisher.SetAction((message, isSystem) =&gt;
+{
+    if (message is CriticalMessage)
+        throw new InvalidOperationException("Publishing service unavailable");
+});
+
+// Simulate side effects like logging or notifications
+publisher.SetAction((message, isSystem) =&gt;
+{
+    if (isSystem)
+        systemMessageCount++;
+    logger.LogInformation("Published {MessageType}", message.GetType().Name);
+});
+
+// Remove the action
+publisher.SetAction(null);
+```
+
+#### Remarks
+
+This method allows customization of the publisher's behavior during testing. The configured action
+            is invoked after the message is added to the [TestableMessagePublisher.PublishedMessages](/api-reference/CloudNimble/SimpleMessageBus/Breakdance/TestableMessagePublisher#publishedmessages) collection, allowing
+            for simulation of various publishing scenarios such as failures, delays, or side effects.
+            
+            Setting this to null removes any previously configured action. The action is optional and publishing
+            will work normally even without it being set.
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual string ToString()
+```
+
+#### Returns
+
+Type: `string?`
+
+## Related APIs
+
+- CloudNimble.SimpleMessageBus.Publish.IMessagePublisher
+

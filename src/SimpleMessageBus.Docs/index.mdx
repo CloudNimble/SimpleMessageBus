@@ -1,0 +1,110 @@
+---
+title: Introducing SimpleMessageBus
+description: 'A simple, lightweight message bus for .NET applications'
+---
+
+<img
+  className="block dark:hidden"
+  src="/images/hero-light.png"
+  alt="SimpleMessageBus Hero Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/hero-dark.png"
+  alt="SimpleMessageBus Hero Dark"
+/>
+
+## What is SimpleMessageBus?
+
+SimpleMessageBus is a lightweight, cross-platform message bus library for .NET applications. It provides a simple abstraction for publishing and consuming messages across different transport mechanisms including Azure Storage Queues, Amazon SQS, file systems, and browser IndexedDB.
+
+<CardGroup cols={2}>
+  <Card
+    title="Multiple Providers"
+    icon="cloud"
+    href="/providers/overview"
+  >
+    Support for Azure, AWS, file system, and IndexedDB providers
+  </Card>
+  <Card
+    title="Simple API"
+    icon="code"
+    href="/quickstart"
+  >
+    Clean, intuitive APIs that are easy to learn and use
+  </Card>
+  <Card
+    title="Cross-Platform"
+    icon="globe"
+    href="/concepts/overview"
+  >
+    Works with .NET 8, 9, and 10 across multiple platforms
+  </Card>
+  <Card
+    title="Extensible"
+    icon="puzzle-piece"
+    href="/guides/configuration"
+  >
+    Easy to extend with custom providers and message handlers
+  </Card>
+</CardGroup>
+
+## Key Features
+
+- **Multiple Transport Providers**: Azure Storage Queues, Amazon SQS, File System, IndexedDB
+- **Dependency Injection**: Built-in support for Microsoft.Extensions.DependencyInjection
+- **Azure Functions Integration**: First-class support for Azure Functions and WebJobs
+- **Blazor WebAssembly Support**: IndexedDB provider for client-side messaging
+- **Serialization**: JSON serialization with extensible message contracts
+- **Error Handling**: Robust error handling and retry mechanisms
+- **Testing Support**: Breakdance testing utilities included
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Microservices Communication">
+    Enable loose coupling between microservices using message-based communication patterns.
+  </Accordion>
+  <Accordion title="Background Processing">
+    Queue work items for background processing in web applications.
+  </Accordion>
+  <Accordion title="Event-Driven Architecture">
+    Implement event-driven patterns with domain events and message handlers.
+  </Accordion>
+  <Accordion title="Blazor WebAssembly">
+    Client-side message queuing for offline scenarios and local data processing.
+  </Accordion>
+</AccordionGroup>
+
+## Getting Started
+
+Ready to get started? Choose your path:
+
+<CardGroup cols={2}>
+  <Card
+    title="Quick Start"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Get up and running in 5 minutes
+  </Card>
+  <Card
+    title="Installation Guide"
+    icon="download"
+    href="/installation"
+  >
+    Detailed installation instructions
+  </Card>
+</CardGroup>
+
+## Community
+
+SimpleMessageBus is an open-source project maintained by CloudNimble. We welcome contributions, feedback, and community involvement.
+
+- **GitHub**: [CloudNimble/SimpleMessageBus](https://github.com/CloudNimble/SimpleMessageBus)
+- **Issues**: Report bugs and request features
+- **Discussions**: Join community discussions and get help
+
+## License
+
+SimpleMessageBus is released under the MIT License. See the [LICENSE](https://github.com/CloudNimble/SimpleMessageBus/blob/main/LICENSE) file for details.

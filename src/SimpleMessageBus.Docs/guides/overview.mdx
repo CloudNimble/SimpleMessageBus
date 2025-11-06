@@ -1,0 +1,329 @@
+---
+title: Core Concepts
+description: 'Understanding the fundamental concepts of SimpleMessageBus'
+---
+
+SimpleMessageBus is built around a few core concepts that work together to provide a simple yet powerful messaging system. Understanding these concepts will help you effectively use the library in your applications.
+
+## Architecture Overview
+
+<img
+  src="/images/architecture-overview.png"
+  alt="SimpleMessageBus Architecture"
+/>
+
+SimpleMessageBus follows a publisher-subscriber pattern with the following key components:
+
+- **Messages**: Data structures that carry information between components
+- **Publishers**: Components that send messages to a transport mechanism
+- **Handlers**: Components that process messages when they are received
+- **Dispatchers**: Components that coordinate message delivery to handlers
+- **Providers**: Transport-specific implementations (Azure, AWS, File System, IndexedDB)
+
+## Messages
+
+Messages are the fundamental units of communication in SimpleMessageBus. They represent events, commands, or notifications that need to be processed.
+
+### Message Contract
+
+All messages must implement the `IMessage` interface:
+
+```csharp
+public interface IMessage
+{
+    // Marker interface - no members required
+}
+```
+
+### Message Implementation
+
+```csharp
+public class OrderProcessedMessage : IMessage
+{
+    public string OrderId { get; set; }
+    public decimal TotalAmount { get; set; }
+    public DateTime ProcessedAt { get; set; }
+    public string CustomerId { get; set; }
+}
+```
+
+### Message Envelope
+
+Internally, SimpleMessageBus wraps your messages in a `MessageEnvelope` that adds metadata:
+
+```csharp
+public class MessageEnvelope
+{
+    public string MessageId { get; set; }
+    public string MessageType { get; set; }
+    public string CorrelationId { get; set; }
+    public DateTime Timestamp { get; set; }
+    public string Content { get; set; } // Serialized message
+    public Dictionary<string, object> Headers { get; set; }
+}
+```
+
+## Publishers
+
+Publishers are responsible for sending messages to the underlying transport mechanism. They serialize messages and handle transport-specific details.
+
+### IMessagePublisher Interface
+
+```csharp
+public interface IMessagePublisher
+{
+    Task PublishAsync<T>(T message) where T : IMessage;
+    Task PublishAsync<T>(T message, CancellationToken cancellationToken) where T : IMessage;
+}
+```
+
+### Usage Example
+
+```csharp
+public class OrderService
+{
+    private readonly IMessagePublisher _publisher;
+
+    public OrderService(IMessagePublisher publisher)
+    {
+        _publisher = publisher;
+    }
+
+    public async Task ProcessOrder(Order order)
+    {
+        // Process the order
+        await SaveOrderToDatabase(order);
+
+        // Publish message
+        await _publisher.PublishAsync(new OrderProcessedMessage
+        {
+            OrderId = order.Id,
+            TotalAmount = order.Total,
+            ProcessedAt = DateTime.UtcNow,
+            CustomerId = order.CustomerId
+        });
+    }
+}
+```
+
+## Handlers
+
+Handlers contain the business logic for processing messages. They implement the `IMessageHandler<T>` interface.
+
+### IMessageHandler Interface
+
+```csharp
+public interface IMessageHandler<in T> where T : IMessage
+{
+    Task HandleAsync(T message);
+}
+```
+
+### Handler Implementation
+
+```csharp
+public class OrderProcessedHandler : IMessageHandler<OrderProcessedMessage>
+{
+    private readonly IEmailService _emailService;
+    private readonly ILogger<OrderProcessedHandler> _logger;
+
+    public OrderProcessedHandler(IEmailService emailService, ILogger<OrderProcessedHandler> logger)
+    {
+        _emailService = emailService;
+        _logger = logger;
+    }
+
+    public async Task HandleAsync(OrderProcessedMessage message)
+    {
+        _logger.LogInformation("Processing order {OrderId} for customer {CustomerId}", 
+            message.OrderId, message.CustomerId);
+
+        try
+        {
+            // Send confirmation email
+            await _emailService.SendOrderConfirmationAsync(
+                message.CustomerId, 
+                message.OrderId, 
+                message.TotalAmount);
+
+            _logger.LogInformation("Order confirmation sent for {OrderId}", message.OrderId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to send order confirmation for {OrderId}", message.OrderId);
+            throw; // Re-throw to trigger retry mechanisms
+        }
+    }
+}
+```
+
+## Dispatchers
+
+Dispatchers coordinate the delivery of messages from the transport mechanism to the appropriate handlers. They handle deserialization, routing, and error handling.
+
+### IMessageDispatcher Interface
+
+```csharp
+public interface IMessageDispatcher
+{
+    Task DispatchAsync(MessageEnvelope envelope);
+    Task DispatchAsync(MessageEnvelope envelope, CancellationToken cancellationToken);
+}
+```
+
+### Dispatcher Types
+
+SimpleMessageBus provides two built-in dispatcher implementations:
+
+#### Parallel Dispatcher
+
+Processes messages concurrently for maximum throughput:
+
+```csharp
+services.AddSimpleMessageBusParallelDispatcher(options =>
+{
+    options.MaxConcurrency = Environment.ProcessorCount * 2;
+    options.BatchSize = 10;
+});
+```
+
+#### Ordered Dispatcher
+
+Processes messages sequentially to maintain order:
+
+```csharp
+services.AddSimpleMessageBusOrderedDispatcher();
+```
+
+## Queue Processors
+
+Queue processors are provider-specific components that poll the underlying transport for new messages and forward them to dispatchers.
+
+### IQueueProcessor Interface
+
+```csharp
+public interface IQueueProcessor
+{
+    Task StartAsync(CancellationToken cancellationToken);
+    Task StopAsync(CancellationToken cancellationToken);
+}
+```
+
+### Provider-Specific Processors
+
+Each provider implements its own queue processor:
+
+- **Azure Storage Queue Processor**: Polls Azure Storage Queues
+- **Amazon SQS Processor**: Long-polls Amazon SQS queues
+- **File System Processor**: Watches file system directories
+- **IndexedDB Processor**: Monitors IndexedDB for new messages
+
+## Message Flow
+
+Here's how messages flow through the system:
+
+```mermaid
+graph LR
+    A[Application] --> B[Publisher]
+    B --> C[Transport<br/>Queue/File/DB]
+    C --> D[Queue Processor]
+    D --> E[Dispatcher]
+    E --> F[Handler]
+    F --> G[Business Logic]
+```
+
+1. **Application** creates and publishes a message
+2. **Publisher** serializes and sends the message to the transport
+3. **Transport** stores the message (queue, file, database)
+4. **Queue Processor** retrieves the message from transport
+5. **Dispatcher** deserializes and routes the message
+6. **Handler** processes the message with business logic
+
+## Error Handling
+
+SimpleMessageBus provides several mechanisms for handling errors:
+
+### Retry Mechanisms
+
+Most providers support automatic retry with configurable policies:
+
+```csharp
+services.AddSimpleMessageBusAzureStorageDispatcher(options =>
+{
+    options.MaxRetryAttempts = 3;
+    options.RetryDelay = TimeSpan.FromSeconds(30);
+    options.BackoffMultiplier = 2.0;
+});
+```
+
+### Dead Letter Queues
+
+Failed messages can be automatically moved to dead letter queues:
+
+```csharp
+services.AddSimpleMessageBusAmazonSQSDispatcher(options =>
+{
+    options.DeadLetterQueueName = "failed-messages";
+    options.MaxDeliveryCount = 5;
+});
+```
+
+### Exception Handling
+
+Handlers should implement proper exception handling:
+
+```csharp
+public async Task HandleAsync(MyMessage message)
+{
+    try
+    {
+        await ProcessMessage(message);
+    }
+    catch (BusinessException ex)
+    {
+        // Log and ignore - don't retry business rule violations
+        _logger.LogWarning(ex, "Business rule violation for message {MessageId}", message.Id);
+    }
+    catch (TransientException ex)
+    {
+        // Log and re-throw - allow retry for transient failures
+        _logger.LogError(ex, "Transient error processing message {MessageId}", message.Id);
+        throw;
+    }
+}
+```
+
+## Next Steps
+
+Now that you understand the core concepts, dive deeper into specific areas:
+
+<CardGroup cols={2}>
+  <Card
+    title="Messages"
+    icon="envelope"
+    href="/concepts/messages"
+  >
+    Learn about message design and best practices
+  </Card>
+  <Card
+    title="Publishers"
+    icon="paper-plane"
+    href="/concepts/publishers"
+  >
+    Understand publishing patterns and configuration
+  </Card>
+  <Card
+    title="Handlers"
+    icon="gear"
+    href="/concepts/handlers"
+  >
+    Master message processing and error handling
+  </Card>
+  <Card
+    title="Dispatchers"
+    icon="route"
+    href="/concepts/dispatchers"
+  >
+    Configure message routing and concurrency
+  </Card>
+</CardGroup>

@@ -1,0 +1,220 @@
+---
+title: AzureStorageQueueProcessor
+description: "Processes messages from Azure Storage Queues and dispatches them to registered message handlers."
+icon: file-brackets-curly
+keywords: ['AzureStorageQueueProcessor', 'CloudNimble.SimpleMessageBus.Dispatch.AzureStorageQueueProcessor', 'CloudNimble.SimpleMessageBus.Dispatch', 'class', 'System.Object', 'CloudNimble.SimpleMessageBus.Dispatch.IQueueProcessor']
+---
+
+import { DocsBadge } from '/snippets/DocsBadge.jsx';
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Dispatch.Azure.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Dispatch
+
+**Inheritance:** System.Object
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Dispatch.AzureStorageQueueProcessor
+```
+
+## Summary
+
+Processes messages from Azure Storage Queues and dispatches them to registered message handlers.
+
+## Remarks
+
+This processor integrates with Azure WebJobs to automatically trigger message processing when
+            messages arrive in Azure Storage Queues. It handles message deserialization, lifecycle management,
+            and provides proper logging and dependency injection scope for each message.
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+
+Initializes a new instance of the [AzureStorageQueueProcessor](/api-reference/CloudNimble/SimpleMessageBus/Dispatch/AzureStorageQueueProcessor) class.
+
+#### Syntax
+
+```csharp
+public AzureStorageQueueProcessor(CloudNimble.SimpleMessageBus.Dispatch.IMessageDispatcher dispatcher, Microsoft.Extensions.DependencyInjection.IServiceScopeFactory serviceScopeFactory)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `dispatcher` | `CloudNimble.SimpleMessageBus.Dispatch.IMessageDispatcher` | The message dispatcher to route messages to handlers. |
+| `serviceScopeFactory` | `Microsoft.Extensions.DependencyInjection.IServiceScopeFactory` | The service scope factory for creating DI scopes per message. |
+
+#### Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+| `ArgumentNullException` | Thrown when *dispatcher* or *serviceScopeFactory* is null. |
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public Object()
+```
+
+## Methods
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual bool Equals(object obj)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `obj` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool Equals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual int GetHashCode()
+```
+
+#### Returns
+
+Type: `int`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetType <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public System.Type GetType()
+```
+
+#### Returns
+
+Type: `System.Type`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+protected internal object MemberwiseClone()
+```
+
+#### Returns
+
+Type: `object`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ProcessQueue
+
+Processes a message from the Azure Storage Queue and dispatches it to registered handlers.
+
+#### Syntax
+
+```csharp
+public System.Threading.Tasks.Task<Azure.Storage.Queues.Models.QueueMessage> ProcessQueue(Azure.Storage.Queues.Models.QueueMessage queueMessage, Microsoft.Extensions.Logging.ILogger logger)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `queueMessage` | `Azure.Storage.Queues.Models.QueueMessage` | The Azure Storage Queue message to process. |
+| `logger` | `Microsoft.Extensions.Logging.ILogger` | The logger instance for this processing operation. |
+
+#### Returns
+
+Type: `System.Threading.Tasks.Task<Azure.Storage.Queues.Models.QueueMessage>`
+The processed queue message, which will be moved to the completed queue if configured.
+
+#### Remarks
+
+This method is triggered automatically by the Azure WebJobs framework when messages arrive.
+            It deserializes the message envelope, sets up processing context, and dispatches to handlers.
+            If processing succeeds, the message is optionally moved to a completion queue.
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool ReferenceEquals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual string ToString()
+```
+
+#### Returns
+
+Type: `string?`
+
+## Related APIs
+
+- CloudNimble.SimpleMessageBus.Dispatch.IQueueProcessor
+

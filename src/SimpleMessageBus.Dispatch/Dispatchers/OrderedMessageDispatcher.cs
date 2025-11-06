@@ -52,10 +52,7 @@ namespace CloudNimble.SimpleMessageBus.Dispatch
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="messageEnvelope"/> is null.</exception>
         public async Task Dispatch(MessageEnvelope messageEnvelope)
         {
-            if (messageEnvelope is null)
-            {
-                throw new ArgumentNullException(nameof(messageEnvelope));
-            }
+            ArgumentNullException.ThrowIfNull(messageEnvelope);
 
             foreach (var handler in _messageHandlers.Where(c => c.GetHandledMessageTypes().Any(d => d.SimpleAssemblyQualifiedName() == messageEnvelope.MessageType)))
             {

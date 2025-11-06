@@ -1,25 +1,35 @@
-<Project Sdk="DotNetDocs.Sdk/1.1.0-preview.7">
+﻿<Project Sdk="DotNetDocs.Sdk/1.1.0-preview.7">
 
-	<PropertyGroup>
-		<DocumentationType>Mintlify</DocumentationType>
-		<GenerateDocumentation>true</GenerateDocumentation>
-		<NamespaceMode>Folder</NamespaceMode>
-		<ShowDocumentationStats>true</ShowDocumentationStats>
+    <PropertyGroup>
+        <DocumentationType>Mintlify</DocumentationType>
+        <GenerateDocumentation>true</GenerateDocumentation>
+        <NamespaceMode>Folder</NamespaceMode>
+        <ShowDocumentationStats>true</ShowDocumentationStats>
 
-		<ConceptualDocsEnabled>false</ConceptualDocsEnabled>
-		<ShowPlaceholders>false</ShowPlaceholders>
+        <ConceptualDocsEnabled>false</ConceptualDocsEnabled>
+        <ShowPlaceholders>false</ShowPlaceholders>
 
-		<MintlifyTemplate>
-			<Name>SimpleMessageBus</Name>
-			<Theme>maple</Theme>
-			<Colors>
-				<Primary>#419AC5</Primary>
-				<Light>#419AC5</Light>
-				<Dark>#3CD0E2</Dark>
-			</Colors>
+        <MintlifyTemplate>
+            <Name>SimpleMessageBus</Name>
+            <Theme>maple</Theme>
+            <Colors>
+                <Primary>#419AC5</Primary>
+                <Light>#419AC5</Light>
+                <Dark>#3CD0E2</Dark>
+            </Colors>
             <Navigation Mode="Unified">
+                <Pages>
+                    <Groups>
+                        <Group Name="Getting Started" Icon="stars">
+                            <Pages>index;why-breakdance;quickstart</Pages>
+                        </Group>
+                        <!--<Group Name="Guides" Icon="dog-leashed">
+                            <Pages>guides/index;guides/pipeline;guides/conceptual-docs;guides/deployment</Pages>
+                        </Group>-->
+                    </Groups>
+                </Pages>
             </Navigation>
         </MintlifyTemplate>
-	</PropertyGroup>
+    </PropertyGroup>
 
 </Project>

@@ -43,7 +43,7 @@ public class OrderCreatedMessage : IMessage
 
 ## Properties
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Id <DocsBadge text="Abstract" variant="warning" />
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> Id <DocsBadge text="Abstract" variant="warning" />
 
 Gets or sets the unique identifier for this Message.
 
@@ -66,7 +66,7 @@ This identifier is used for tracking messages through the system, deduplication,
 
 ## Methods
 
-### <Icon icon="puzzle-piece" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  CreateChild <DocsBadge text="Extension" variant="success" />
+### <Icon icon="puzzle-piece" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> CreateChild <DocsBadge text="Extension" variant="success" />
 
 <Note>Extension method from `CloudNimble.SimpleMessageBus.Core.MessageExtensions`</Note>
 
@@ -104,7 +104,7 @@ shipmentRequested.Items = result.Items;
 await publisher.PublishAsync(shipmentRequested);
 ```
 
-### <Icon icon="puzzle-piece" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  LastRunSucceeded <DocsBadge text="Extension" variant="success" />
+### <Icon icon="puzzle-piece" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> LastRunSucceeded <DocsBadge text="Extension" variant="success" />
 
 <Note>Extension method from `CloudNimble.SimpleMessageBus.Core.MessageExtensions`</Note>
 
@@ -145,7 +145,7 @@ public async Task Handle(OrderCreated message, ILogger logger)
 }
 ```
 
-### <Icon icon="puzzle-piece" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  UpdateResult <DocsBadge text="Extension" variant="success" />
+### <Icon icon="puzzle-piece" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> UpdateResult <DocsBadge text="Extension" variant="success" />
 
 <Note>Extension method from `CloudNimble.SimpleMessageBus.Core.MessageExtensions`</Note>
 

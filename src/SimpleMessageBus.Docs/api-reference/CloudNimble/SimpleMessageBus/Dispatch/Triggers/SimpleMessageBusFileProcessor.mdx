@@ -27,7 +27,7 @@ Default file processor used by [FileTriggerAttribute](https://learn.microsoft.co
 
 ## Constructors
 
-### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> .ctor
 
 Constructs a new instance.
 
@@ -43,7 +43,7 @@ public SimpleMessageBusFileProcessor(CloudNimble.SimpleMessageBus.Dispatch.Trigg
 |------|------|-------------|
 | `context` | `CloudNimble.SimpleMessageBus.Dispatch.Triggers.SimpleMessageBusFileProcessorFactoryContext` | The [SimpleMessageBusFileProcessorFactoryContext](/api-reference/CloudNimble/SimpleMessageBus/Dispatch/Triggers/SimpleMessageBusFileProcessorFactoryContext) to use. |
 
-### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> .ctor <DocsBadge text="Inherited" variant="neutral" />
 
 <Note>Inherited from `object`</Note>
 
@@ -55,7 +55,7 @@ public Object()
 
 ## Properties
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  InstanceId <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> InstanceId <DocsBadge text="Virtual" variant="warning" />
 
 Gets the current role instance ID. In Azure WebApps, this will be the
             WEBSITE_INSTANCE_ID. In non Azure scenarios, this will default to the
@@ -71,7 +71,7 @@ public virtual string InstanceId { get; }
 
 Type: `string`
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MaxDegreeOfParallelism <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> MaxDegreeOfParallelism <DocsBadge text="Virtual" variant="warning" />
 
 Gets the maximum degree of parallelism that will be used
             when processing files concurrently.
@@ -91,7 +91,7 @@ Type: `int`
 Files are added to an internal processing queue as file events
             are detected, and they're processed in parallel based on this setting.
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MaxProcessCount <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> MaxProcessCount <DocsBadge text="Virtual" variant="warning" />
 
 Gets the maximum number of times file processing will
             be attempted for a file.
@@ -106,7 +106,7 @@ public virtual int MaxProcessCount { get; }
 
 Type: `int`
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MaxQueueSize <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> MaxQueueSize <DocsBadge text="Virtual" variant="warning" />
 
 Gets the bounds on the maximum number of files that can be queued
             up for processing at one time. When set to -1, the work queue is
@@ -122,7 +122,7 @@ public virtual int MaxQueueSize { get; }
 
 Type: `int`
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  StatusFileExtension <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> StatusFileExtension <DocsBadge text="Virtual" variant="warning" />
 
 Gets the file extension that will be used for the status files
             that are created for processed files.
@@ -139,7 +139,7 @@ Type: `string`
 
 ## Methods
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Cleanup <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> Cleanup <DocsBadge text="Virtual" variant="warning" />
 
 Perform any required cleanup. This includes deleting processed files
             (when [AutoDelete](https://learn.microsoft.com/dotnet/api/microsoft.azure.webjobs.filetriggerattribute.autodelete) is True).
@@ -150,7 +150,7 @@ Perform any required cleanup. This includes deleting processed files
 public virtual void Cleanup()
 ```
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  CleanupProcessedFiles <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> CleanupProcessedFiles <DocsBadge text="Virtual" variant="warning" />
 
 Clean up any files that have been fully processed
 
@@ -160,7 +160,7 @@ Clean up any files that have been fully processed
 public virtual void CleanupProcessedFiles()
 ```
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
 
 <Note>Inherited from `object`</Note>
 
@@ -180,7 +180,7 @@ public virtual bool Equals(object obj)
 
 Type: `bool`
 
-### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> Equals <DocsBadge text="Inherited" variant="neutral" />
 
 <Note>Inherited from `object`</Note>
 
@@ -201,7 +201,7 @@ public static bool Equals(object objA, object objB)
 
 Type: `bool`
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
 
 <Note>Inherited from `object`</Note>
 
@@ -215,7 +215,7 @@ public virtual int GetHashCode()
 
 Type: `int`
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetType <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> GetType <DocsBadge text="Inherited" variant="neutral" />
 
 <Note>Inherited from `object`</Note>
 
@@ -229,7 +229,7 @@ public System.Type GetType()
 
 Type: `System.Type`
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
 
 <Note>Inherited from `object`</Note>
 
@@ -243,7 +243,7 @@ protected internal object MemberwiseClone()
 
 Type: `object`
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ProcessFileAsync <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ProcessFileAsync <DocsBadge text="Virtual" variant="warning" />
 
 Process the file indicated by the specified [FileSystemEventArgs](https://learn.microsoft.com/dotnet/api/system.io.filesystemeventargs).
 
@@ -265,7 +265,7 @@ public virtual System.Threading.Tasks.Task<bool> ProcessFileAsync(System.IO.File
 Type: `System.Threading.Tasks.Task<bool>`
 A [Task](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task) that returns true if the file was processed successfully, false otherwise.
 
-### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
 
 <Note>Inherited from `object`</Note>
 
@@ -286,7 +286,7 @@ public static bool ReferenceEquals(object objA, object objB)
 
 Type: `bool`
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ShouldProcessFile <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ShouldProcessFile <DocsBadge text="Virtual" variant="warning" />
 
 Determines whether the specified file should be processed.
 
@@ -307,7 +307,7 @@ public virtual bool ShouldProcessFile(string filePath)
 Type: `bool`
 True if the file should be processed, false otherwise.
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
 
 <Note>Inherited from `object`</Note>
 

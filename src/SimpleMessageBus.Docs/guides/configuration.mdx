@@ -1,71 +1,75 @@
 ---
 title: Configuration Guide
-description: 'Complete guide to configuring SimpleMessageBus in your application'
+sidebarTitle: Configuration
+description: Complete guide to configuring SimpleMessageBus in your application
+icon: gear
 ---
 
 This guide covers all aspects of configuring SimpleMessageBus in your .NET applications, from basic setup to advanced scenarios.
 
 ## Basic Configuration
 
-### ASP.NET Core Application
+<Steps>
+  <Step title="Configure for ASP.NET Core">
+    Configure SimpleMessageBus in your `Program.cs` file:
 
-Configure SimpleMessageBus in your `Program.cs` file:
+    ```csharp
+    using SimpleMessageBus.Publish.Azure.Extensions;
+    using SimpleMessageBus.Dispatch.Azure.Extensions;
 
-```csharp
-using SimpleMessageBus.Publish.Azure.Extensions;
-using SimpleMessageBus.Dispatch.Azure.Extensions;
+    var builder = WebApplication.CreateBuilder(args);
 
-var builder = WebApplication.CreateBuilder(args);
+    // Configure publisher
+    builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
+    {
+        options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+        options.DefaultQueueName = "messages";
+    });
 
-// Configure publisher
-builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
-{
-    options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
-    options.DefaultQueueName = "messages";
-});
+    // Configure dispatcher
+    builder.Services.AddSimpleMessageBusAzureStorageDispatcher(options =>
+    {
+        options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+        options.MaxConcurrentMessages = 32;
+        options.PollingInterval = TimeSpan.FromSeconds(5);
+    });
 
-// Configure dispatcher
-builder.Services.AddSimpleMessageBusAzureStorageDispatcher(options =>
-{
-    options.ConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
-    options.MaxConcurrentMessages = 32;
-    options.PollingInterval = TimeSpan.FromSeconds(5);
-});
+    // Register message handlers
+    builder.Services.AddScoped<IMessageHandler, OrderCreatedHandler>();
 
-// Register message handlers
-builder.Services.AddScoped<IMessageHandler, OrderCreatedHandler>();
+    var app = builder.Build();
+    app.Run();
+    ```
+  </Step>
 
-var app = builder.Build();
-app.Run();
-```
+  <Step title="Configure for Console Applications">
+    For console applications, use the generic host:
 
-### Console Application
+    ```csharp
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.DependencyInjection;
 
-For console applications, use the generic host:
+    var builder = Host.CreateApplicationBuilder(args);
 
-```csharp
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+    // Configure SimpleMessageBus
+    builder.Services.AddSimpleMessageBusFileSystemPublisher(options =>
+    {
+        options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "messages");
+    });
 
-var builder = Host.CreateApplicationBuilder(args);
+    builder.Services.AddSimpleMessageBusFileSystemDispatcher(options =>
+    {
+        options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "messages");
+    });
 
-// Configure SimpleMessageBus
-builder.Services.AddSimpleMessageBusFileSystemPublisher(options =>
-{
-    options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "messages");
-});
+    // Register handlers
+    builder.Services.AddScoped<IMessageHandler, OrderHandler>();
 
-builder.Services.AddSimpleMessageBusFileSystemDispatcher(options =>
-{
-    options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "messages");
-});
-
-// Register handlers
-builder.Services.AddScoped<IMessageHandler, OrderHandler>();
-
-var host = builder.Build();
-await host.RunAsync();
-```
+    var host = builder.Build();
+    await host.RunAsync();
+    ```
+  </Step>
+</Steps>
 
 ## Provider-Specific Configuration
 
@@ -210,134 +214,154 @@ builder.Services.AddSimpleMessageBusIndexedDbDispatcher(options =>
 
 ## Environment-Based Configuration
 
-### Configuration by Environment
+<Tabs>
+  <Tab title="By Environment">
+    Configure different providers for different environments:
 
-```csharp
-var builder = WebApplication.CreateBuilder(args);
+    ```csharp
+    var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.IsDevelopment())
-{
-    // Use file system in development
-    builder.Services.AddSimpleMessageBusFileSystemPublisher(options =>
+    if (builder.Environment.IsDevelopment())
     {
-        options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "dev-messages");
-    });
-    
-    builder.Services.AddSimpleMessageBusFileSystemDispatcher(options =>
-    {
-        options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "dev-messages");
-        options.PollingInterval = TimeSpan.FromSeconds(1);
-    });
-}
-else if (builder.Environment.IsStaging())
-{
-    // Use Azure Storage in staging
-    builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
-    {
-        options.ConnectionString = builder.Configuration.GetConnectionString("StagingStorage");
-        options.DefaultQueueName = "staging-messages";
-    });
-    
-    builder.Services.AddSimpleMessageBusAzureStorageDispatcher(options =>
-    {
-        options.ConnectionString = builder.Configuration.GetConnectionString("StagingStorage");
-        options.DefaultQueueName = "staging-messages";
-    });
-}
-else // Production
-{
-    // Use Amazon SQS in production
-    builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
-    {
-        options.Region = builder.Configuration["AWS:Region"];
-        options.UseInstanceProfile = true;
-        options.DefaultQueueName = "production-messages";
-    });
-    
-    builder.Services.AddSimpleMessageBusAmazonSQSDispatcher(options =>
-    {
-        options.Region = builder.Configuration["AWS:Region"];
-        options.UseInstanceProfile = true;
-        options.DefaultQueueName = "production-messages";
-    });
-}
-```
+        // Use file system in development
+        builder.Services.AddSimpleMessageBusFileSystemPublisher(options =>
+        {
+            options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "dev-messages");
+        });
 
-### Configuration with Feature Flags
-
-```csharp
-var useAmazonSQS = builder.Configuration.GetValue<bool>("Features:UseAmazonSQS");
-var useHighThroughput = builder.Configuration.GetValue<bool>("Features:HighThroughput");
-
-if (useAmazonSQS)
-{
-    builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+        builder.Services.AddSimpleMessageBusFileSystemDispatcher(options =>
+        {
+            options.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "dev-messages");
+            options.PollingInterval = TimeSpan.FromSeconds(1);
+        });
+    }
+    else if (builder.Environment.IsStaging())
     {
-        builder.Configuration.GetSection("AmazonSQS").Bind(options);
-    });
-}
-else
-{
-    builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
-    {
-        builder.Configuration.GetSection("AzureStorage").Bind(options);
-    });
-}
+        // Use Azure Storage in staging
+        builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
+        {
+            options.ConnectionString = builder.Configuration.GetConnectionString("StagingStorage");
+            options.DefaultQueueName = "staging-messages";
+        });
 
-// Adjust concurrency based on feature flag
-builder.Services.Configure<DispatcherOptions>(options =>
-{
-    options.MaxConcurrentMessages = useHighThroughput ? 64 : 16;
-});
-```
+        builder.Services.AddSimpleMessageBusAzureStorageDispatcher(options =>
+        {
+            options.ConnectionString = builder.Configuration.GetConnectionString("StagingStorage");
+            options.DefaultQueueName = "staging-messages";
+        });
+    }
+    else // Production
+    {
+        // Use Amazon SQS in production
+        builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+        {
+            options.Region = builder.Configuration["AWS:Region"];
+            options.UseInstanceProfile = true;
+            options.DefaultQueueName = "production-messages";
+        });
+
+        builder.Services.AddSimpleMessageBusAmazonSQSDispatcher(options =>
+        {
+            options.Region = builder.Configuration["AWS:Region"];
+            options.UseInstanceProfile = true;
+            options.DefaultQueueName = "production-messages";
+        });
+    }
+    ```
+  </Tab>
+
+  <Tab title="With Feature Flags">
+    Use feature flags to control provider selection:
+
+    ```csharp
+    var useAmazonSQS = builder.Configuration.GetValue<bool>("Features:UseAmazonSQS");
+    var useHighThroughput = builder.Configuration.GetValue<bool>("Features:HighThroughput");
+
+    if (useAmazonSQS)
+    {
+        builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+        {
+            builder.Configuration.GetSection("AmazonSQS").Bind(options);
+        });
+    }
+    else
+    {
+        builder.Services.AddSimpleMessageBusAzureStoragePublisher(options =>
+        {
+            builder.Configuration.GetSection("AzureStorage").Bind(options);
+        });
+    }
+
+    // Adjust concurrency based on feature flag
+    builder.Services.Configure<DispatcherOptions>(options =>
+    {
+        options.MaxConcurrentMessages = useHighThroughput ? 64 : 16;
+    });
+    ```
+  </Tab>
+</Tabs>
 
 ## Message Handler Registration
 
-### Manual Registration
+<Tabs>
+  <Tab title="Manual Registration">
+    Register individual handlers explicitly:
 
-```csharp
-// Register individual handlers
-services.AddScoped<IMessageHandler, OrderCreatedHandler>();
-services.AddScoped<IMessageHandler, PaymentProcessedHandler>();
-services.AddScoped<IMessageHandler, InventoryReservedHandler>();
-```
-
-### Assembly Scanning
-
-```csharp
-// Register all handlers from current assembly
-services.Scan(scan => scan
-    .FromAssemblyOf<OrderCreatedHandler>()
-    .AddClasses(classes => classes.AssignableTo<IMessageHandler>())
-    .As<IMessageHandler>()
-    .WithScopedLifetime());
-
-// Register handlers from multiple assemblies
-services.Scan(scan => scan
-    .FromAssemblies(
-        Assembly.GetExecutingAssembly(),
-        Assembly.GetAssembly(typeof(ExternalHandler)))
-    .AddClasses(classes => classes.AssignableTo<IMessageHandler>())
-    .As<IMessageHandler>()
-    .WithScopedLifetime());
-```
-
-### Conditional Registration
-
-```csharp
-// Register handlers based on configuration
-if (builder.Configuration.GetValue<bool>("Features:OrderProcessing"))
-{
+    ```csharp
+    // Register individual handlers
     services.AddScoped<IMessageHandler, OrderCreatedHandler>();
-    services.AddScoped<IMessageHandler, OrderCancelledHandler>();
-}
-
-if (builder.Configuration.GetValue<bool>("Features:PaymentProcessing"))
-{
     services.AddScoped<IMessageHandler, PaymentProcessedHandler>();
-    services.AddScoped<IMessageHandler, PaymentFailedHandler>();
-}
-```
+    services.AddScoped<IMessageHandler, InventoryReservedHandler>();
+    ```
+
+    **Best for**: Small projects with few handlers.
+  </Tab>
+
+  <Tab title="Assembly Scanning">
+    Automatically discover and register handlers:
+
+    ```csharp
+    // Register all handlers from current assembly
+    services.Scan(scan => scan
+        .FromAssemblyOf<OrderCreatedHandler>()
+        .AddClasses(classes => classes.AssignableTo<IMessageHandler>())
+        .As<IMessageHandler>()
+        .WithScopedLifetime());
+
+    // Register handlers from multiple assemblies
+    services.Scan(scan => scan
+        .FromAssemblies(
+            Assembly.GetExecutingAssembly(),
+            Assembly.GetAssembly(typeof(ExternalHandler)))
+        .AddClasses(classes => classes.AssignableTo<IMessageHandler>())
+        .As<IMessageHandler>()
+        .WithScopedLifetime());
+    ```
+
+    **Best for**: Large projects with many handlers.
+  </Tab>
+
+  <Tab title="Conditional Registration">
+    Register handlers based on configuration:
+
+    ```csharp
+    // Register handlers based on configuration
+    if (builder.Configuration.GetValue<bool>("Features:OrderProcessing"))
+    {
+        services.AddScoped<IMessageHandler, OrderCreatedHandler>();
+        services.AddScoped<IMessageHandler, OrderCancelledHandler>();
+    }
+
+    if (builder.Configuration.GetValue<bool>("Features:PaymentProcessing"))
+    {
+        services.AddScoped<IMessageHandler, PaymentProcessedHandler>();
+        services.AddScoped<IMessageHandler, PaymentFailedHandler>();
+    }
+    ```
+
+    **Best for**: Feature flag-based deployments.
+  </Tab>
+</Tabs>
 
 ## Advanced Configuration
 

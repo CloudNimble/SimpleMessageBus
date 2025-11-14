@@ -66,7 +66,7 @@ var paymentProcessed = new PaymentProcessedMessage
 
 ## Properties
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  CorrelationId <DocsBadge text="Abstract" variant="warning" />
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> CorrelationId <DocsBadge text="Abstract" variant="warning" />
 
 Gets or sets the correlation ID for tracking related messages across the entire processing chain.
 
@@ -117,7 +117,7 @@ The correlation ID provides a way to group all messages that are part of the sam
             For new workflows, generate a new correlation ID. For messages created in response to existing messages,
             inherit the correlation ID from the triggering message.
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ParentId <DocsBadge text="Abstract" variant="warning" />
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ParentId <DocsBadge text="Abstract" variant="warning" />
 
 Gets or sets the ID of the parent message that triggered this message, enabling message lineage tracking.
 

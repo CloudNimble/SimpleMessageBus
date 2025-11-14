@@ -7,13 +7,14 @@
   "name": "SimpleMessageBus",
   "navigation": {
     "pages": [
-      "index",
       {
         "group": "Getting Started",
+        "icon": "stars",
         "pages": [
           "index",
-          "installation",
-          "quickstart"
+          "why-simplemessagebus",
+          "quickstart",
+          "installation"
         ]
       },
       {

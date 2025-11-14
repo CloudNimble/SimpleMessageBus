@@ -64,7 +64,7 @@ public async Task OnNextAsync(MessageEnvelope envelope)
 
 ## Constructors
 
-### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> .ctor
 
 Initializes a new instance of the [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) class.
 
@@ -79,7 +79,7 @@ public MessageEnvelope()
 This parameterless constructor should only be used for deserializing the MessageEnvelope from storage.
             For creating new envelopes to wrap messages, use the `IMessage)` constructor instead.
 
-### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> .ctor
 
 Initializes a new instance of the [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) class for a given [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage).
 
@@ -124,7 +124,7 @@ This constructor automatically serializes the message to JSON, generates a uniqu
             sets the publish timestamp to the current UTC time, and extracts the message type information
             for later deserialization. The resulting envelope is ready to be published to any queue provider.
 
-### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  .ctor <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> .ctor <DocsBadge text="Inherited" variant="neutral" />
 
 <Note>Inherited from `object`</Note>
 
@@ -136,7 +136,7 @@ public Object()
 
 ## Properties
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  AttemptsCount
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> AttemptsCount
 
 The number of times the system has previously attempted to process this message.
 
@@ -150,7 +150,7 @@ public long AttemptsCount { get; set; }
 
 Type: `long`
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  DatePublished
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> DatePublished
 
 The UTC date and time that this nessage was published to the queue.
 
@@ -164,7 +164,7 @@ public System.DateTimeOffset DatePublished { get; set; }
 
 Type: `System.DateTimeOffset`
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Id
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> Id
 
 A [Guid](https://learn.microsoft.com/dotnet/api/system.guid) uniquely identifying this message on the queue. Helps when looking at logs or correlating from telemetry.
 
@@ -178,7 +178,7 @@ public System.Guid Id { get; set; }
 
 Type: `System.Guid`
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Message
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> Message
 
 Gets the deserialized message instance.
 
@@ -229,7 +229,7 @@ This property deserializes the message on each access. For performance-critical 
             The deserialization uses the [MessageEnvelope.MessageType](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagetype) to determine the target type and deserializes
             the [MessageEnvelope.MessageContent](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagecontent) JSON string into the appropriate message instance.
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MessageContent
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> MessageContent
 
 The serialized content of the [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage).
 
@@ -243,7 +243,7 @@ public string MessageContent { get; set; }
 
 Type: `string`
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MessageState
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> MessageState
 
 A container to help track the state of a message as it flows between [IMessageHandler](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler)IMessageHandlers&lt;/see&gt;. This value is ignored by the 
             serializer and will not be persisted between failed message runs.
@@ -258,7 +258,7 @@ public dynamic MessageState { get; private set; }
 
 Type: `dynamic`
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MessageType
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> MessageType
 
 A string representing the type name of the message. Defaults to IMessage.GetType().AssemblyQualifiedName".
 
@@ -272,7 +272,7 @@ public string MessageType { get; set; }
 
 Type: `string`
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ProcessLog
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ProcessLog
 
 The processing log for this particular message across all MessageHandlers.
 
@@ -286,7 +286,7 @@ public Microsoft.Extensions.Logging.ILogger ProcessLog { get; set; }
 
 Type: `Microsoft.Extensions.Logging.ILogger`
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ServiceScope
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ServiceScope
 
 The processing log for this particular message across all MessageHandlers.
 
@@ -302,7 +302,7 @@ Type: `Microsoft.Extensions.DependencyInjection.IServiceScope`
 
 ## Methods
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
 
 <Note>Inherited from `object`</Note>
 
@@ -322,7 +322,7 @@ public virtual bool Equals(object obj)
 
 Type: `bool`
 
-### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  Equals <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> Equals <DocsBadge text="Inherited" variant="neutral" />
 
 <Note>Inherited from `object`</Note>
 
@@ -343,7 +343,7 @@ public static bool Equals(object objA, object objB)
 
 Type: `bool`
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
 
 <Note>Inherited from `object`</Note>
 
@@ -357,7 +357,7 @@ public virtual int GetHashCode()
 
 Type: `int`
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetMessage
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> GetMessage
 
 Retrieves the [MessageEnvelope.MessageContent](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagecontent) deserialized into an [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) of the specified type.
 
@@ -402,7 +402,7 @@ This method provides type-safe deserialization when you know the exact message t
             It directly deserializes the JSON content without using the [MessageEnvelope.MessageType](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#messagetype) property for type resolution.
             This can be more performant than the [MessageEnvelope.Message](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope#message) property for known types, but requires explicit type specification.
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetType <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> GetType <DocsBadge text="Inherited" variant="neutral" />
 
 <Note>Inherited from `object`</Note>
 
@@ -416,7 +416,7 @@ public System.Type GetType()
 
 Type: `System.Type`
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
 
 <Note>Inherited from `object`</Note>
 
@@ -430,7 +430,7 @@ protected internal object MemberwiseClone()
 
 Type: `object`
 
-### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
 
 <Note>Inherited from `object`</Note>
 
@@ -451,7 +451,7 @@ public static bool ReferenceEquals(object objA, object objB)
 
 Type: `bool`
 
-### <Icon icon="code-merge" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ToString <DocsBadge text="Override" variant="info" />
+### <Icon icon="code-merge" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ToString <DocsBadge text="Override" variant="info" />
 
 #### Syntax
 
@@ -463,7 +463,7 @@ public override string ToString()
 
 Type: `string`
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
 
 <Note>Inherited from `object`</Note>
 

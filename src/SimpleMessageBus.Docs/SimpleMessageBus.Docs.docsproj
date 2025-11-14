@@ -1,4 +1,4 @@
-﻿<Project Sdk="DotNetDocs.Sdk/1.1.0-preview.7">
+﻿<Project Sdk="DotNetDocs.Sdk/1.1.0-preview.14">
 
     <PropertyGroup>
         <DocumentationType>Mintlify</DocumentationType>
@@ -21,7 +21,7 @@
                 <Pages>
                     <Groups>
                         <Group Name="Getting Started" Icon="stars">
-                            <Pages>index;why-breakdance;quickstart</Pages>
+                            <Pages>index;why-simplemessagebus;quickstart</Pages>
                         </Group>
                         <!--<Group Name="Guides" Icon="dog-leashed">
                             <Pages>guides/index;guides/pipeline;guides/conceptual-docs;guides/deployment</Pages>

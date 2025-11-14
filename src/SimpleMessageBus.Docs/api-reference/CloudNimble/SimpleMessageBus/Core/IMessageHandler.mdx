@@ -70,7 +70,7 @@ public class OrderMessageHandler : IMessageHandler
 
 ## Methods
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  GetHandledMessageTypes <DocsBadge text="Abstract" variant="warning" />
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> GetHandledMessageTypes <DocsBadge text="Abstract" variant="warning" />
 
 Specifies which [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) types are handled by this [IMessageHandler](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler).
 
@@ -103,7 +103,7 @@ This method is called during handler registration to determine message routing. 
             types that this handler can process. The framework will ensure that only messages of these types
             are delivered to this handler's `MessageEnvelope)` method.
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  OnErrorAsync <DocsBadge text="Abstract" variant="warning" />
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> OnErrorAsync <DocsBadge text="Abstract" variant="warning" />
 
 Specifies what this handler should do when an error occurs during processing.
 
@@ -148,7 +148,7 @@ This method is called when an exception is thrown during message processing. Use
             Note that after this method completes, the message will typically be moved to a poison queue
             unless retry policies dictate otherwise.
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} />  OnNextAsync <DocsBadge text="Abstract" variant="warning" />
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> OnNextAsync <DocsBadge text="Abstract" variant="warning" />
 
 Specifies what this handler should do when it is time to process the [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope).
 

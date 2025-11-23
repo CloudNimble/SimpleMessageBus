@@ -9,7 +9,6 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>SimpleMessageBus.Publish.IndexedDb</PackageId>
 		<Title>SimpleMessageBus Publisher for Blazor IndexedDb</Title>
 		<Summary>
 			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
@@ -18,7 +17,7 @@
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net10.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="[10.*-*, 11.0.0)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="[10.*, 11.0.0)" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net9.0'">

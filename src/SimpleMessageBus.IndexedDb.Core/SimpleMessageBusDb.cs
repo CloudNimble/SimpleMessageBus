@@ -1,9 +1,8 @@
 ﻿using CloudNimble.BlazorEssentials.IndexedDb;
-using CloudNimble.SimpleMessageBus.IndexedDb.Core;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 
-namespace SimpleMessageBus.IndexedDb.Core
+namespace CloudNimble.SimpleMessageBus.IndexedDb.Core
 {
 
     /// <summary>

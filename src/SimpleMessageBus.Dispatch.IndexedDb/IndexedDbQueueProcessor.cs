@@ -1,7 +1,7 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
+using CloudNimble.SimpleMessageBus.IndexedDb.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SimpleMessageBus.IndexedDb.Core;
 using System;
 using System.Collections.Concurrent;
 using System.Threading;

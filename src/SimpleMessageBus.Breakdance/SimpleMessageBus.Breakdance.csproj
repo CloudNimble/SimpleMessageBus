@@ -8,7 +8,6 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>SimpleMessageBus.Breakdance</PackageId>
 		<Title>SimpleMessageBus Testing via Breakdance</Title>
 		<Summary>
 			Tools for integrating SimpleMesageBus tests in your workflow. Can work standalone or with other 

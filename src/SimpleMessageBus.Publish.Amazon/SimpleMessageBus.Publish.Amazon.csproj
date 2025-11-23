@@ -8,7 +8,6 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>SimpleMessageBus.Publish.Amazon</PackageId>
 		<Title>SimpleMessageBus Publisher for Amazon</Title>
 		<Summary>
 			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains

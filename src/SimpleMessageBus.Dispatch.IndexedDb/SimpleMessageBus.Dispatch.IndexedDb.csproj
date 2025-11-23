@@ -8,7 +8,6 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>SimpleMessageBus.Dispatch.IndexedDb</PackageId>
 		<Title>SimpleMessageBus Dispatcher for Blazor IndexedDb</Title>
 		<Summary>
 			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
@@ -18,9 +17,9 @@
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net10.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="[10.*-*, 11.0.0)" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="[10.*-*, 11.0.0)" />
-		<PackageReference Include="System.Net.Http.Json" Version="[10.*-*, 11.0.0)" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="[10.*, 11.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="[10.*, 11.0.0)" />
+		<PackageReference Include="System.Net.Http.Json" Version="[10.*, 11.0.0)" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net9.0'">

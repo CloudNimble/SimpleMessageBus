@@ -8,7 +8,6 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>SimpleMessageBus.Publish.Azure</PackageId>
 		<Title>SimpleMessageBus Publisher for Azure</Title>
 		<Summary>
 			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains

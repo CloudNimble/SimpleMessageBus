@@ -8,7 +8,6 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>SimpleMessageBus.IndexedDb.Core</PackageId>
 		<Title>SimpleMessageBus Core Framework for Blazor IndexedDb</Title>
 		<Summary>
 			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
@@ -17,22 +16,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BlazorEssentials.IndexedDb" Version="[3.*-*, 4.0.0)" />
+		<PackageReference Include="BlazorEssentials.IndexedDb" Version="[4.*-*, 5.0.0)" />
+		<PackageReference Include="EasyAF.Http" Version="[4.*-*, 5.0.0)" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net10.0'">
-		<PackageReference Include="Microsoft.Extensions.Options" Version="[10.*-*, 11.0.0)" />
-		<PackageReference Include="System.Text.Json" Version="[10.*-*, 11.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="[10.*, 11.0.0)" />
+		<PackageReference Include="System.Text.Json" Version="[10.*, 11.0.0)" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
 		<PackageReference Include="Microsoft.Extensions.Options" Version="[9.*, 11.0.0)" />
 		<PackageReference Include="System.Text.Json" Version="[9.*, 11.0.0)" />
-		<!-- Transient package fixes to deal with .NET 9.0 RCs --><!--
-		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[9.*, 11.0.0)" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="[9.*, 11.0.0)" />
-		<PackageReference Include="System.Net.Http.Json" Version="[9.*, 11.0.0)" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="[9.*, 11.0.0)" />-->
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net8.0'">

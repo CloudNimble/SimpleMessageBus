@@ -38,14 +38,14 @@ This processor is designed for Blazor WebAssembly applications where IndexedDB p
 #### Syntax
 
 ```csharp
-public IndexedDbQueueProcessor(SimpleMessageBus.IndexedDb.Core.SimpleMessageBusDb database, CloudNimble.SimpleMessageBus.Dispatch.IMessageDispatcher dispatcher, Microsoft.Extensions.DependencyInjection.IServiceScopeFactory serviceScopeFactory)
+public IndexedDbQueueProcessor(CloudNimble.SimpleMessageBus.IndexedDb.Core.SimpleMessageBusDb database, CloudNimble.SimpleMessageBus.Dispatch.IMessageDispatcher dispatcher, Microsoft.Extensions.DependencyInjection.IServiceScopeFactory serviceScopeFactory)
 ```
 
 #### Parameters
 
 | Name | Type | Description |
 |------|------|-------------|
-| `database` | `SimpleMessageBus.IndexedDb.Core.SimpleMessageBusDb` | - |
+| `database` | `CloudNimble.SimpleMessageBus.IndexedDb.Core.SimpleMessageBusDb` | - |
 | `dispatcher` | `CloudNimble.SimpleMessageBus.Dispatch.IMessageDispatcher` | - |
 | `serviceScopeFactory` | `Microsoft.Extensions.DependencyInjection.IServiceScopeFactory` | - |
 

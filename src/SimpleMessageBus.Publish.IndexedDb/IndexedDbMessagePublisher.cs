@@ -1,6 +1,5 @@
 ﻿using CloudNimble.SimpleMessageBus.Core;
-using SimpleMessageBus.IndexedDb.Core;
-using System;
+using CloudNimble.SimpleMessageBus.IndexedDb.Core;
 using System.Threading.Tasks;
 
 namespace CloudNimble.SimpleMessageBus.Publish.IndexedDb

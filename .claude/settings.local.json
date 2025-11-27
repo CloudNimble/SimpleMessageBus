@@ -10,7 +10,11 @@
       "Bash(timeout:*)",
       "Bash(ls:*)",
       "Bash(dotnet test:*)",
-      "Bash(dotnet build:*)"
+      "Bash(dotnet build:*)",
+      "Bash(where:*)",
+      "Bash(dir:*)",
+      "Bash(Get-Process:*)",
+      "Bash(Select-Object -Property ProcessName,Id)"
     ],
     "deny": []
   }

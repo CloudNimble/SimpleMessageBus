@@ -1,0 +1,271 @@
+---
+title: KafkaMessagePublisher
+description: "Manages the process of publishing MessageBus messages to Apache Kafka."
+icon: file-brackets-curly
+keywords: ['KafkaMessagePublisher', 'CloudNimble.SimpleMessageBus.Publish.KafkaMessagePublisher', 'CloudNimble.SimpleMessageBus.Publish', 'class', 'System.Object', 'CloudNimble.SimpleMessageBus.Publish.IMessagePublisher', 'System.IDisposable']
+---
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Publish.Kafka.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Publish
+
+**Inheritance:** System.Object
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Publish.KafkaMessagePublisher
+```
+
+## Summary
+
+Manages the process of publishing MessageBus messages to Apache Kafka.
+
+## Remarks
+
+
+
+
+             This publisher integrates with Apache Kafka using the Confluent.Kafka client library.
+             It handles message serialization, producer initialization, and optional message key routing.
+             
+
+
+
+
+             For advanced partitioning control, implement [IKafkaKeyProvider](/api-reference/CloudNimble/SimpleMessageBus/Publish/IKafkaKeyProvider) on your
+             message types. Messages with the same key are guaranteed to be delivered to the same
+             partition in order.
+             
+
+
+
+## Examples
+
+```csharp
+// Basic usage
+await publisher.PublishAsync(new MyMessage { Data = "Hello" });
+
+// With partition key for ordering
+await publisher.PublishAsync(new OrderMessage { OrderId = "123" }); // Implements IKafkaKeyProvider
+```
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> .ctor
+
+Creates a new instance of [KafkaMessagePublisher](/api-reference/CloudNimble/SimpleMessageBus/Publish/KafkaMessagePublisher).
+
+#### Syntax
+
+```csharp
+public KafkaMessagePublisher(Microsoft.Extensions.Options.IOptions<CloudNimble.SimpleMessageBus.Core.KafkaOptions> options)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `options` | `Microsoft.Extensions.Options.IOptions<CloudNimble.SimpleMessageBus.Core.KafkaOptions>` | The Kafka configuration options. Should be registered with your Dependency Injection container. |
+
+#### Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+| `ArgumentNullException` | Thrown when *options* is null. |
+| `ArgumentException` | Thrown when required configuration properties are missing. |
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> .ctor <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public Object()
+```
+
+## Methods
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Dispose
+
+Disposes the Kafka producer and releases resources.
+
+#### Syntax
+
+```csharp
+public void Dispose()
+```
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Equals <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual bool Equals(object obj)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `obj` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Equals <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool Equals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> GetHashCode <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual int GetHashCode()
+```
+
+#### Returns
+
+Type: `int`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> GetType <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public System.Type GetType()
+```
+
+#### Returns
+
+Type: `System.Type`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> MemberwiseClone <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+protected internal object MemberwiseClone()
+```
+
+#### Returns
+
+Type: `object`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> PublishAsync
+
+Publishes a message to the configured Kafka topic.
+
+#### Syntax
+
+```csharp
+public System.Threading.Tasks.Task PublishAsync(CloudNimble.SimpleMessageBus.Core.IMessage message, bool isSystemGenerated = false)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `message` | `CloudNimble.SimpleMessageBus.Core.IMessage` | The [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) to wrap in a [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) and publish to Kafka. |
+| `isSystemGenerated` | `bool` | Specifies whether or not the event was generated by the system. (Not currently used). |
+
+#### Returns
+
+Type: `System.Threading.Tasks.Task`
+A [Task](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task) reference for the asynchronous function.
+
+#### Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+| `ArgumentNullException` | Thrown when *message* is null. |
+
+#### Remarks
+
+
+
+
+            If the message implements [IKafkaKeyProvider](/api-reference/CloudNimble/SimpleMessageBus/Publish/IKafkaKeyProvider), the key will be used
+            to route the message to a specific partition, ensuring ordering for messages
+            with the same key.
+            
+
+
+
+
+            Messages are serialized using [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) which includes metadata
+            such as the message ID, timestamp, and type information for deserialization.
+            
+
+
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ReferenceEquals <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool ReferenceEquals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ToString <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual string ToString()
+```
+
+#### Returns
+
+Type: `string?`
+
+## Related APIs
+
+- CloudNimble.SimpleMessageBus.Publish.IMessagePublisher
+- System.IDisposable
+

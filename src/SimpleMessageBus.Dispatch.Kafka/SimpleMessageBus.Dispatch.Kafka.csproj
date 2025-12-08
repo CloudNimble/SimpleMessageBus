@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>CloudNimble.SimpleMessageBus.Dispatch.Kafka</AssemblyName>
+		<RootNamespace>CloudNimble.SimpleMessageBus.Dispatch.Kafka</RootNamespace>
+		<TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
+		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Title>SimpleMessageBus Dispatcher for Kafka</Title>
+		<Summary>
+			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
+			the logic necessary to dispatch Domain events from Apache Kafka through registered IMessageHandlers.
+		</Summary>
+		<PackageReleaseNotes>
+			Version 6.0:
+			  - Initial release of Kafka dispatcher support using Azure WebJobs Kafka extension.
+		</PackageReleaseNotes>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Azure.WebJobs" Version="[3.0.*, 3.1.0)" />
+		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="[5.*, 6.0.0)" />
+		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Kafka" Version="[3.*, 4.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SimpleMessageBus.Dispatch\SimpleMessageBus.Dispatch.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -14,7 +14,8 @@
       "Bash(where:*)",
       "Bash(dir:*)",
       "Bash(Get-Process:*)",
-      "Bash(Select-Object -Property ProcessName,Id)"
+      "Bash(Select-Object -Property ProcessName,Id)",
+      "Bash(cat:*)"
     ],
     "deny": []
   }

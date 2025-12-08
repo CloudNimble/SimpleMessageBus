@@ -5,8 +5,6 @@ icon: plug
 keywords: ['ITrackable', 'CloudNimble.SimpleMessageBus.Core.ITrackable', 'CloudNimble.SimpleMessageBus.Core', 'interface']
 ---
 
-import { DocsBadge } from '/snippets/DocsBadge.jsx';
-
 ## Definition
 
 **Assembly:** CloudNimble.SimpleMessageBus.Core.dll
@@ -66,7 +64,7 @@ var paymentProcessed = new PaymentProcessedMessage
 
 ## Properties
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> CorrelationId <DocsBadge text="Abstract" variant="warning" />
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> CorrelationId <Badge color="orange">Abstract</Badge>
 
 Gets or sets the correlation ID for tracking related messages across the entire processing chain.
 
@@ -117,7 +115,7 @@ The correlation ID provides a way to group all messages that are part of the sam
             For new workflows, generate a new correlation ID. For messages created in response to existing messages,
             inherit the correlation ID from the triggering message.
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ParentId <DocsBadge text="Abstract" variant="warning" />
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ParentId <Badge color="orange">Abstract</Badge>
 
 Gets or sets the ID of the parent message that triggered this message, enabling message lineage tracking.
 

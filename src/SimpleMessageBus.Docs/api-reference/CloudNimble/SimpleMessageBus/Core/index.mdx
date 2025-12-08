@@ -3,7 +3,7 @@ title: Overview
 description: "Summary of the CloudNimble.SimpleMessageBus.Core Namespace"
 icon: folder-tree
 mode: wide
-keywords: ['CloudNimble.SimpleMessageBus.Core', 'namespace', 'AzureStorageQueueConstants', 'AzureStorageQueueEncoding', 'AzureStorageQueueOptions', 'FileSystemConstants', 'FileSystemOptions', 'IMessage', 'IMessageHandler', 'IMetadataAware', 'ITrackable', 'MessageBase']
+keywords: ['CloudNimble.SimpleMessageBus.Core', 'namespace', 'AzureStorageQueueConstants', 'AzureStorageQueueEncoding', 'AzureStorageQueueOptions', 'FileSystemConstants', 'FileSystemOptions', 'IMessage', 'IMessageHandler', 'IMetadataAware', 'ITrackable', 'KafkaAuthenticationMode']
 ---
 
 ## Types
@@ -17,6 +17,10 @@ keywords: ['CloudNimble.SimpleMessageBus.Core', 'namespace', 'AzureStorageQueueC
 | [AzureStorageQueueOptions](/api-reference/CloudNimble/SimpleMessageBus/Core/AzureStorageQueueOptions) | Specifies the options required to leverage Azure Queue Storage as the SimpleMessageBus backing queue. |
 | [FileSystemConstants](/api-reference/CloudNimble/SimpleMessageBus/Core/FileSystemConstants) | A set of helpers to convert file system-related magic strings to compiled references. |
 | [FileSystemOptions](/api-reference/CloudNimble/SimpleMessageBus/Core/FileSystemOptions) | Specifies the options required to leverage the local file system as the SimpleMessageBus backing queue. |
+| [KafkaAuthenticationMode](/api-reference/CloudNimble/SimpleMessageBus/Core/KafkaAuthenticationMode) | SASL authentication mechanisms for Kafka. |
+| [KafkaBrokerProtocol](/api-reference/CloudNimble/SimpleMessageBus/Core/KafkaBrokerProtocol) | Kafka security protocol options. |
+| [KafkaConstants](/api-reference/CloudNimble/SimpleMessageBus/Core/KafkaConstants) | Constants for Kafka topic and consumer group configuration placeholders. |
+| [KafkaOptions](/api-reference/CloudNimble/SimpleMessageBus/Core/KafkaOptions) | Specifies the options required to leverage Apache Kafka as the SimpleMessageBus backing queue. |
 | [MessageBase](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageBase) | Base class providing a complete implementation of common message functionality. |
 | [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) | Represents a wrapper for an [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) that will be published to the SimpleMessageBus Queue. |
 
@@ -34,4 +38,6 @@ keywords: ['CloudNimble.SimpleMessageBus.Core', 'namespace', 'AzureStorageQueueC
 | Name | Summary |
 | ---- | ------- |
 | [AzureStorageQueueEncoding](/api-reference/CloudNimble/SimpleMessageBus/Core/AzureStorageQueueEncoding) | Determines how QueueMessage.Body is represented in HTTP requests and responses. |
+| [KafkaAuthenticationMode](/api-reference/CloudNimble/SimpleMessageBus/Core/KafkaAuthenticationMode) | SASL authentication mechanisms for Kafka. |
+| [KafkaBrokerProtocol](/api-reference/CloudNimble/SimpleMessageBus/Core/KafkaBrokerProtocol) | Kafka security protocol options. |
 

@@ -27,6 +27,10 @@
     <Project Path="SimpleMessageBus.IndexedDb.Core/SimpleMessageBus.IndexedDb.Core.csproj" />
     <Project Path="SimpleMessageBus.Publish.IndexedDb/SimpleMessageBus.Publish.IndexedDb.csproj" />
   </Folder>
+  <Folder Name="/Core/Kafka/">
+    <Project Path="SimpleMessageBus.Dispatch.Kafka/SimpleMessageBus.Dispatch.Kafka.csproj" />
+    <Project Path="SimpleMessageBus.Publish.Kafka/SimpleMessageBus.Publish.Kafka.csproj" />
+  </Folder>
   <Folder Name="/Docs/">
     <Project Path="SimpleMessageBus.Docs/SimpleMessageBus.Docs.docsproj" Type="C#" />
   </Folder>
@@ -62,6 +66,7 @@
     <Project Path="SimpleMessageBus.Tests.Core/SimpleMessageBus.Tests.Core.csproj" />
     <Project Path="SimpleMessageBus.Tests.Dispatch.Azure/SimpleMessageBus.Tests.Dispatch.Azure.csproj" />
     <Project Path="SimpleMessageBus.Tests.Dispatch.FileSystem/SimpleMessageBus.Tests.Dispatch.FileSystem.csproj" />
+    <Project Path="SimpleMessageBus.Tests.Dispatch.Kafka/SimpleMessageBus.Tests.Dispatch.Kafka.csproj" />
     <Project Path="SimpleMessageBus.Tests.Dispatch/SimpleMessageBus.Tests.Dispatch.csproj" />
     <Project Path="SimpleMessageBus.Tests.Publish/SimpleMessageBus.Tests.Publish.csproj" />
     <Project Path="SimpleMessageBus.Tests.Shared/SimpleMessageBus.Tests.Shared.csproj" />

@@ -1,0 +1,36 @@
+---
+title: KafkaAuthenticationMode
+description: "SASL authentication mechanisms for Kafka."
+icon: list-ol
+tag: "ENUM"
+keywords: ['KafkaAuthenticationMode', 'CloudNimble.SimpleMessageBus.Core.KafkaAuthenticationMode', 'CloudNimble.SimpleMessageBus.Core', 'class', 'System.Enum']
+---
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Core.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Core
+
+**Inheritance:** System.Enum
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Core.KafkaAuthenticationMode
+```
+
+## Summary
+
+SASL authentication mechanisms for Kafka.
+
+## Values
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `NotSet` | 0 | No authentication configured. |
+| `Plain` | 1 | PLAIN mechanism (username/password). |
+| `ScramSha256` | 2 | SCRAM-SHA-256 mechanism. |
+| `ScramSha512` | 3 | SCRAM-SHA-512 mechanism. |
+| `Gssapi` | 4 | Kerberos (GSSAPI) authentication. |
+

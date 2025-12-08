@@ -81,6 +81,10 @@
                       "api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler",
                       "api-reference/CloudNimble/SimpleMessageBus/Core/IMetadataAware",
                       "api-reference/CloudNimble/SimpleMessageBus/Core/ITrackable",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/KafkaAuthenticationMode",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/KafkaBrokerProtocol",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/KafkaConstants",
+                      "api-reference/CloudNimble/SimpleMessageBus/Core/KafkaOptions",
                       "api-reference/CloudNimble/SimpleMessageBus/Core/MessageBase",
                       "api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope"
                     ]
@@ -112,6 +116,14 @@
                         "pages": [
                           "api-reference/CloudNimble/SimpleMessageBus/Dispatch/IndexedDb/index",
                           "api-reference/CloudNimble/SimpleMessageBus/Dispatch/IndexedDb/IndexedDbQueueProcessor"
+                        ]
+                      },
+                      {
+                        "group": "Kafka",
+                        "icon": "folder-tree",
+                        "pages": [
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/Kafka/index",
+                          "api-reference/CloudNimble/SimpleMessageBus/Dispatch/Kafka/KafkaProcessor"
                         ]
                       },
                       {
@@ -167,6 +179,15 @@
                         "pages": [
                           "api-reference/CloudNimble/SimpleMessageBus/Publish/IndexedDb/index",
                           "api-reference/CloudNimble/SimpleMessageBus/Publish/IndexedDb/IndexedDbMessagePublisher"
+                        ]
+                      },
+                      {
+                        "group": "Kafka",
+                        "icon": "folder-tree",
+                        "pages": [
+                          "api-reference/CloudNimble/SimpleMessageBus/Publish/Kafka/index",
+                          "api-reference/CloudNimble/SimpleMessageBus/Publish/Kafka/IKafkaKeyProvider",
+                          "api-reference/CloudNimble/SimpleMessageBus/Publish/Kafka/KafkaMessagePublisher"
                         ]
                       }
                     ]

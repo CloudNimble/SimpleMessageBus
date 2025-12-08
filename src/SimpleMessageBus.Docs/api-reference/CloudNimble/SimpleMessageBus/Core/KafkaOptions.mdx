@@ -1,0 +1,295 @@
+---
+title: KafkaOptions
+description: "Specifies the options required to leverage Apache Kafka as the SimpleMessageBus backing queue."
+icon: file-brackets-curly
+keywords: ['KafkaOptions', 'CloudNimble.SimpleMessageBus.Core.KafkaOptions', 'CloudNimble.SimpleMessageBus.Core', 'class', 'System.Object']
+---
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Core.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Core
+
+**Inheritance:** System.Object
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Core.KafkaOptions
+```
+
+## Summary
+
+Specifies the options required to leverage Apache Kafka as the SimpleMessageBus backing queue.
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> .ctor
+
+Creates a new instance with default values from [KafkaConstants](/api-reference/CloudNimble/SimpleMessageBus/Core/KafkaConstants).
+
+#### Syntax
+
+```csharp
+public KafkaOptions()
+```
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> .ctor <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public Object()
+```
+
+## Properties
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> AuthenticationMode
+
+The SASL authentication mechanism when using SASL protocols.
+
+#### Syntax
+
+```csharp
+public CloudNimble.SimpleMessageBus.Core.KafkaAuthenticationMode AuthenticationMode { get; set; }
+```
+
+#### Property Value
+
+Type: `CloudNimble.SimpleMessageBus.Core.KafkaAuthenticationMode`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> BrokerList
+
+The Kafka broker list (e.g., "localhost:9092" or "broker1:9092,broker2:9092").
+
+#### Syntax
+
+```csharp
+public string BrokerList { get; set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ConsumerGroup
+
+The consumer group ID for message consumption.
+
+#### Syntax
+
+```csharp
+public string ConsumerGroup { get; set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> MaxBatchSize
+
+Maximum number of messages to process in a batch. Default is 64.
+
+#### Syntax
+
+```csharp
+public int MaxBatchSize { get; set; }
+```
+
+#### Property Value
+
+Type: `int`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Password
+
+SASL password for authentication.
+
+#### Syntax
+
+```csharp
+public string Password { get; set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Protocol
+
+The security protocol for broker communication.
+
+#### Syntax
+
+```csharp
+public CloudNimble.SimpleMessageBus.Core.KafkaBrokerProtocol Protocol { get; set; }
+```
+
+#### Property Value
+
+Type: `CloudNimble.SimpleMessageBus.Core.KafkaBrokerProtocol`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> SslCaLocation
+
+Path to CA certificate file for SSL/TLS verification.
+
+#### Syntax
+
+```csharp
+public string SslCaLocation { get; set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> TopicName
+
+The name of the Kafka topic for messages.
+
+#### Syntax
+
+```csharp
+public string TopicName { get; set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Username
+
+SASL username for authentication.
+
+#### Syntax
+
+```csharp
+public string Username { get; set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+## Methods
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Equals <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual bool Equals(object obj)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `obj` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Equals <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool Equals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> GetHashCode <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual int GetHashCode()
+```
+
+#### Returns
+
+Type: `int`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> GetType <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public System.Type GetType()
+```
+
+#### Returns
+
+Type: `System.Type`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> MemberwiseClone <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+protected internal object MemberwiseClone()
+```
+
+#### Returns
+
+Type: `object`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ReferenceEquals <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool ReferenceEquals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ToString <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual string ToString()
+```
+
+#### Returns
+
+Type: `string?`
+

@@ -1,10 +1,11 @@
-﻿<Project Sdk="DotNetDocs.Sdk/1.1.0">
+﻿<Project Sdk="DotNetDocs.Sdk/1.2.0-preview.3">
 
     <PropertyGroup>
         <DocumentationType>Mintlify</DocumentationType>
         <GenerateDocumentation>true</GenerateDocumentation>
         <NamespaceMode>Folder</NamespaceMode>
         <ShowDocumentationStats>true</ShowDocumentationStats>
+        <!--<ExcludePatterns>Samples</ExcludePatterns>-->
 
         <ConceptualDocsEnabled>false</ConceptualDocsEnabled>
         <ShowPlaceholders>false</ShowPlaceholders>

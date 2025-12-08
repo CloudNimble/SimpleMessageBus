@@ -5,8 +5,6 @@ icon: file-brackets-curly
 keywords: ['TestableMessagePublisher', 'CloudNimble.SimpleMessageBus.Breakdance.TestableMessagePublisher', 'CloudNimble.SimpleMessageBus.Breakdance', 'class', 'System.Object', 'CloudNimble.SimpleMessageBus.Publish.IMessagePublisher']
 ---
 
-import { DocsBadge } from '/snippets/DocsBadge.jsx';
-
 ## Definition
 
 **Assembly:** CloudNimble.SimpleMessageBus.Breakdance.dll
@@ -73,7 +71,7 @@ await Assert.ThrowsExceptionAsync&lt;InvalidOperationException&gt;(() =&gt;
 
 ## Constructors
 
-### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> .ctor
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> .ctor
 
 Initializes a new instance of the [TestableMessagePublisher](/api-reference/CloudNimble/SimpleMessageBus/Breakdance/TestableMessagePublisher) class.
             Creates an empty publisher with no published messages or configured actions.
@@ -84,7 +82,7 @@ Initializes a new instance of the [TestableMessagePublisher](/api-reference/Clou
 public TestableMessagePublisher()
 ```
 
-### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> .ctor <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> .ctor <Badge color="gray">Inherited</Badge>
 
 <Note>Inherited from `object`</Note>
 
@@ -96,7 +94,7 @@ public Object()
 
 ## Properties
 
-### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> PublishedMessages
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> PublishedMessages
 
 Gets a read-only list of all messages that have been published via this publisher.
             This collection can be used in test assertions to verify published message content.
@@ -144,7 +142,7 @@ This property provides access to all messages captured during testing. Messages 
 
 ## Methods
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ClearMessages
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ClearMessages
 
 Clears all published messages from the internal collection.
             Use this method to reset the state between tests.
@@ -180,7 +178,7 @@ This method is typically called in test setup or teardown to ensure each test st
             After calling this method, the [TestableMessagePublisher.PublishedMessages](/api-reference/CloudNimble/SimpleMessageBus/Breakdance/TestableMessagePublisher#publishedmessages) collection will be empty until new messages
             are published. This prevents test interference where one test's published messages affect another test's assertions.
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> Equals <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Equals <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
 
 <Note>Inherited from `object`</Note>
 
@@ -200,7 +198,7 @@ public virtual bool Equals(object obj)
 
 Type: `bool`
 
-### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> Equals <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Equals <Badge color="gray">Inherited</Badge>
 
 <Note>Inherited from `object`</Note>
 
@@ -221,7 +219,7 @@ public static bool Equals(object objA, object objB)
 
 Type: `bool`
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> GetHashCode <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> GetHashCode <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
 
 <Note>Inherited from `object`</Note>
 
@@ -235,7 +233,7 @@ public virtual int GetHashCode()
 
 Type: `int`
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> GetType <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> GetType <Badge color="gray">Inherited</Badge>
 
 <Note>Inherited from `object`</Note>
 
@@ -249,7 +247,7 @@ public System.Type GetType()
 
 Type: `System.Type`
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> MemberwiseClone <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> MemberwiseClone <Badge color="gray">Inherited</Badge>
 
 <Note>Inherited from `object`</Note>
 
@@ -263,7 +261,7 @@ protected internal object MemberwiseClone()
 
 Type: `object`
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> PublishAsync
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> PublishAsync
 
 Implements the IMessagePublisher interface method by capturing the published message
             for later assertion and optionally invoking a configured action.
@@ -314,7 +312,7 @@ This method implements the core functionality of the test double by:
             Unlike real message publishers, this method does not actually send messages to any queue.
             It completes synchronously and never throws exceptions unless a custom action is configured to do so.
 
-### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ReferenceEquals <DocsBadge text="Inherited" variant="neutral" />
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ReferenceEquals <Badge color="gray">Inherited</Badge>
 
 <Note>Inherited from `object`</Note>
 
@@ -335,7 +333,7 @@ public static bool ReferenceEquals(object objA, object objB)
 
 Type: `bool`
 
-### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> SetAction
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> SetAction
 
 Sets an action to be executed when a message is published.
 
@@ -383,7 +381,7 @@ This method allows customization of the publisher's behavior during testing. The
             Setting this to null removes any previously configured action. The action is optional and publishing
             will work normally even without it being set.
 
-### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} style={{ paddingRight: '8px' }} /> ToString <DocsBadge text="Inherited" variant="neutral" /> <DocsBadge text="Virtual" variant="warning" />
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ToString <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
 
 <Note>Inherited from `object`</Note>
 

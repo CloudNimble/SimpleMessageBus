@@ -1,5 +1,6 @@
 namespace CloudNimble.SimpleMessageBus.Core
 {
+
     /// <summary>
     /// SASL authentication mechanisms for Kafka.
     /// </summary>

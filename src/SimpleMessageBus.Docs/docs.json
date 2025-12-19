@@ -245,65 +245,11 @@
                 "icon": "folder-tree",
                 "pages": [
                   {
-                    "group": "DependencyInjection",
-                    "icon": "folder-tree",
-                    "pages": [
-                      "api-reference/Microsoft/Extensions/DependencyInjection/index",
-                      "api-reference/Microsoft/Extensions/DependencyInjection/IServiceCollection"
-                    ]
-                  },
-                  {
                     "group": "Hosting",
                     "icon": "folder-tree",
                     "pages": [
                       "api-reference/Microsoft/Extensions/Hosting/index",
                       "api-reference/Microsoft/Extensions/Hosting/IHostBuilder"
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "group": "SimpleMessageBus",
-            "icon": "folder-tree",
-            "pages": [
-              {
-                "group": "Samples",
-                "icon": "folder-tree",
-                "pages": [
-                  {
-                    "group": "AzureWebJobs",
-                    "icon": "folder-tree",
-                    "pages": [
-                      "api-reference/SimpleMessageBus/Samples/AzureWebJobs/index",
-                      "api-reference/SimpleMessageBus/Samples/AzureWebJobs/EmailMessageHandler"
-                    ]
-                  },
-                  {
-                    "group": "Core",
-                    "icon": "folder-tree",
-                    "pages": [
-                      "api-reference/SimpleMessageBus/Samples/Core/index",
-                      "api-reference/SimpleMessageBus/Samples/Core/NewUserMessage"
-                    ]
-                  },
-                  {
-                    "group": "ExternalTriggers",
-                    "icon": "folder-tree",
-                    "pages": [
-                      "api-reference/SimpleMessageBus/Samples/ExternalTriggers/index",
-                      "api-reference/SimpleMessageBus/Samples/ExternalTriggers/SampleTimers"
-                    ]
-                  },
-                  {
-                    "group": "OnPrem",
-                    "icon": "folder-tree",
-                    "pages": [
-                      "api-reference/SimpleMessageBus/Samples/OnPrem/index",
-                      "api-reference/SimpleMessageBus/Samples/OnPrem/EmailMessageHandler",
-                      "api-reference/SimpleMessageBus/Samples/OnPrem/Functions",
-                      "api-reference/SimpleMessageBus/Samples/OnPrem/Program"
                     ]
                   }
                 ]

@@ -10,29 +10,30 @@
     <Project Path="SimpleMessageBus.Hosting/SimpleMessageBus.Hosting.csproj" />
     <Project Path="SimpleMessageBus.Publish/SimpleMessageBus.Publish.csproj" />
   </Folder>
-  <Folder Name="/Core/Amazon/">
+  <Folder Name="/Docs/">
+    <Project Path="SimpleMessageBus.Docs/SimpleMessageBus.Docs.docsproj" Type="C#" />
+  </Folder>
+  <Folder Name="/Providers/" />
+  <Folder Name="/Providers/Amazon/">
     <Project Path="SimpleMessageBus.Amazon.Core/SimpleMessageBus.Amazon.Core.csproj" />
     <Project Path="SimpleMessageBus.Dispatch.Amazon/SimpleMessageBus.Dispatch.Amazon.csproj" />
     <Project Path="SimpleMessageBus.Publish.Amazon/SimpleMessageBus.Publish.Amazon.csproj" />
   </Folder>
-  <Folder Name="/Core/Azure/">
+  <Folder Name="/Providers/Azure/">
     <Project Path="SimpleMessageBus.Dispatch.Azure/SimpleMessageBus.Dispatch.Azure.csproj" />
     <Project Path="SimpleMessageBus.Publish.Azure/SimpleMessageBus.Publish.Azure.csproj" />
   </Folder>
-  <Folder Name="/Core/FileSystem/">
+  <Folder Name="/Providers/FileSystem/">
     <Project Path="SimpleMessageBus.Dispatch.FileSystem/SimpleMessageBus.Dispatch.FileSystem.csproj" />
   </Folder>
-  <Folder Name="/Core/IndexedDb/">
+  <Folder Name="/Providers/IndexedDb/">
     <Project Path="SimpleMessageBus.Dispatch.IndexedDb/SimpleMessageBus.Dispatch.IndexedDb.csproj" />
     <Project Path="SimpleMessageBus.IndexedDb.Core/SimpleMessageBus.IndexedDb.Core.csproj" />
     <Project Path="SimpleMessageBus.Publish.IndexedDb/SimpleMessageBus.Publish.IndexedDb.csproj" />
   </Folder>
-  <Folder Name="/Core/Kafka/">
+  <Folder Name="/Providers/Kafka/">
     <Project Path="SimpleMessageBus.Dispatch.Kafka/SimpleMessageBus.Dispatch.Kafka.csproj" />
     <Project Path="SimpleMessageBus.Publish.Kafka/SimpleMessageBus.Publish.Kafka.csproj" />
-  </Folder>
-  <Folder Name="/Docs/">
-    <Project Path="SimpleMessageBus.Docs/SimpleMessageBus.Docs.docsproj" Type="C#" />
   </Folder>
   <Folder Name="/Samples/">
     <Project Path="SimpleMessageBus.Samples.AzureWebJobs/SimpleMessageBus.Samples.AzureWebJobs.csproj" />

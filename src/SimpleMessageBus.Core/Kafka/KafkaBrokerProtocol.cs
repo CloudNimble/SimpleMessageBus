@@ -1,5 +1,6 @@
 namespace CloudNimble.SimpleMessageBus.Core
 {
+
     /// <summary>
     /// Kafka security protocol options.
     /// </summary>

@@ -14,15 +14,4 @@ D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Publish.Amazon\bin\Debug\net10.0
 D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Publish.Azure\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Publish.Azure.dll
 D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Publish.IndexedDb\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Publish.IndexedDb.dll
 D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Publish.Kafka\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Publish.Kafka.dll
-D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Samples.AzureWebJobs\bin\Debug\net10.0\SimpleMessageBus.Samples.AzureWebJobs.dll
-D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Samples.Blazor.WorkerService\bin\Debug\net10.0\SimpleMessageBus.Samples.Blazor.WorkerService.dll
-D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Samples.Core\bin\Debug\net10.0\SimpleMessageBus.Samples.Core.dll
-D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Samples.ExternalTriggers\bin\Debug\net10.0\SimpleMessageBus.Samples.ExternalTriggers.dll
-D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Samples.OnPrem\bin\Debug\net10.0\SimpleMessageBus.Samples.OnPrem.dll
-D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Samples.SimpleClientApp\bin\Debug\net10.0\SimpleMessageBus.Samples.SimpleClientApp.dll
-D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Templates.AzureWebJob\bin\Debug\net10.0\SimpleMessageBus.Templates.AzureWebJob.dll
-D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Templates.Core\bin\Debug\net10.0\SimpleMessageBus.Templates.Core.dll
-D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Templates.Dispatch\bin\Debug\net10.0\SimpleMessageBus.Templates.Dispatch.dll
-D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Templates.Package\bin\Debug\net10.0\SimpleMessageBus.Templates.Projects.dll
-D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Templates.WindowsService\bin\Debug\net10.0\SimpleMessageBus.Templates.WindowsService.dll
 D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Tools\bin\Debug\net10.0\SimpleMessageBus.Tools.dll

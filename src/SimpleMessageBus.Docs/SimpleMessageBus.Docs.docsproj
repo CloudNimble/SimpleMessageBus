@@ -1,0 +1,37 @@
+﻿<Project Sdk="DotNetDocs.Sdk/1.2.0">
+
+    <PropertyGroup>
+        <DocumentationType>Mintlify</DocumentationType>
+        <GenerateDocumentation>true</GenerateDocumentation>
+        <NamespaceMode>Folder</NamespaceMode>
+
+        <ShowDocumentationStats>true</ShowDocumentationStats>
+        <ExcludePatterns>Samples;Templates</ExcludePatterns>
+
+        <ConceptualDocsEnabled>false</ConceptualDocsEnabled>
+        <ShowPlaceholders>false</ShowPlaceholders>
+
+        <MintlifyTemplate>
+            <Name>SimpleMessageBus</Name>
+            <Theme>maple</Theme>
+            <Colors>
+                <Primary>#419AC5</Primary>
+                <Light>#419AC5</Light>
+                <Dark>#3CD0E2</Dark>
+            </Colors>
+            <Navigation Mode="Unified">
+                <Pages>
+                    <Groups>
+                        <Group Name="Getting Started" Icon="stars">
+                            <Pages>index;why-simplemessagebus;quickstart</Pages>
+                        </Group>
+                        <!--<Group Name="Guides" Icon="dog-leashed">
+                            <Pages>guides/index;guides/pipeline;guides/conceptual-docs;guides/deployment</Pages>
+                        </Group>-->
+                    </Groups>
+                </Pages>
+            </Navigation>
+        </MintlifyTemplate>
+    </PropertyGroup>
+
+</Project>

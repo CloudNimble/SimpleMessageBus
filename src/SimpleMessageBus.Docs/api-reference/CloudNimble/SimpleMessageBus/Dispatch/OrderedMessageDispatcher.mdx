@@ -1,0 +1,216 @@
+---
+title: OrderedMessageDispatcher
+description: "An [IMessageDispatcher](/api-reference/CloudNimble/SimpleMessageBus/Dispatch/IMessageDispatcher) implementation that processes the messages in the order the ..."
+icon: file-brackets-curly
+keywords: ['OrderedMessageDispatcher', 'CloudNimble.SimpleMessageBus.Dispatch.OrderedMessageDispatcher', 'CloudNimble.SimpleMessageBus.Dispatch', 'class', 'System.Object', 'CloudNimble.SimpleMessageBus.Dispatch.IMessageDispatcher']
+---
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Dispatch.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Dispatch
+
+**Inheritance:** System.Object
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Dispatch.OrderedMessageDispatcher
+```
+
+## Summary
+
+An [IMessageDispatcher](/api-reference/CloudNimble/SimpleMessageBus/Dispatch/IMessageDispatcher) implementation that processes the messages in the order the [IMessageHandler](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler)IMessageHandlers&lt;/see&gt; 
+            were registered with the Dependency Injection container.
+
+## Remarks
+
+This dispatcher ensures that message handlers are invoked sequentially in registration order. This is useful
+            when handler execution order matters, such as when one handler's output affects another handler's behavior.
+            Each handler completes before the next one begins, providing predictable execution flow but potentially
+            slower overall processing compared to parallel dispatching.
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> .ctor
+
+Initializes a new instance of the [OrderedMessageDispatcher](/api-reference/CloudNimble/SimpleMessageBus/Dispatch/OrderedMessageDispatcher) class.
+
+#### Syntax
+
+```csharp
+public OrderedMessageDispatcher(System.Collections.Generic.IEnumerable<CloudNimble.SimpleMessageBus.Core.IMessageHandler> messageHandlers)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `messageHandlers` | `System.Collections.Generic.IEnumerable<CloudNimble.SimpleMessageBus.Core.IMessageHandler>` | The collection of message handlers to dispatch to. |
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> .ctor <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public Object()
+```
+
+## Methods
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Dispatch
+
+Sends the [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) to the [IMessageHandler](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessageHandler)MessageHandlers&lt;/see&gt; registered to that type, for processing.
+
+#### Syntax
+
+```csharp
+public System.Threading.Tasks.Task Dispatch(CloudNimble.SimpleMessageBus.Core.MessageEnvelope messageEnvelope)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `messageEnvelope` | `CloudNimble.SimpleMessageBus.Core.MessageEnvelope` | The [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) instance to be processed. |
+
+#### Returns
+
+Type: `System.Threading.Tasks.Task`
+
+#### Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+| `ArgumentNullException` | Thrown when *messageEnvelope* is null. |
+
+#### Remarks
+
+Handlers are invoked sequentially in the order they were registered with the DI container.
+            If any handler throws an exception, subsequent handlers will not be invoked.
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Equals <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual bool Equals(object obj)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `obj` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Equals <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool Equals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> GetHashCode <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual int GetHashCode()
+```
+
+#### Returns
+
+Type: `int`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> GetType <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public System.Type GetType()
+```
+
+#### Returns
+
+Type: `System.Type`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> MemberwiseClone <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+protected internal object MemberwiseClone()
+```
+
+#### Returns
+
+Type: `object`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ReferenceEquals <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool ReferenceEquals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ToString <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual string ToString()
+```
+
+#### Returns
+
+Type: `string?`
+
+## Related APIs
+
+- CloudNimble.SimpleMessageBus.Dispatch.IMessageDispatcher
+

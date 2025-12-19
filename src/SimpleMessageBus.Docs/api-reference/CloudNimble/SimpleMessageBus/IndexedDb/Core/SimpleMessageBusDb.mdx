@@ -1,0 +1,92 @@
+---
+title: SimpleMessageBusDb
+description: "Represents the IndexedDB database structure for SimpleMessageBus in Blazor WebAssembly applications."
+icon: file-brackets-curly
+keywords: ['SimpleMessageBusDb', 'CloudNimble.SimpleMessageBus.IndexedDb.Core.SimpleMessageBusDb', 'CloudNimble.SimpleMessageBus.IndexedDb.Core', 'class', 'CloudNimble.BlazorEssentials.IndexedDb.IndexedDbDatabase']
+---
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.IndexedDb.Core.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.IndexedDb.Core
+
+**Inheritance:** CloudNimble.BlazorEssentials.IndexedDb.IndexedDbDatabase
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.IndexedDb.Core.SimpleMessageBusDb
+```
+
+## Summary
+
+Represents the IndexedDB database structure for SimpleMessageBus in Blazor WebAssembly applications.
+
+## Remarks
+
+This class defines the IndexedDB schema used for client-side message queuing in Blazor WebAssembly.
+            It provides three object stores for managing message lifecycle: Queue (pending), Completed (successful),
+            and Failed (error) processing states.
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> .ctor
+
+#### Syntax
+
+```csharp
+public SimpleMessageBusDb(Microsoft.JSInterop.IJSRuntime jsRuntime, Microsoft.Extensions.Options.IOptions<CloudNimble.SimpleMessageBus.IndexedDb.Core.IndexedDbOptions> indexedDbOptions)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `jsRuntime` | `Microsoft.JSInterop.IJSRuntime` | - |
+| `indexedDbOptions` | `Microsoft.Extensions.Options.IOptions<CloudNimble.SimpleMessageBus.IndexedDb.Core.IndexedDbOptions>` | - |
+
+## Properties
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Completed
+
+Gets or sets the object store for successfully processed messages.
+
+#### Syntax
+
+```csharp
+public CloudNimble.BlazorEssentials.IndexedDb.IndexedDbObjectStore Completed { get; set; }
+```
+
+#### Property Value
+
+Type: `CloudNimble.BlazorEssentials.IndexedDb.IndexedDbObjectStore`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Failed
+
+Gets or sets the object store for messages that failed processing.
+
+#### Syntax
+
+```csharp
+public CloudNimble.BlazorEssentials.IndexedDb.IndexedDbObjectStore Failed { get; set; }
+```
+
+#### Property Value
+
+Type: `CloudNimble.BlazorEssentials.IndexedDb.IndexedDbObjectStore`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Queue
+
+Gets or sets the object store for messages pending processing.
+
+#### Syntax
+
+```csharp
+public CloudNimble.BlazorEssentials.IndexedDb.IndexedDbObjectStore Queue { get; set; }
+```
+
+#### Property Value
+
+Type: `CloudNimble.BlazorEssentials.IndexedDb.IndexedDbObjectStore`
+

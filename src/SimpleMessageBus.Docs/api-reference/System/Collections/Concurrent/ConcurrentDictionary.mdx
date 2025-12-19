@@ -1,0 +1,86 @@
+---
+title: ConcurrentDictionary
+description: "Extension methods for ConcurrentDictionary from System.Collections.Concurrent"
+icon: file-brackets-curly
+keywords: ['ConcurrentDictionary', 'System.Collections.Concurrent.ConcurrentDictionary<string, object>', 'System.Collections.Concurrent', 'error']
+---
+
+## Definition
+
+**Assembly:** System.Collections.Concurrent.dll
+
+**Namespace:** System.Collections.Concurrent
+
+## Syntax
+
+```csharp
+System.Collections.Concurrent.ConcurrentDictionary<string, object>
+```
+
+## Summary
+
+This type is defined in System.Collections.Concurrent.
+
+## Remarks
+
+See [Microsoft documentation](https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary{system.string, system.object}) for more information about the rest of the API.
+
+## Methods
+
+### <Icon icon="puzzle-piece" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Filter <Badge color="green">Extension</Badge>
+
+<Note>Extension method from `System.Collections.Concurrent.SimpleMessageBus_ConcurrentDictionaryExtensions`</Note>
+
+Filters the metadata [ConcurrentDictionary`2](https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2) to exclude keys ending with "-Status" or "-Timestamp".
+
+#### Syntax
+
+```csharp
+public static System.Collections.Concurrent.ConcurrentDictionary<string, object> Filter(System.Collections.Concurrent.ConcurrentDictionary<string, object> metadata)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `metadata` | `System.Collections.Concurrent.ConcurrentDictionary<string, object>` | The metadata dictionary to filter. |
+
+#### Returns
+
+Type: `System.Collections.Concurrent.ConcurrentDictionary<string, object>`
+A new concurrent dictionary containing only the non-status entries.
+
+#### Remarks
+
+This method helps filter out handler execution metadata when copying metadata between events,
+            ensuring that the execution status of one event doesn't affect another.
+
+### <Icon icon="puzzle-piece" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> FilterAndCombine <Badge color="green">Extension</Badge>
+
+<Note>Extension method from `System.Collections.Concurrent.SimpleMessageBus_ConcurrentDictionaryExtensions`</Note>
+
+Filters the metadata dictionary to exclude keys ending with "-Status" and combines it with the payload dictionary.
+
+#### Syntax
+
+```csharp
+public static System.Collections.Generic.Dictionary<string, object> FilterAndCombine(System.Collections.Concurrent.ConcurrentDictionary<string, object> metadata, System.Collections.Generic.Dictionary<string, object> payload)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `metadata` | `System.Collections.Concurrent.ConcurrentDictionary<string, object>` | The metadata dictionary to filter and combine. |
+| `payload` | `System.Collections.Generic.Dictionary<string, object>` | The payload dictionary to combine with the filtered metadata. |
+
+#### Returns
+
+Type: `System.Collections.Generic.Dictionary<string, object>`
+A new dictionary containing the combined entries from the payload and filtered metadata.
+
+#### Remarks
+
+This method helps filter out handler execution status from the metadata when constructing 
+            new messages or passing metadata between events in a processing chain.
+

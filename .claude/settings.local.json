@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet:*)",
+      "Bash(find:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:docs.aws.amazon.com)",
+      "Bash(rg:*)",
+      "Bash(timeout:*)",
+      "Bash(ls:*)",
+      "Bash(dotnet test:*)",
+      "Bash(dotnet build:*)",
+      "Bash(where:*)",
+      "Bash(dir:*)",
+      "Bash(Get-Process:*)",
+      "Bash(Select-Object -Property ProcessName,Id)",
+      "Bash(cat:*)"
+    ],
+    "deny": []
+  }
+}

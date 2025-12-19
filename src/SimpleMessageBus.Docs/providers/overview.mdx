@@ -1,0 +1,331 @@
+---
+title: Providers Overview
+description: 'Choose the right message transport provider for your needs'
+---
+
+SimpleMessageBus supports multiple transport providers, allowing you to choose the best option for your infrastructure and requirements. Each provider has its own strengths and is optimized for specific scenarios.
+
+## Available Providers
+
+<CardGroup cols={2}>
+  <Card
+    title="Azure Storage Queue"
+    icon="microsoft"
+    href="/providers/azure-storage-queue"
+  >
+    Reliable, cost-effective queuing using Azure Storage
+  </Card>
+  <Card
+    title="Amazon SQS"
+    icon="aws"
+    href="/providers/amazon-sqs"
+  >
+    Fully managed message queuing service from AWS
+  </Card>
+  <Card
+    title="File System"
+    icon="folder"
+    href="/providers/filesystem"
+  >
+    Local file-based messaging for development and on-premises
+  </Card>
+  <Card
+    title="IndexedDB"
+    icon="globe"
+    href="/providers/indexeddb"
+  >
+    Client-side messaging for Blazor WebAssembly applications
+  </Card>
+</CardGroup>
+
+## Provider Comparison
+
+<div className="overflow-x-auto">
+  <table className="min-w-full">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Azure Storage</th>
+        <th>Amazon SQS</th>
+        <th>File System</th>
+        <th>IndexedDB</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>**Cost**</td>
+        <td>Very Low</td>
+        <td>Low</td>
+        <td>Free</td>
+        <td>Free</td>
+      </tr>
+      <tr>
+        <td>**Scalability**</td>
+        <td>High</td>
+        <td>Very High</td>
+        <td>Limited</td>
+        <td>Limited</td>
+      </tr>
+      <tr>
+        <td>**Reliability**</td>
+        <td>High</td>
+        <td>Very High</td>
+        <td>Medium</td>
+        <td>Medium</td>
+      </tr>
+      <tr>
+        <td>**Latency**</td>
+        <td>Low</td>
+        <td>Very Low</td>
+        <td>Very Low</td>
+        <td>Very Low</td>
+      </tr>
+      <tr>
+        <td>**Setup Complexity**</td>
+        <td>Low</td>
+        <td>Medium</td>
+        <td>Very Low</td>
+        <td>Low</td>
+      </tr>
+      <tr>
+        <td>**Platform Support**</td>
+        <td>All</td>
+        <td>All</td>
+        <td>All</td>
+        <td>Browser Only</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Choosing a Provider
+
+### Azure Storage Queue
+
+**Best for:**
+- Applications already using Azure ecosystem
+- Cost-sensitive scenarios (very affordable)
+- High-volume, low-complexity messaging
+- Integration with Azure Functions
+
+**Limitations:**
+- 64KB message size limit
+- Basic message ordering (FIFO not guaranteed)
+- No advanced routing features
+
+**Example Use Cases:**
+- Background job processing
+- Event notifications
+- Simple workflow coordination
+
+### Amazon SQS
+
+**Best for:**
+- Applications in AWS ecosystem
+- Mission-critical applications requiring high reliability
+- Complex messaging patterns with DLQ support
+- Applications requiring message ordering (FIFO queues)
+
+**Limitations:**
+- Higher cost than Azure Storage
+- More complex IAM configuration
+- AWS-specific features and terminology
+
+**Example Use Cases:**
+- Microservices communication
+- Order processing systems
+- High-volume transaction processing
+
+### File System
+
+**Best for:**
+- Development and testing
+- On-premises deployments
+- Simple applications with low message volume
+- Azure Functions with custom triggers
+
+**Limitations:**
+- Not suitable for production at scale
+- No built-in redundancy
+- Platform-dependent file locking
+
+**Example Use Cases:**
+- Local development
+- Simple background processing
+- File-based integrations
+- Proof of concepts
+
+### IndexedDB
+
+**Best for:**
+- Blazor WebAssembly applications
+- Client-side background processing
+- Offline-capable applications
+- Browser-based workflows
+
+**Limitations:**
+- Browser storage quotas
+- Single-user scenarios only
+- No cross-browser synchronization
+- Limited to WebAssembly context
+
+**Example Use Cases:**
+- Client-side data processing
+- Offline message queuing
+- Browser-based workflows
+- Progressive Web Apps (PWAs)
+
+## Multi-Provider Architecture
+
+You can use multiple providers in the same application for different scenarios:
+
+```csharp
+// Configure multiple publishers
+services.AddSimpleMessageBusAzureStoragePublisher("primary", options =>
+{
+    options.ConnectionString = azureConnectionString;
+});
+
+services.AddSimpleMessageBusFileSystemPublisher("local", options =>
+{
+    options.RootPath = localPath;
+});
+
+// Use named publishers
+public class OrderService
+{
+    private readonly IMessagePublisher _primaryPublisher;
+    private readonly IMessagePublisher _localPublisher;
+
+    public OrderService(
+        [FromKeyedServices("primary")] IMessagePublisher primaryPublisher,
+        [FromKeyedServices("local")] IMessagePublisher localPublisher)
+    {
+        _primaryPublisher = primaryPublisher;
+        _localPublisher = localPublisher;
+    }
+}
+```
+
+## Migration Between Providers
+
+SimpleMessageBus makes it easy to migrate between providers:
+
+1. **Add the new provider** alongside the existing one
+2. **Gradually migrate message types** to the new provider
+3. **Update handlers** to process from both providers during transition
+4. **Remove the old provider** once migration is complete
+
+```csharp
+// Phase 1: Add new provider
+services.AddSimpleMessageBusAmazonSQSPublisher(newOptions);
+services.AddSimpleMessageBusAzureStoragePublisher(oldOptions);
+
+// Phase 2: Dual publishing during migration
+await _newPublisher.PublishAsync(message);
+await _oldPublisher.PublishAsync(message); // Remove when ready
+
+// Phase 3: Remove old provider
+services.RemoveSimpleMessageBusAzureStorage();
+```
+
+## Provider-Specific Features
+
+Each provider offers unique features that you can leverage:
+
+### Azure Storage Queue Features
+
+- **Poison message handling**: Automatic dead letter queue support
+- **Message TTL**: Configurable time-to-live for messages
+- **Peek operations**: Non-destructive message inspection
+- **Batch operations**: Process multiple messages efficiently
+
+### Amazon SQS Features
+
+- **FIFO queues**: Guaranteed message ordering
+- **Message deduplication**: Automatic duplicate detection
+- **Dead letter queues**: Sophisticated error handling
+- **Long polling**: Efficient message retrieval
+
+### File System Features
+
+- **Azure Functions triggers**: Custom trigger bindings
+- **File watching**: Real-time processing of new files
+- **Structured storage**: Organized file hierarchies
+- **Cross-platform compatibility**: Works on all operating systems
+
+### IndexedDB Features
+
+- **Offline support**: Works without network connectivity
+- **Large storage**: Gigabytes of client-side storage
+- **Transaction support**: ACID properties for data integrity
+- **Asynchronous operations**: Non-blocking browser operations
+
+## Configuration Patterns
+
+### Environment-Based Configuration
+
+Use different providers based on environment:
+
+```csharp
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddSimpleMessageBusFileSystemProvider();
+}
+else if (builder.Environment.IsProduction())
+{
+    builder.Services.AddSimpleMessageBusAzureStorageProvider();
+}
+```
+
+### Feature Flag Configuration
+
+Use feature flags to switch providers:
+
+```csharp
+var useAmazonSQS = builder.Configuration.GetValue<bool>("Features:UseAmazonSQS");
+
+if (useAmazonSQS)
+{
+    builder.Services.AddSimpleMessageBusAmazonSQSProvider();
+}
+else
+{
+    builder.Services.AddSimpleMessageBusAzureStorageProvider();
+}
+```
+
+## Next Steps
+
+Choose your provider and dive into the detailed configuration:
+
+<CardGroup cols={2}>
+  <Card
+    title="Azure Storage Queue"
+    icon="microsoft"
+    href="/providers/azure-storage-queue"
+  >
+    Configure Azure Storage Queue provider
+  </Card>
+  <Card
+    title="Amazon SQS"
+    icon="aws"
+    href="/providers/amazon-sqs"
+  >
+    Set up Amazon SQS provider
+  </Card>
+  <Card
+    title="File System"
+    icon="folder"
+    href="/providers/filesystem"
+  >
+    Use File System provider
+  </Card>
+  <Card
+    title="IndexedDB"
+    icon="globe"
+    href="/providers/indexeddb"
+  >
+    Implement IndexedDB provider
+  </Card>
+</CardGroup>

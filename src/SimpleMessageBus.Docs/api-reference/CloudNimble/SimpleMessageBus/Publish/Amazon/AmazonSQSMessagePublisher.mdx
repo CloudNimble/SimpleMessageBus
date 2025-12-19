@@ -1,0 +1,214 @@
+---
+title: AmazonSQSMessagePublisher
+description: "Manages the process of publishing MessageBus messages to Amazon SQS."
+icon: file-brackets-curly
+keywords: ['AmazonSQSMessagePublisher', 'CloudNimble.SimpleMessageBus.Publish.Amazon.AmazonSQSMessagePublisher', 'CloudNimble.SimpleMessageBus.Publish.Amazon', 'class', 'System.Object', 'CloudNimble.SimpleMessageBus.Publish.IMessagePublisher']
+---
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Publish.Amazon.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Publish.Amazon
+
+**Inheritance:** System.Object
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Publish.Amazon.AmazonSQSMessagePublisher
+```
+
+## Summary
+
+Manages the process of publishing MessageBus messages to Amazon SQS.
+
+## Remarks
+
+This publisher integrates with Amazon SQS to provide reliable, scalable message queuing
+            in AWS environments. It handles message serialization, queue URL resolution, and
+            supports both standard and FIFO queues depending on configuration.
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> .ctor
+
+Creates a new instance of the [AmazonSQSMessagePublisher](/api-reference/CloudNimble/SimpleMessageBus/Publish/Amazon/AmazonSQSMessagePublisher).
+
+#### Syntax
+
+```csharp
+public AmazonSQSMessagePublisher(Microsoft.Extensions.Options.IOptions<CloudNimble.SimpleMessageBus.Amazon.Core.AmazonSQSOptions> options, Amazon.SQS.IAmazonSQS sqsClient)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `options` | `Microsoft.Extensions.Options.IOptions<CloudNimble.SimpleMessageBus.Amazon.Core.AmazonSQSOptions>` | The [AmazonSQSOptions](/api-reference/CloudNimble/SimpleMessageBus/Amazon/Core/AmazonSQSOptions) instance to use to configure Amazon SQS. Should be registered with your Dependency Injection container. |
+| `sqsClient` | `Amazon.SQS.IAmazonSQS` | The `IAmazonSQS` client instance. |
+
+#### Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+| `ArgumentNullException` | *options* is [`null`](https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null) or
+            *sqsClient* is [`null`](https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null). |
+| `ArgumentException` | *options*.QueueName is [`null`](https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null) or whitespace. |
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> .ctor <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public Object()
+```
+
+## Methods
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Equals <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual bool Equals(object obj)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `obj` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Equals <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool Equals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> GetHashCode <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual int GetHashCode()
+```
+
+#### Returns
+
+Type: `int`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> GetType <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public System.Type GetType()
+```
+
+#### Returns
+
+Type: `System.Type`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> MemberwiseClone <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+protected internal object MemberwiseClone()
+```
+
+#### Returns
+
+Type: `object`
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> PublishAsync
+
+Publishes the specified [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) to a queue.
+
+#### Syntax
+
+```csharp
+public System.Threading.Tasks.Task PublishAsync(CloudNimble.SimpleMessageBus.Core.IMessage message, bool isSystemGenerated = false)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `message` | `CloudNimble.SimpleMessageBus.Core.IMessage` | The [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) to wrap in a [MessageEnvelope](/api-reference/CloudNimble/SimpleMessageBus/Core/MessageEnvelope) and publish to the queue. |
+| `isSystemGenerated` | `bool` | Specifies whether or not the event was generated by the system. (Not currently used). |
+
+#### Returns
+
+Type: `System.Threading.Tasks.Task`
+A [Task](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task) reference for the asynchronous function.
+
+### <Icon icon="thumbtack" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ReferenceEquals <Badge color="gray">Inherited</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public static bool ReferenceEquals(object objA, object objB)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `objA` | `object?` | - |
+| `objB` | `object?` | - |
+
+#### Returns
+
+Type: `bool`
+
+### <Icon icon="code-fork" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ToString <Badge color="gray">Inherited</Badge> <Badge color="orange">Virtual</Badge>
+
+<Note>Inherited from `object`</Note>
+
+#### Syntax
+
+```csharp
+public virtual string ToString()
+```
+
+#### Returns
+
+Type: `string?`
+
+## Related APIs
+
+- CloudNimble.SimpleMessageBus.Publish.IMessagePublisher
+

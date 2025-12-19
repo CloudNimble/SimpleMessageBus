@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>CloudNimble.SimpleMessageBus.Publish.Kafka</AssemblyName>
+		<RootNamespace>CloudNimble.SimpleMessageBus.Publish.Kafka</RootNamespace>
+		<TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
+		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Title>SimpleMessageBus Publisher for Kafka</Title>
+		<Summary>
+			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
+			the logic necessary to publish Domain events to Apache Kafka topics.
+		</Summary>
+		<PackageReleaseNotes>
+			Version 6.0:
+			  - Initial release of Kafka publisher support using Confluent.Kafka client library.
+		</PackageReleaseNotes>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Confluent.Kafka" Version="[2.*, 3.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SimpleMessageBus.Publish\SimpleMessageBus.Publish.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+		<InternalsVisibleTo Include="SimpleMessageBus.Tests.Dispatch.Kafka, $(StrongNamePublicKey)" />
+	</ItemGroup>
+
+</Project>

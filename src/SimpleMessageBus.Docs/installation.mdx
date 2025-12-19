@@ -1,0 +1,302 @@
+---
+title: Installation
+description: 'Detailed installation instructions for SimpleMessageBus'
+---
+
+## Package Selection
+
+SimpleMessageBus is distributed as multiple NuGet packages based on the provider you want to use. Choose the packages that match your infrastructure and requirements.
+
+### Core Packages
+
+<CardGroup cols={2}>
+  <Card title="SimpleMessageBus.Core" icon="cube">
+    Core interfaces and base classes. Required by all other packages.
+  </Card>
+  <Card title="SimpleMessageBus.Hosting" icon="server">
+    Hosting extensions for background services and message processing.
+  </Card>
+</CardGroup>
+
+### Publishing Packages
+
+<AccordionGroup>
+  <Accordion title="SimpleMessageBus.Publish">
+    **File System Publisher**
+    
+    Basic file system-based message publishing. Good for development and simple scenarios.
+    
+    ```bash
+    dotnet add package SimpleMessageBus.Publish
+    ```
+  </Accordion>
+  
+  <Accordion title="SimpleMessageBus.Publish.Azure">
+    **Azure Storage Queue Publisher**
+    
+    Publishes messages to Azure Storage Queues.
+    
+    ```bash
+    dotnet add package SimpleMessageBus.Publish.Azure
+    ```
+    
+    **Dependencies:**
+    - Azure.Storage.Queues
+    - Microsoft.Extensions.DependencyInjection
+  </Accordion>
+  
+  <Accordion title="SimpleMessageBus.Publish.Amazon">
+    **Amazon SQS Publisher**
+    
+    Publishes messages to Amazon SQS queues.
+    
+    ```bash
+    dotnet add package SimpleMessageBus.Publish.Amazon
+    ```
+    
+    **Dependencies:**
+    - AWSSDK.SQS
+    - Microsoft.Extensions.DependencyInjection
+  </Accordion>
+  
+  <Accordion title="SimpleMessageBus.Publish.IndexedDb">
+    **IndexedDB Publisher (Blazor WebAssembly)**
+    
+    Client-side message publishing using browser IndexedDB.
+    
+    ```bash
+    dotnet add package SimpleMessageBus.Publish.IndexedDb
+    ```
+    
+    **Requirements:**
+    - Blazor WebAssembly project
+    - .NET 8+ target framework
+  </Accordion>
+</AccordionGroup>
+
+### Dispatching Packages
+
+<AccordionGroup>
+  <Accordion title="SimpleMessageBus.Dispatch">
+    **Core Dispatcher**
+    
+    Base dispatcher functionality and interfaces.
+    
+    ```bash
+    dotnet add package SimpleMessageBus.Dispatch
+    ```
+  </Accordion>
+  
+  <Accordion title="SimpleMessageBus.Dispatch.Azure">
+    **Azure Storage Queue Dispatcher**
+    
+    Processes messages from Azure Storage Queues.
+    
+    ```bash
+    dotnet add package SimpleMessageBus.Dispatch.Azure
+    ```
+  </Accordion>
+  
+  <Accordion title="SimpleMessageBus.Dispatch.Amazon">
+    **Amazon SQS Dispatcher**
+    
+    Processes messages from Amazon SQS queues.
+    
+    ```bash
+    dotnet add package SimpleMessageBus.Dispatch.Amazon
+    ```
+  </Accordion>
+  
+  <Accordion title="SimpleMessageBus.Dispatch.FileSystem">
+    **File System Dispatcher**
+    
+    Processes messages from file system storage. Includes Azure Functions trigger support.
+    
+    ```bash
+    dotnet add package SimpleMessageBus.Dispatch.FileSystem
+    ```
+  </Accordion>
+  
+  <Accordion title="SimpleMessageBus.Dispatch.IndexedDb">
+    **IndexedDB Dispatcher (Blazor WebAssembly)**
+    
+    Client-side message processing using browser IndexedDB.
+    
+    ```bash
+    dotnet add package SimpleMessageBus.Dispatch.IndexedDb
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Testing Package
+
+<Card title="SimpleMessageBus.Breakdance" icon="flask">
+  Testing utilities and mocks for unit testing message handlers.
+  
+  ```bash
+  dotnet add package SimpleMessageBus.Breakdance --version 1.0.0-preview
+  ```
+</Card>
+
+## Installation by Scenario
+
+### Web Application with Azure Storage
+
+For ASP.NET Core applications using Azure Storage Queues:
+
+```bash
+dotnet add package SimpleMessageBus.Publish.Azure
+dotnet add package SimpleMessageBus.Dispatch.Azure
+dotnet add package SimpleMessageBus.Hosting
+```
+
+### Console Application with Amazon SQS
+
+For console applications using Amazon SQS:
+
+```bash
+dotnet add package SimpleMessageBus.Publish.Amazon
+dotnet add package SimpleMessageBus.Dispatch.Amazon
+dotnet add package SimpleMessageBus.Hosting
+dotnet add package Microsoft.Extensions.Hosting
+```
+
+### Azure Functions
+
+For Azure Functions with file system triggers:
+
+```bash
+dotnet add package SimpleMessageBus.Publish
+dotnet add package SimpleMessageBus.Dispatch.FileSystem
+dotnet add package Microsoft.Azure.WebJobs.Extensions
+```
+
+### Blazor WebAssembly
+
+For client-side Blazor applications:
+
+```bash
+dotnet add package SimpleMessageBus.Publish.IndexedDb
+dotnet add package SimpleMessageBus.Dispatch.IndexedDb
+```
+
+### Development and Testing
+
+For development and testing scenarios:
+
+```bash
+dotnet add package SimpleMessageBus.Publish
+dotnet add package SimpleMessageBus.Dispatch.FileSystem
+dotnet add package SimpleMessageBus.Breakdance
+```
+
+## Framework Requirements
+
+<Note>
+SimpleMessageBus requires .NET 8.0 or later. It supports .NET 8, 9, and 10.
+</Note>
+
+### Supported Platforms
+
+- **Windows**: Full support for all providers
+- **Linux**: Full support for all providers
+- **macOS**: Full support for all providers
+- **Browser (Blazor WebAssembly)**: IndexedDB provider only
+
+### Target Frameworks
+
+All packages multi-target the following frameworks:
+
+- `net8.0`
+- `net9.0` 
+- `net10.0`
+
+## Package Manager Commands
+
+### Package Manager Console
+
+```powershell
+# Azure Storage Queue
+Install-Package SimpleMessageBus.Publish.Azure
+Install-Package SimpleMessageBus.Dispatch.Azure
+
+# Amazon SQS
+Install-Package SimpleMessageBus.Publish.Amazon
+Install-Package SimpleMessageBus.Dispatch.Amazon
+
+# File System
+Install-Package SimpleMessageBus.Publish
+Install-Package SimpleMessageBus.Dispatch.FileSystem
+
+# IndexedDB (Blazor WebAssembly)
+Install-Package SimpleMessageBus.Publish.IndexedDb
+Install-Package SimpleMessageBus.Dispatch.IndexedDb
+```
+
+### PackageReference
+
+Add to your `.csproj` file:
+
+```xml
+<PackageReference Include="SimpleMessageBus.Publish.Azure" Version="6.0.0" />
+<PackageReference Include="SimpleMessageBus.Dispatch.Azure" Version="6.0.0" />
+```
+
+## Verification
+
+After installation, verify the packages are correctly installed:
+
+```bash
+dotnet list package
+```
+
+You should see the SimpleMessageBus packages listed with their version numbers.
+
+## Next Steps
+
+After installation, proceed to:
+
+<CardGroup cols={2}>
+  <Card
+    title="Quick Start"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Get up and running in 5 minutes
+  </Card>
+  <Card
+    title="Provider Configuration"
+    icon="gear"
+    href="/providers/overview"
+  >
+    Configure your chosen provider
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+### Common Issues
+
+<AccordionGroup>
+  <Accordion title="Package Version Conflicts">
+    Ensure all SimpleMessageBus packages are using the same version. Use `dotnet list package --outdated` to check for version mismatches.
+  </Accordion>
+  
+  <Accordion title="Framework Compatibility">
+    SimpleMessageBus requires .NET 8.0 or later. Update your project's target framework if necessary:
+    
+    ```xml
+    <TargetFramework>net8.0</TargetFramework>
+    ```
+  </Accordion>
+  
+  <Accordion title="Missing Dependencies">
+    Some providers have additional dependencies that should be automatically installed. If you encounter missing assembly errors, try restoring packages:
+    
+    ```bash
+    dotnet restore
+    ```
+  </Accordion>
+</AccordionGroup>
+
+For additional help, visit our [GitHub Issues](https://github.com/CloudNimble/SimpleMessageBus/issues) page.

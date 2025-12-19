@@ -3,12 +3,11 @@
 	<PropertyGroup>
 		<AssemblyName>CloudNimble.SimpleMessageBus.Dispatch.Azure</AssemblyName>
 		<RootNamespace>CloudNimble.SimpleMessageBus.Dispatch.Azure</RootNamespace>
-		<TargetFrameworks>netstandard2.0;net9.0;net8.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>SimpleMessageBus.Dispatch.Azure</PackageId>
 		<Title>SimpleMessageBus Dispatcher for Azure</Title>
 		<Summary>
 			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
@@ -27,7 +26,7 @@
 		<PackageReference Include="Microsoft.Azure.WebJobs" Version="[3.0.*, 3.1.0)" />
 		<PackageReference Include="Microsoft.Azure.WebJobs.Host.Storage" Version="[5.*, 6.0.0)" />
 		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="[5.*, 6.0.0)" />
-		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage.Queues" Version="[5.2.*, 6.0.0)" />
+		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage.Queues" Version="[5.*, 6.0.0)" />
 	</ItemGroup>
 
 	<ItemGroup>

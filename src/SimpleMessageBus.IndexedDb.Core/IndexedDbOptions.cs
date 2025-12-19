@@ -4,6 +4,11 @@
     /// <summary>
     /// Specifies the options required to leverage a browser's IndexedDB instance as the SimpleMessageBus backing queue.
     /// </summary>
+    /// <remarks>
+    /// These options configure the IndexedDB database and object store names used for message queuing
+    /// in Blazor WebAssembly applications. The default values follow SimpleMessageBus conventions
+    /// and can be customized for specific application requirements.
+    /// </remarks>
     public class IndexedDbOptions
     {
 

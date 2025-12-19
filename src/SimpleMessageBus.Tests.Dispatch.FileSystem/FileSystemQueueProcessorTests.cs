@@ -1,4 +1,5 @@
 using CloudNimble.Breakdance.Assemblies;
+using CloudNimble.Breakdance.Extensions.MSTest2;
 using CloudNimble.SimpleMessageBus.Core;
 using CloudNimble.SimpleMessageBus.Publish;
 using FluentAssertions;
@@ -22,7 +23,8 @@ namespace SimpleMessageBus.Tests.Dispatch
     /// 
     /// </summary>
     [TestClass]
-    public class FileSystemQueueProcessorTests : BreakdanceTestBase
+    [DoNotParallelize]
+    public class FileSystemQueueProcessorTests : BreakdanceMSTestBase
     {
 
         public static int MessageCount = 0;
@@ -30,7 +32,7 @@ namespace SimpleMessageBus.Tests.Dispatch
         private const string filePath = @"D:\Scratch\SimpleMessageBus\";
 
         [TestInitialize]
-        public void TestInit()
+        public async Task TestInitAsync()
         {
             TestHostBuilder
                 .UseEnvironment("Development")
@@ -58,9 +60,19 @@ namespace SimpleMessageBus.Tests.Dispatch
                 .UseConsoleLifetime();
 
             TestSetup();
-            _ = TestHost.RunAsync();
+            _ = TestHost.RunAsync(TestContext.CancellationToken);
         }
 
+        [TestCleanup]
+        public async Task DeleteQueueFiles()
+        {
+            var options = TestHost.Services.GetRequiredService<IOptions<FileSystemOptions>>().Value;
+            foreach (var file in Directory.GetFiles(options.QueueFolderPath))
+            {
+                File.Delete(file);
+            }
+            TestTearDown();
+        }
 
         /// <summary>
         /// 
@@ -83,7 +95,6 @@ namespace SimpleMessageBus.Tests.Dispatch
         [TestMethod]
         public async Task SimulatedNetworkMessagePublisherWorks()
         {
-            var options = TestHost.Services.GetRequiredService<IOptions<FileSystemOptions>>().Value;
             var time = DateTime.Now.ToString("HHmmss");
 
             var envelope = new MessageEnvelope(new TestMessage())
@@ -91,6 +102,8 @@ namespace SimpleMessageBus.Tests.Dispatch
                 Id = Guid.NewGuid(),
                 DatePublished = DateTimeOffset.UtcNow
             };
+
+            var options = TestHost.Services.GetRequiredService<IOptions<FileSystemOptions>>().Value;
 
             File.WriteAllText(Path.Combine(options.QueueFolderPath, $"{time}.tmpmsg"), JsonConvert.SerializeObject(envelope));
             Thread.Sleep(200);
@@ -113,6 +126,7 @@ namespace SimpleMessageBus.Tests.Dispatch
             /// <returns></returns>
             public IEnumerable<Type> GetHandledMessageTypes()
             {
+                Console.WriteLine("TestMessageHandler Loaded.");
                 yield return typeof(TestMessage);
             }
 
@@ -129,10 +143,11 @@ namespace SimpleMessageBus.Tests.Dispatch
             /// </summary>
             /// <param name="messageEnvelope"></param>
             /// <returns></returns>
-            public Task OnNextAsync(MessageEnvelope messageEnvelope)
+            public async Task OnNextAsync(MessageEnvelope messageEnvelope)
             {
                 MessageCount = 1;
-                return Task.FromResult(0);
+                Console.WriteLine("MessageCount Incremented.");
+                await Task.FromResult(true);
             }
 
         }

@@ -13,18 +13,36 @@ namespace SimpleMessageBus.Samples.Core
     /// 2) Send them a welcome email.
     /// 3) Send yourself a test message letting you know you have a new signup.
     /// </remarks>
-    public class NewUserMessage : IMessage
+    public class NewUserMessage : MessageBase
     {
 
-        /// <summary>
-        /// The unique identifier for this Message.
-        /// </summary>
-        public Guid Id { get; set; }
+        #region Properties
 
         /// <summary>
         /// The email address of the user that registered.
         /// </summary>
         public string Email { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="NewUserMessage"/>.
+        /// </summary>
+        public NewUserMessage() : base()
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="NewUserMessage"/> as a child of another message.
+        /// </summary>
+        /// <param name="parent">The parent message to inherit metadata from.</param>
+        public NewUserMessage(IMessage parent) : base(parent)
+        {
+        }
+
+        #endregion
                
     }
 

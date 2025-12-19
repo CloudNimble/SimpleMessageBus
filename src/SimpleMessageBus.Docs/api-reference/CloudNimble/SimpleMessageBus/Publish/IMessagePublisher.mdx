@@ -1,0 +1,60 @@
+---
+title: IMessagePublisher
+description: "Defines the functionality required for publishing an [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) to a supported backing queue."
+icon: plug
+keywords: ['IMessagePublisher', 'CloudNimble.SimpleMessageBus.Publish.IMessagePublisher', 'CloudNimble.SimpleMessageBus.Publish', 'interface']
+---
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Publish.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Publish
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Publish.IMessagePublisher
+```
+
+## Summary
+
+Defines the functionality required for publishing an [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) to a supported backing queue.
+
+## Remarks
+
+Message publishers are the entry point for sending messages into the SimpleMessageBus system.
+            Different implementations support various queue providers (Azure, Amazon, FileSystem, IndexedDB)
+            while maintaining a consistent interface for application code.
+
+## Methods
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> PublishAsync <Badge color="orange">Abstract</Badge>
+
+Publishes the specified [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage) to a queue.
+
+#### Syntax
+
+```csharp
+System.Threading.Tasks.Task PublishAsync(CloudNimble.SimpleMessageBus.Core.IMessage message, bool isSystemGenerated = false)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `message` | `CloudNimble.SimpleMessageBus.Core.IMessage` | The message to add to the queue. |
+| `isSystemGenerated` | `bool` | Specifies whether the message comes from the currently-authenticated user, or is a system-generated message.
+            This flag can be used for auditing, routing, or processing decisions. |
+
+#### Returns
+
+Type: `System.Threading.Tasks.Task`
+A task representing the asynchronous publish operation.
+
+#### Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+| `ArgumentNullException` | Thrown when *message* is null. |
+

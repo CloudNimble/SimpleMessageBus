@@ -3,12 +3,11 @@
 	<PropertyGroup>
 		<AssemblyName>CloudNimble.SimpleMessageBus.Publish.Azure</AssemblyName>
 		<RootNamespace>CloudNimble.SimpleMessageBus.Publish.Azure</RootNamespace>
-		<TargetFrameworks>netstandard2.0;net9.0;net8.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>SimpleMessageBus.Publish.Azure</PackageId>
 		<Title>SimpleMessageBus Publisher for Azure</Title>
 		<Summary>
 			A framework for reliable, distributed, scalable, cross-platform event processing on .NET. This package contains
@@ -33,6 +32,7 @@
 
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
-	</ItemGroup>
+        <InternalsVisibleTo Include="SimpleMessageBus.Tests.Dispatch.Azure, $(StrongNamePublicKey)" />
+    </ItemGroup>
 
 </Project>

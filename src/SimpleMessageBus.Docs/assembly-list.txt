@@ -1,0 +1,17 @@
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Amazon.Core\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Amazon.Core.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Breakdance\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Breakdance.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Core\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Core.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Dispatch\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Dispatch.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Dispatch.Amazon\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Dispatch.Amazon.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Dispatch.Azure\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Dispatch.Azure.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Dispatch.FileSystem\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Dispatch.FileSystem.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Dispatch.IndexedDb\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Dispatch.IndexedDb.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Dispatch.Kafka\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Dispatch.Kafka.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Hosting\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Hosting.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.IndexedDb.Core\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.IndexedDb.Core.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Publish\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Publish.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Publish.Amazon\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Publish.Amazon.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Publish.Azure\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Publish.Azure.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Publish.IndexedDb\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Publish.IndexedDb.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Publish.Kafka\bin\Debug\net10.0\CloudNimble.SimpleMessageBus.Publish.Kafka.dll
+D:\GitHub\SimpleMessageBus\src\SimpleMessageBus.Tools\bin\Debug\net10.0\SimpleMessageBus.Tools.dll

@@ -1,0 +1,70 @@
+---
+title: IKafkaKeyProvider
+description: "Interface for providing Kafka message keys. Implement this on your [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage)             types to..."
+icon: plug
+keywords: ['IKafkaKeyProvider', 'CloudNimble.SimpleMessageBus.Publish.IKafkaKeyProvider', 'CloudNimble.SimpleMessageBus.Publish', 'interface']
+---
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Publish.Kafka.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Publish
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Publish.IKafkaKeyProvider
+```
+
+## Summary
+
+Interface for providing Kafka message keys. Implement this on your [IMessage](/api-reference/CloudNimble/SimpleMessageBus/Core/IMessage)
+            types to control message partitioning in Kafka.
+
+## Remarks
+
+
+
+
+            Kafka uses message keys to determine which partition a message goes to. Messages with
+            the same key always go to the same partition, ensuring ordering for related messages.
+            
+
+
+
+
+            Common use cases:
+            
+
+
+
+
+## Examples
+
+```csharp
+public class OrderUpdatedMessage : MessageBase, IKafkaKeyProvider
+{
+    public string OrderId { get; set; }
+    public string GetKafkaKey() =&gt; OrderId;
+}
+```
+
+## Methods
+
+### <Icon icon="function" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> GetKafkaKey <Badge color="orange">Abstract</Badge>
+
+Gets the Kafka message key for partition routing.
+
+#### Syntax
+
+```csharp
+string GetKafkaKey()
+```
+
+#### Returns
+
+Type: `string`
+A string key that determines partition assignment. Return `null` to use
+            round-robin partitioning (no ordering guarantee).
+

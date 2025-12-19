@@ -1,0 +1,129 @@
+---
+title: SimpleMessageBusFileTriggerAttribute
+description: "Attribute used to mark a job function that should be invoked based             on file events."
+icon: lock
+sidebarTitle: SimpleMessageBusFileTriggerAttribute
+tag: "SEALED"
+keywords: ['SimpleMessageBusFileTriggerAttribute', 'CloudNimble.SimpleMessageBus.Dispatch.Triggers.SimpleMessageBusFileTriggerAttribute', 'CloudNimble.SimpleMessageBus.Dispatch.Triggers', 'class', 'System.Attribute']
+---
+
+## Definition
+
+**Assembly:** CloudNimble.SimpleMessageBus.Dispatch.FileSystem.dll
+
+**Namespace:** CloudNimble.SimpleMessageBus.Dispatch.Triggers
+
+**Inheritance:** System.Attribute
+
+## Syntax
+
+```csharp
+CloudNimble.SimpleMessageBus.Dispatch.Triggers.SimpleMessageBusFileTriggerAttribute
+```
+
+## Summary
+
+Attribute used to mark a job function that should be invoked based
+            on file events.
+
+## Remarks
+
+The method parameter type can be one of the following:
+            
+
+
+## Constructors
+
+### <Icon icon="hammer" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> .ctor
+
+Constructs a new instance.
+
+#### Syntax
+
+```csharp
+public SimpleMessageBusFileTriggerAttribute(string path, string filter, System.IO.WatcherChangeTypes changeTypes = 1, bool autoDelete = false)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `path` | `string` | The root path that this trigger is configured to watch for files on. |
+| `filter` | `string` | The optional file filter that will be used. |
+| `changeTypes` | `System.IO.WatcherChangeTypes` | The [WatcherChangeTypes](https://learn.microsoft.com/dotnet/api/system.io.watcherchangetypes) that will be used by the file watcher. The Default is Created. |
+| `autoDelete` | `bool` | True if processed files should be deleted automatically, false otherwise. The default is False. |
+
+## Properties
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> AutoDelete
+
+Gets a value indicating whether files should be automatically deleted after they
+            are successfully processed. When set to true, all files including any companion files
+            starting with the target file name will be deleted when the file is successfully processed.
+
+#### Syntax
+
+```csharp
+public bool AutoDelete { get; private set; }
+```
+
+#### Property Value
+
+Type: `bool`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> ChangeTypes
+
+Gets the [WatcherChangeTypes](https://learn.microsoft.com/dotnet/api/system.io.watcherchangetypes) that will be used by the file watcher.
+
+#### Syntax
+
+```csharp
+public System.IO.WatcherChangeTypes ChangeTypes { get; private set; }
+```
+
+#### Property Value
+
+Type: `System.IO.WatcherChangeTypes`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Filter
+
+Gets the optional file filter that will be used.
+
+#### Syntax
+
+```csharp
+public string Filter { get; private set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> Path
+
+Gets the root path that this trigger is configured to watch for files on.
+
+#### Syntax
+
+```csharp
+public string Path { get; private set; }
+```
+
+#### Property Value
+
+Type: `string`
+
+### <Icon icon="tag" iconType="duotone" color="#419AC5" size={24} className="mr-2" /> RootPath
+
+Gets the root path that this trigger is configured to watch for files on.
+
+#### Syntax
+
+```csharp
+public string RootPath { get; }
+```
+
+#### Property Value
+
+Type: `string`
+

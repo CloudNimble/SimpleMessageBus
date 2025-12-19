@@ -1,0 +1,776 @@
+---
+title: Amazon SQS Provider
+description: 'Configure SimpleMessageBus with Amazon Simple Queue Service'
+---
+
+The Amazon SQS provider offers enterprise-grade message queuing with advanced features like FIFO queues, dead letter queues, and long polling. It's ideal for mission-critical applications requiring high reliability and throughput.
+
+## Installation
+
+Install the Amazon SQS packages:
+
+```bash
+dotnet add package SimpleMessageBus.Publish.Amazon
+dotnet add package SimpleMessageBus.Dispatch.Amazon
+```
+
+## Basic Configuration
+
+### Publishing Configuration
+
+Configure the publisher in your startup:
+
+```csharp
+using SimpleMessageBus.Publish.Amazon.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+{
+    options.Region = "us-east-1";
+    options.AccessKey = builder.Configuration["AWS:AccessKey"];
+    options.SecretKey = builder.Configuration["AWS:SecretKey"];
+    options.DefaultQueueName = "messages";
+});
+
+var app = builder.Build();
+```
+
+### Dispatching Configuration
+
+Configure the message dispatcher:
+
+```csharp
+using SimpleMessageBus.Dispatch.Amazon.Extensions;
+
+builder.Services.AddSimpleMessageBusAmazonSQSDispatcher(options =>
+{
+    options.Region = "us-east-1";
+    options.AccessKey = builder.Configuration["AWS:AccessKey"];
+    options.SecretKey = builder.Configuration["AWS:SecretKey"];
+    options.DefaultQueueName = "messages";
+    options.MaxConcurrentMessages = 20;
+    options.WaitTimeSeconds = 20; // Long polling
+});
+```
+
+## Configuration Options
+
+### AmazonSQSOptions
+
+<AccordionGroup>
+  <Accordion title="Authentication Settings">
+    ```csharp
+    public class AmazonSQSOptions
+    {
+        // AWS Region
+        public string Region { get; set; } = "us-east-1";
+        
+        // Authentication - choose one method
+        public string AccessKey { get; set; }
+        public string SecretKey { get; set; }
+        public string SessionToken { get; set; } // For temporary credentials
+        
+        // Alternative: Use IAM roles (recommended for EC2/ECS)
+        public bool UseInstanceProfile { get; set; } = false;
+        
+        // Alternative: Use specific profile
+        public string ProfileName { get; set; }
+        
+        // Default queue name
+        public string DefaultQueueName { get; set; } = "messages";
+        
+        // Queue URL prefix (optional)
+        public string QueueUrlPrefix { get; set; }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion title="Message Processing">
+    ```csharp
+    public class AmazonSQSDispatcherOptions : AmazonSQSOptions
+    {
+        // Maximum messages to retrieve per request (1-10)
+        public int MaxNumberOfMessages { get; set; } = 10;
+        
+        // Long polling wait time (0-20 seconds)
+        public int WaitTimeSeconds { get; set; } = 20;
+        
+        // Message visibility timeout (seconds)
+        public int VisibilityTimeoutSeconds { get; set; } = 300;
+        
+        // Maximum concurrent message processing
+        public int MaxConcurrentMessages { get; set; } = 20;
+        
+        // Enable dead letter queue handling
+        public bool EnableDeadLetterQueue { get; set; } = true;
+        
+        // Dead letter queue suffix
+        public string DeadLetterQueueSuffix { get; set; } = "-dlq";
+        
+        // Maximum delivery count before DLQ
+        public int MaxDeliveryCount { get; set; } = 3;
+    }
+    ```
+  </Accordion>
+  
+  <Accordion title="Advanced Settings">
+    ```csharp
+    public class AmazonSQSAdvancedOptions
+    {
+        // Use FIFO queues for ordered processing
+        public bool UseFifoQueues { get; set; } = false;
+        
+        // Message group ID for FIFO queues
+        public string MessageGroupId { get; set; } = "default";
+        
+        // Enable content-based deduplication
+        public bool ContentBasedDeduplication { get; set; } = true;
+        
+        // Custom SQS client configuration
+        public AmazonSQSConfig SqsConfig { get; set; }
+        
+        // Message attributes to include
+        public Dictionary<string, string> DefaultMessageAttributes { get; set; }
+        
+        // Custom queue name resolver
+        public IQueueNameResolver QueueNameResolver { get; set; }
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Authentication Methods
+
+### Access Keys (Development)
+
+For development environments:
+
+```json
+{
+  "AWS": {
+    "AccessKey": "AKIAIOSFODNN7EXAMPLE",
+    "SecretKey": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+    "Region": "us-east-1"
+  }
+}
+```
+
+```csharp
+builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+{
+    options.AccessKey = builder.Configuration["AWS:AccessKey"];
+    options.SecretKey = builder.Configuration["AWS:SecretKey"];
+    options.Region = builder.Configuration["AWS:Region"];
+});
+```
+
+### IAM Roles (Recommended for Production)
+
+For EC2 instances, ECS tasks, or Lambda functions:
+
+```csharp
+builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+{
+    options.Region = "us-east-1";
+    options.UseInstanceProfile = true; // Use attached IAM role
+});
+```
+
+### Named Profiles
+
+Using AWS CLI profiles:
+
+```csharp
+builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+{
+    options.Region = "us-east-1";
+    options.ProfileName = "production"; // Profile from ~/.aws/credentials
+});
+```
+
+### Temporary Credentials
+
+For applications using AWS STS:
+
+```csharp
+builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+{
+    options.Region = "us-east-1";
+    options.AccessKey = temporaryCredentials.AccessKey;
+    options.SecretKey = temporaryCredentials.SecretKey;
+    options.SessionToken = temporaryCredentials.SessionToken;
+});
+```
+
+## Queue Types
+
+### Standard Queues
+
+Default queue type with high throughput:
+
+```csharp
+builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+{
+    options.DefaultQueueName = "messages";
+    // Standard queue used by default
+});
+```
+
+**Characteristics:**
+- Nearly unlimited throughput
+- At-least-once delivery
+- Best-effort ordering
+- Lower cost
+
+### FIFO Queues
+
+For ordered message processing:
+
+```csharp
+builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+{
+    options.DefaultQueueName = "messages.fifo"; // Must end with .fifo
+    options.UseFifoQueues = true;
+    options.MessageGroupId = "order-processing";
+    options.ContentBasedDeduplication = true;
+});
+```
+
+**Characteristics:**
+- Exactly-once processing
+- Strict message ordering
+- 3,000 messages/second with batching
+- Higher cost
+
+## Dead Letter Queue Configuration
+
+### Automatic DLQ Setup
+
+SimpleMessageBus can automatically configure dead letter queues:
+
+```csharp
+builder.Services.AddSimpleMessageBusAmazonSQSDispatcher(options =>
+{
+    options.EnableDeadLetterQueue = true;
+    options.MaxDeliveryCount = 3;
+    options.DeadLetterQueueSuffix = "-dlq";
+});
+```
+
+### Manual DLQ Configuration
+
+Set up DLQ manually in AWS Console or with Infrastructure as Code:
+
+```json
+{
+  "QueueConfiguration": {
+    "RedrivePolicy": {
+      "deadLetterTargetArn": "arn:aws:sqs:us-east-1:123456789012:messages-dlq",
+      "maxReceiveCount": 3
+    }
+  }
+}
+```
+
+### DLQ Message Processing
+
+Handle messages from dead letter queue:
+
+```csharp
+public class DeadLetterHandler : IMessageHandler<FailedMessage>
+{
+    private readonly ILogger<DeadLetterHandler> _logger;
+    private readonly IEmailService _emailService;
+
+    public async Task HandleAsync(FailedMessage message)
+    {
+        _logger.LogCritical("Message failed after max retries: {@Message}", message);
+        
+        // Alert operations team
+        await _emailService.SendAlertAsync(
+            "Dead Letter Queue Alert",
+            $"Message {message.MessageId} failed processing after {message.AttemptCount} attempts"
+        );
+        
+        // Store for manual investigation
+        await StoreForInvestigation(message);
+    }
+}
+```
+
+## Message Attributes and Metadata
+
+### Standard Message Attributes
+
+SQS supports message attributes for filtering and routing:
+
+```csharp
+public class OrderMessage : IMessage, IMetadataAware
+{
+    public string OrderId { get; set; }
+    public decimal Amount { get; set; }
+    
+    public Dictionary<string, object> Metadata { get; set; } = new()
+    {
+        ["Priority"] = "High",
+        ["Source"] = "WebApp",
+        ["Version"] = "2.0"
+    };
+}
+```
+
+### Custom Message Attributes
+
+Add custom attributes during publishing:
+
+```csharp
+public class CustomSQSPublisher : IMessagePublisher
+{
+    private readonly AmazonSQSMessagePublisher _basePublisher;
+
+    public async Task PublishAsync<T>(T message) where T : IMessage
+    {
+        var envelope = new MessageEnvelope
+        {
+            Content = JsonSerializer.Serialize(message),
+            MessageType = typeof(T).FullName,
+            Timestamp = DateTime.UtcNow,
+            Headers = new Dictionary<string, object>
+            {
+                ["Environment"] = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+                ["MachineName"] = Environment.MachineName,
+                ["ProcessId"] = Environment.ProcessId
+            }
+        };
+        
+        await _basePublisher.PublishAsync(envelope);
+    }
+}
+```
+
+## Error Handling and Retry Strategies
+
+### Built-in Retry Logic
+
+Configure automatic retries:
+
+```csharp
+builder.Services.AddSimpleMessageBusAmazonSQSDispatcher(options =>
+{
+    options.VisibilityTimeoutSeconds = 300; // 5 minutes
+    options.MaxDeliveryCount = 5; // Retry up to 5 times
+});
+```
+
+### Custom Error Handling
+
+Implement sophisticated error handling:
+
+```csharp
+public class RobustMessageHandler : IMessageHandler<OrderMessage>
+{
+    public async Task HandleAsync(OrderMessage message)
+    {
+        try
+        {
+            await ProcessOrder(message);
+        }
+        catch (ValidationException ex)
+        {
+            // Don't retry validation errors - send to DLQ immediately
+            _logger.LogWarning(ex, "Validation error for order {OrderId}", message.OrderId);
+            throw new PermanentFailureException("Validation failed", ex);
+        }
+        catch (HttpRequestException ex) when (IsTransientError(ex))
+        {
+            // Retry transient HTTP errors
+            _logger.LogWarning(ex, "Transient error processing order {OrderId}", message.OrderId);
+            throw; // Will be retried automatically
+        }
+        catch (Exception ex)
+        {
+            // Log unexpected errors
+            _logger.LogError(ex, "Unexpected error processing order {OrderId}", message.OrderId);
+            throw;
+        }
+    }
+
+    private bool IsTransientError(HttpRequestException ex)
+    {
+        return ex.Message.Contains("timeout") || 
+               ex.Message.Contains("connection") ||
+               ex.Message.Contains("502") ||
+               ex.Message.Contains("503");
+    }
+}
+```
+
+## Monitoring and CloudWatch Integration
+
+### CloudWatch Metrics
+
+SQS automatically publishes metrics to CloudWatch:
+
+- `ApproximateNumberOfMessages`
+- `ApproximateNumberOfMessagesVisible`
+- `NumberOfMessagesSent`
+- `NumberOfMessagesReceived`
+- `NumberOfMessagesDeleted`
+
+### Custom Application Metrics
+
+Track application-specific metrics:
+
+```csharp
+public class MetricsMessageHandler : IMessageHandler<OrderMessage>
+{
+    private readonly IMetrics _metrics;
+
+    public async Task HandleAsync(OrderMessage message)
+    {
+        using var activity = Activity.StartActivity("ProcessOrder");
+        activity?.SetTag("order.id", message.OrderId);
+        
+        var timer = Stopwatch.StartNew();
+        
+        try
+        {
+            await ProcessOrder(message);
+            
+            // Success metrics
+            _metrics.Counter("orders.processed")
+                   .WithTag("status", "success")
+                   .Add(1);
+                   
+            _metrics.Histogram("order.processing.duration")
+                   .WithTag("status", "success")
+                   .Record(timer.ElapsedMilliseconds);
+        }
+        catch (Exception ex)
+        {
+            // Error metrics
+            _metrics.Counter("orders.processed")
+                   .WithTag("status", "error")
+                   .WithTag("error.type", ex.GetType().Name)
+                   .Add(1);
+                   
+            throw;
+        }
+    }
+}
+```
+
+### X-Ray Tracing
+
+Enable AWS X-Ray for distributed tracing:
+
+```csharp
+builder.Services.AddAWSXRayTracing();
+
+public class TracingOrderHandler : IMessageHandler<OrderMessage>
+{
+    public async Task HandleAsync(OrderMessage message)
+    {
+        using var segment = AWSXRayRecorder.Instance.BeginSubsegment("ProcessOrder");
+        
+        segment.AddAnnotation("OrderId", message.OrderId);
+        segment.AddMetadata("Order", message);
+        
+        try
+        {
+            await ProcessOrder(message);
+            segment.AddAnnotation("Status", "Success");
+        }
+        catch (Exception ex)
+        {
+            segment.AddException(ex);
+            segment.AddAnnotation("Status", "Error");
+            throw;
+        }
+    }
+}
+```
+
+## Performance Optimization
+
+### Long Polling
+
+Use long polling to reduce costs and latency:
+
+```csharp
+builder.Services.AddSimpleMessageBusAmazonSQSDispatcher(options =>
+{
+    options.WaitTimeSeconds = 20; // Maximum long polling time
+    options.MaxNumberOfMessages = 10; // Batch processing
+});
+```
+
+### Batch Operations
+
+Process messages in batches:
+
+```csharp
+public class BatchOrderProcessor : IMessageHandler<OrderMessage>
+{
+    private readonly List<OrderMessage> _batch = new();
+    private readonly object _lock = new();
+
+    public async Task HandleAsync(OrderMessage message)
+    {
+        bool shouldProcess;
+        
+        lock (_lock)
+        {
+            _batch.Add(message);
+            shouldProcess = _batch.Count >= 10; // Process in batches of 10
+        }
+
+        if (shouldProcess)
+        {
+            List<OrderMessage> currentBatch;
+            lock (_lock)
+            {
+                currentBatch = new List<OrderMessage>(_batch);
+                _batch.Clear();
+            }
+
+            await ProcessBatch(currentBatch);
+        }
+    }
+
+    private async Task ProcessBatch(List<OrderMessage> orders)
+    {
+        // Process multiple orders efficiently
+        await _orderService.ProcessOrdersAsync(orders);
+    }
+}
+```
+
+### Multiple Processors
+
+Scale with multiple queue processors:
+
+```csharp
+// Configure multiple processors for high throughput
+for (int i = 0; i < Environment.ProcessorCount; i++)
+{
+    builder.Services.AddSimpleMessageBusAmazonSQSDispatcher($"processor-{i}", options =>
+    {
+        options.DefaultQueueName = "high-volume-messages";
+        options.MaxConcurrentMessages = 10;
+    });
+}
+```
+
+## Security Best Practices
+
+### IAM Policies
+
+Minimal required permissions for publisher:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "sqs:SendMessage",
+        "sqs:GetQueueAttributes"
+      ],
+      "Resource": "arn:aws:sqs:us-east-1:123456789012:messages*"
+    }
+  ]
+}
+```
+
+Minimal required permissions for dispatcher:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "sqs:ReceiveMessage",
+        "sqs:DeleteMessage",
+        "sqs:ChangeMessageVisibility",
+        "sqs:GetQueueAttributes"
+      ],
+      "Resource": "arn:aws:sqs:us-east-1:123456789012:messages*"
+    }
+  ]
+}
+```
+
+### VPC Endpoints
+
+Use VPC endpoints for private communication:
+
+```csharp
+builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+{
+    options.SqsConfig = new AmazonSQSConfig
+    {
+        ServiceURL = "https://vpce-1234567-abcdefgh.sqs.us-east-1.vpce.amazonaws.com"
+    };
+});
+```
+
+### Message Encryption
+
+Enable server-side encryption:
+
+```csharp
+// Configure queue with SSE-SQS (managed keys)
+// Or SSE-KMS (customer managed keys)
+// This is done at the queue level in AWS
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Authentication Errors">
+    **Symptoms**: `AmazonServiceException` with access denied
+    
+    **Solutions**:
+    - Verify IAM permissions
+    - Check access key and secret key
+    - Ensure correct region
+    - Validate queue ARN format
+    
+    ```csharp
+    // Test SQS connection
+    var sqs = new AmazonSQSClient(accessKey, secretKey, RegionEndpoint.USEast1);
+    var queues = await sqs.ListQueuesAsync();
+    ```
+  </Accordion>
+  
+  <Accordion title="Throttling Issues">
+    **Symptoms**: `AmazonServiceException` with throttling errors
+    
+    **Solutions**:
+    - Implement exponential backoff
+    - Reduce message rate
+    - Use batch operations
+    - Consider FIFO queue limits
+    
+    ```csharp
+    options.RetryPolicy = new ExponentialBackoffRetryPolicy
+    {
+        MaxRetries = 5,
+        BaseDelay = TimeSpan.FromSeconds(1)
+    };
+    ```
+  </Accordion>
+  
+  <Accordion title="Message Size Limits">
+    **Symptoms**: `MessageTooLarge` exceptions
+    
+    **Solutions**:
+    - SQS limit: 256 KB
+    - Use S3 for large payloads
+    - Reference S3 objects in messages
+    
+    ```csharp
+    public class LargeDataMessage : IMessage
+    {
+        public string S3Bucket { get; set; }
+        public string S3Key { get; set; }
+        public string MessageId { get; set; }
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Complete Example
+
+Here's a complete working example with FIFO queue and DLQ:
+
+```csharp
+// Program.cs
+using SimpleMessageBus.Publish.Amazon.Extensions;
+using SimpleMessageBus.Dispatch.Amazon.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configure Amazon SQS with FIFO queue
+builder.Services.AddSimpleMessageBusAmazonSQSPublisher(options =>
+{
+    options.Region = "us-east-1";
+    options.UseInstanceProfile = true; // Use IAM role
+    options.DefaultQueueName = "orders.fifo";
+    options.UseFifoQueues = true;
+    options.MessageGroupId = "order-processing";
+});
+
+builder.Services.AddSimpleMessageBusAmazonSQSDispatcher(options =>
+{
+    options.Region = "us-east-1";
+    options.UseInstanceProfile = true;
+    options.DefaultQueueName = "orders.fifo";
+    options.UseFifoQueues = true;
+    options.EnableDeadLetterQueue = true;
+    options.MaxDeliveryCount = 3;
+    options.WaitTimeSeconds = 20; // Long polling
+    options.MaxConcurrentMessages = 10;
+});
+
+// Register handlers
+builder.Services.AddScoped<IMessageHandler<OrderCreatedMessage>, OrderCreatedHandler>();
+
+var app = builder.Build();
+
+// API endpoint
+app.MapPost("/orders", async (CreateOrderRequest request, IMessagePublisher publisher) =>
+{
+    var orderId = Guid.NewGuid().ToString();
+    
+    await publisher.PublishAsync(new OrderCreatedMessage
+    {
+        OrderId = orderId,
+        CustomerId = request.CustomerId,
+        TotalAmount = request.TotalAmount,
+        CreatedAt = DateTime.UtcNow
+    });
+    
+    return Results.Ok(new { OrderId = orderId });
+});
+
+app.Run();
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="FIFO Queues"
+    icon="list-ol"
+    href="/guides/fifo-queues"
+  >
+    Learn about ordered message processing
+  </Card>
+  <Card
+    title="Dead Letter Queues"
+    icon="skull"
+    href="/guides/dead-letter-queues"
+  >
+    Handle failed messages effectively
+  </Card>
+  <Card
+    title="CloudWatch Monitoring"
+    icon="chart-line"
+    href="/guides/monitoring"
+  >
+    Monitor your SQS integration
+  </Card>
+  <Card
+    title="Performance Tuning"
+    icon="gauge-high"
+    href="/guides/performance"
+  >
+    Optimize for high throughput
+  </Card>
+</CardGroup>
